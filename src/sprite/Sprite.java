@@ -32,7 +32,7 @@ public class Sprite {
 			fpsCounter = 0;
 			spriteCounter++;
 		}
-		
+
 		if (spriteCounter >= sprites.size()) {
 			spriteCounter = 0;
 		}
