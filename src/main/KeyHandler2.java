@@ -3,19 +3,14 @@ package main;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class KeyHandler extends KeyHandlerTemplate implements KeyListener {
+public class KeyHandler2 extends KeyHandlerTemplate implements KeyListener {
 
-	public KeyHandler() {
+	public KeyHandler2() {
 		UP = false; 
 		DOWN = false;
 		LEFT = false;
 		RIGHT = false;
 		SHOOTING = false;
-	}
-	
-	@Override
-	public Boolean isMoving() {
-		return UP || DOWN || LEFT || RIGHT;
 	}
 
 	@Override
@@ -26,19 +21,19 @@ public class KeyHandler extends KeyHandlerTemplate implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 		
-		if (code == KeyEvent.VK_W) {
+		if (code == KeyEvent.VK_I) {
 			UP = true;
 		}
 		
-		if (code == KeyEvent.VK_S) {
+		if (code == KeyEvent.VK_K) {
 			DOWN = true;
 		}
 		
-		if (code == KeyEvent.VK_A) {
+		if (code == KeyEvent.VK_J) {
 			LEFT = true;
 		}
 		
-		if (code == KeyEvent.VK_D) {
+		if (code == KeyEvent.VK_L) {
 			RIGHT = true;
 		}
 		
@@ -52,19 +47,19 @@ public class KeyHandler extends KeyHandlerTemplate implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		int code = e.getKeyCode();
 		
-		if (code == KeyEvent.VK_W) {
+		if (code == KeyEvent.VK_I) {
 			UP = false;
 		}
 		
-		if (code == KeyEvent.VK_S) {
+		if (code == KeyEvent.VK_K) {
 			DOWN = false;
 		}
 		
-		if (code == KeyEvent.VK_A) {
+		if (code == KeyEvent.VK_J) {
 			LEFT = false;
 		}
 		
-		if (code == KeyEvent.VK_D) {
+		if (code == KeyEvent.VK_L) {
 			RIGHT = false;
 		}
 		

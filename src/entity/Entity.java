@@ -1,5 +1,7 @@
 package entity;
 
+import java.awt.Rectangle;
+
 import sprite.SpriteManager;
 
 public class Entity {
@@ -9,6 +11,8 @@ public class Entity {
 	private int speed;
 	private String direction;
 	public SpriteManager sprite = new SpriteManager(this);
+	public Rectangle solidArea;
+	public Boolean movementDisabled = false;
 
 	public int getSpeed() {
 		return speed;

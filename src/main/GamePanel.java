@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+import entity.Enemy;
 import entity.Player;
 import tile.TileManager;
 
@@ -13,8 +14,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 
-	final int originalTileSize = 16;
-	final int scale = 3;
+	private final int originalTileSize = 16;
+	private final int scale = 3;
 
 	public final int tileSize = originalTileSize * scale;
 	public final int col = 20;
@@ -31,15 +32,22 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int worldHeight = worldRow * tileSize;
 
 	private Thread thread = null;
-	KeyHandler keys = new KeyHandler();
+	
+	private KeyHandler keys = new KeyHandler();
+	private KeyHandler2 keys2 = new KeyHandler2();
+	
 	public Player player = new Player(this, keys);
-	TileManager tm = new TileManager(this);
+	public Enemy player2 = new Enemy(this, keys2);
+	
+	public TileManager tm = new TileManager(this);
+	public CollisionDetector cd = new CollisionDetector(this);
 
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
 		this.addKeyListener(keys);
+		this.addKeyListener(keys2);
 	}
 
 	public void startGameThread() {
@@ -69,6 +77,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void update() {
 		player.update();
+		player2.update();
 	}
 
 	public void paintComponent(Graphics g) {
@@ -78,6 +87,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		tm.draw(g2);
 		player.draw(g2);
+		player2.draw(g2);
 		
 		g2.dispose();
 	}

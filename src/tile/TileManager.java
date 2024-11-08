@@ -15,8 +15,8 @@ import main.Renderable;
 public class TileManager implements Renderable {
 	
 	GamePanel gp;
-	Tile[] tiles;
-	int[][] map;
+	private Tile[] tiles;
+	private int[][] map;
 			
 	public TileManager(GamePanel gp) {
 		this.gp = gp;
@@ -30,7 +30,8 @@ public class TileManager implements Renderable {
 	private void loadTiles() {
 		try {
 			tiles[0] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/grass.png")));	
-			tiles[1] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/water.png")));	
+			tiles[1] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/water.png")));
+			tiles[1].isSolid = true;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -89,6 +90,15 @@ public class TileManager implements Renderable {
 				}
 			}
 		}
+	}
+	
+	public int getMapTileNumber(int col, int row) {
+		if (col < 0 || row < 0) return 0;
+		return map[col][row];
+	}
+	
+	public Boolean isTileSolid(int tileIndex) {
+		return tiles[tileIndex].isSolid;
 	}
 
 }

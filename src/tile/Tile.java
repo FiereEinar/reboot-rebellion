@@ -7,6 +7,7 @@ import sprite.Sprite;
 public class Tile {
 	
 	private Sprite sprite = new Sprite();
+	public Boolean isSolid = false;
 	
 	public Tile(BufferedImage image) {
 		this.sprite.addSprite(image);
