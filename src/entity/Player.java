@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import main.GamePanel;
 import main.KeyHandlerTemplate;
 import main.Renderable;
+import object.GameObject;
 
 public class Player extends Entity implements Renderable {
 
@@ -31,7 +32,7 @@ public class Player extends Entity implements Renderable {
 		this.setSpeed(5);
 		this.setDirection("down");
 
-		this.solidArea = new Rectangle(8, 16, 32, 32);
+		this.setSolidArea(new Rectangle(8, 16, 32, 32));
 
 		loadSprites();
 	}
@@ -67,6 +68,7 @@ public class Player extends Entity implements Renderable {
 		updateDirection();
 		this.movementDisabled = false;
 		gp.cd.checkWorldCollision(this);
+		checkObjectCollisions();
 		updateCoordinates();
 	}
 
@@ -107,6 +109,17 @@ public class Player extends Entity implements Renderable {
 		}
 		if (this.getDirection().equalsIgnoreCase("right") || keys.RIGHT) {
 			this.worldX += this.getSpeed();
+		}
+	}
+
+	private void checkObjectCollisions() {
+		GameObject hitObject = gp.cd.checkEntityObjectCollision(this, true);
+		if (hitObject != null) {
+			if (hitObject.isSolid) {
+				this.movementDisabled = true;
+			}
+			
+			
 		}
 	}
 

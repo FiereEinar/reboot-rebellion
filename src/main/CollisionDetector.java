@@ -1,6 +1,9 @@
 package main;
 
+import java.awt.Rectangle;
+
 import entity.Entity;
+import object.GameObject;
 
 public class CollisionDetector {
 
@@ -11,10 +14,10 @@ public class CollisionDetector {
 	}
 
 	public void checkWorldCollision(Entity entity) {
-		int entityLeftWorldX = entity.worldX + entity.solidArea.x;
-		int entityRightWorldX = entity.worldX + entity.solidArea.x + entity.solidArea.width;
-		int entityTopWorldY = entity.worldY + entity.solidArea.y;
-		int entityBottomWorldY = entity.worldY + entity.solidArea.y + entity.solidArea.height;
+		int entityLeftWorldX = entity.worldX + entity.getSolidArea().x;
+		int entityRightWorldX = entity.worldX + entity.getSolidArea().x + entity.getSolidArea().width;
+		int entityTopWorldY = entity.worldY + entity.getSolidArea().y;
+		int entityBottomWorldY = entity.worldY + entity.getSolidArea().y + entity.getSolidArea().height;
 
 		int entityLeftCol = entityLeftWorldX / gp.tileSize;
 		int entityRightCol = entityRightWorldX / gp.tileSize;
@@ -48,10 +51,38 @@ public class CollisionDetector {
 			System.out.println("WARNING: Invalid value for direction");
 			break;
 		}
-		
+
 		if (gp.tm.isTileSolid(tileNum1) || gp.tm.isTileSolid(tileNum2)) {
 			entity.movementDisabled = true;
 		}
 	}
 
+	public GameObject checkEntityObjectCollision(Entity entity, Boolean isPlayer) {
+		GameObject hitObject = null;
+		Rectangle rec1 = entity.getSolidAreaRelativeToWorld();
+
+		for (GameObject o : gp.om.getObjects()) {
+			Rectangle rec2 = o.getSolidAreaRelativeToWorld();
+
+			switch (entity.getDirection()) {
+			case "up":
+				rec1.y -= entity.getSpeed();
+				break;
+			case "down":
+				rec1.y += entity.getSpeed();
+				break;
+			case "left":
+				rec1.x -= entity.getSpeed();
+				break;
+			case "right":
+				rec1.x += entity.getSpeed();
+				break;
+			}
+
+			if (rec1.intersects(rec2))
+				hitObject = o;
+		}
+		
+		return hitObject;
+	}
 }

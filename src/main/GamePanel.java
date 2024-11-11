@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 
 import entity.Enemy;
 import entity.Player;
+import object.ObjectManager;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -42,6 +43,8 @@ public class GamePanel extends JPanel implements Runnable {
 	public TileManager tm = new TileManager(this);
 	public CollisionDetector cd = new CollisionDetector(this);
 
+	public ObjectManager om = new ObjectManager(this);
+	
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
 		this.setDoubleBuffered(true);
@@ -78,6 +81,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public void update() {
 		player.update();
 		player2.update();
+		om.update();
 	}
 
 	public void paintComponent(Graphics g) {
@@ -88,6 +92,7 @@ public class GamePanel extends JPanel implements Runnable {
 		tm.draw(g2);
 		player.draw(g2);
 		player2.draw(g2);
+		om.draw(g2);
 		
 		g2.dispose();
 	}

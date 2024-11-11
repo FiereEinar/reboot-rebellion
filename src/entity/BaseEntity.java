@@ -1,0 +1,27 @@
+package entity;
+
+import java.awt.Rectangle;
+
+public class BaseEntity {
+
+	public int worldX = 0;
+	public int worldY = 0;
+	private Rectangle solidArea;
+	private Rectangle solidAreaRelativeToWorld = new Rectangle(0, 0, 48, 48);
+	
+	public void setSolidArea(Rectangle solidArea) {
+		this.solidArea = solidArea;
+	}
+	
+	public Rectangle getSolidArea() {
+		return this.solidArea;
+	}
+	
+	public Rectangle getSolidAreaRelativeToWorld() {
+		this.solidAreaRelativeToWorld.x = this.worldX + this.solidArea.x;
+		this.solidAreaRelativeToWorld.y = this.worldY + this.solidArea.y;
+
+		return this.solidAreaRelativeToWorld;
+	}
+
+}
