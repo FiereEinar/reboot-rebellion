@@ -7,9 +7,9 @@ import javax.imageio.ImageIO;
 public class GunOBJ extends GameObject {
 
 	public GunOBJ() {
-		this.worldX = 48;
-		this.worldY = 48;
-
+		this.worldX = 48 * 3;
+		this.worldY = 48 * 3;
+		this.name = "gun_1";
 		loadSprites();
 	}
 

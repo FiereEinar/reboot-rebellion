@@ -79,9 +79,9 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void update() {
+		om.update();
 		player.update();
 		player2.update();
-		om.update();
 	}
 
 	public void paintComponent(Graphics g) {
@@ -90,9 +90,9 @@ public class GamePanel extends JPanel implements Runnable {
 		Graphics2D g2 = (Graphics2D) g;
 
 		tm.draw(g2);
+		om.draw(g2);
 		player.draw(g2);
 		player2.draw(g2);
-		om.draw(g2);
 		
 		g2.dispose();
 	}

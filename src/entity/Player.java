@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import inventory.Inventory;
 import main.GamePanel;
 import main.KeyHandlerTemplate;
 import main.Renderable;
@@ -15,6 +16,7 @@ public class Player extends Entity implements Renderable {
 
 	KeyHandlerTemplate keys;
 	GamePanel gp;
+	Inventory inventory = new Inventory();
 
 	public int screenX;
 	public int screenY;
@@ -119,7 +121,12 @@ public class Player extends Entity implements Renderable {
 				this.movementDisabled = true;
 			}
 			
-			
+			this.inventory.addInventoryItem(hitObject);
+			gp.om.removeObject(hitObject.name);
+			System.out.println("Player Inventory: ");
+			for (GameObject o: this.inventory.getItems()) {
+				System.out.println(o.name);
+			}
 		}
 	}
 

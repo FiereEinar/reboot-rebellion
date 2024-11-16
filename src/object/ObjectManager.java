@@ -23,6 +23,10 @@ public class ObjectManager implements Renderable {
 	public ArrayList<GameObject> getObjects() {
 		return this.objects;
 	}
+	
+	public void removeObject(String name) {
+		objects.removeIf(t -> t.name == name);
+	}
 
 	@Override
 	public void update() {
