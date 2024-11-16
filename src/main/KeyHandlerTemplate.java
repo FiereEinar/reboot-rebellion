@@ -1,6 +1,6 @@
 package main;
 
-public class KeyHandlerTemplate {
+public abstract class KeyHandlerTemplate {
 
 	public Boolean UP;
 	public Boolean DOWN;
@@ -8,7 +8,5 @@ public class KeyHandlerTemplate {
 	public Boolean RIGHT;
 	public Boolean SHOOTING;
 	
-	public Boolean isMoving() {
-		return false;
-	}
+	public abstract Boolean isMoving();
 }

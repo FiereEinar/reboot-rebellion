@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
-import entity.Enemy;
 import entity.Player;
 import object.ObjectManager;
 import tile.TileManager;
@@ -35,11 +34,7 @@ public class GamePanel extends JPanel implements Runnable {
 	private Thread thread = null;
 	
 	private KeyHandler keys = new KeyHandler();
-	private KeyHandler2 keys2 = new KeyHandler2();
-	
 	public Player player = new Player(this, keys);
-	public Enemy player2 = new Enemy(this, keys2);
-	
 	public TileManager tm = new TileManager(this);
 	public CollisionDetector cd = new CollisionDetector(this);
 
@@ -50,7 +45,6 @@ public class GamePanel extends JPanel implements Runnable {
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
 		this.addKeyListener(keys);
-		this.addKeyListener(keys2);
 	}
 
 	public void startGameThread() {
@@ -81,7 +75,6 @@ public class GamePanel extends JPanel implements Runnable {
 	public void update() {
 		om.update();
 		player.update();
-		player2.update();
 	}
 
 	public void paintComponent(Graphics g) {
@@ -92,7 +85,6 @@ public class GamePanel extends JPanel implements Runnable {
 		tm.draw(g2);
 		om.draw(g2);
 		player.draw(g2);
-		player2.draw(g2);
 		
 		g2.dispose();
 	}
