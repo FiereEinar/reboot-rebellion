@@ -13,14 +13,13 @@ import object.GameObject;
 public class Player extends Entity implements Renderable {
 
 	KeyHandler keys;
-	GamePanel gp;
 	Inventory inventory = new Inventory();
 
 	public int screenX;
 	public int screenY;
 
 	public Player(GamePanel gp, KeyHandler keys) {
-		this.gp = gp;
+		super(gp);
 		this.keys = keys;
 
 		this.worldX = 100;

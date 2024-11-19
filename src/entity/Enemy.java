@@ -10,11 +10,9 @@ import main.Renderable;
 
 public class Enemy extends Entity implements Renderable {
 
-	GamePanel gp;
-	
 	public Enemy(GamePanel gp) {
-		this.gp = gp;
-
+		super(gp);
+		
 		this.worldX = 50;
 		this.worldY = 50;
 		

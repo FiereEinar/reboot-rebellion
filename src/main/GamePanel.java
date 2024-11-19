@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+import entity.EntityManager;
 import entity.Player;
 import object.ObjectManager;
 import tile.TileManager;
@@ -40,6 +41,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public CollisionDetector cd = new CollisionDetector(this);
 	public ObjectManager om = new ObjectManager(this);
 	public UI ui = new UI(this);
+	public EntityManager em = new EntityManager(this);
 	
 	public int gameState;
 	public final int STATE_PAUSE = 1;
@@ -81,6 +83,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public void update() {
 		if (gameState == STATE_PLAY) {
 			om.update();
+			em.update();
 			player.update();
 		}
 		
@@ -96,6 +99,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		tm.draw(g2);
 		om.draw(g2);
+		em.draw(g2);
 		player.draw(g2);
 		ui.draw(g2);
 		
