@@ -2,31 +2,29 @@ package entity;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import inventory.Inventory;
 import main.GamePanel;
-import main.KeyHandlerTemplate;
+import main.KeyHandler;
 import main.Renderable;
+import main.Utils;
 import object.GameObject;
 
 public class Player extends Entity implements Renderable {
 
-	KeyHandlerTemplate keys;
+	KeyHandler keys;
 	GamePanel gp;
 	Inventory inventory = new Inventory();
 
 	public int screenX;
 	public int screenY;
 
-	public Player(GamePanel gp, KeyHandlerTemplate keys) {
+	public Player(GamePanel gp, KeyHandler keys) {
 		this.gp = gp;
 		this.keys = keys;
 
-		this.worldX = 50;
-		this.worldY = 50;
+		this.worldX = 100;
+		this.worldY = 400;
 
 		this.screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
 		this.screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
@@ -40,29 +38,27 @@ public class Player extends Entity implements Renderable {
 	}
 
 	private void loadSprites() {
-		try {
-			this.sprite.up.addSprite(
-					ImageIO.read(getClass().getResourceAsStream("/robot_3_ranger_movement/move_front_1.png")));
-			this.sprite.up.addSprite(
-					ImageIO.read(getClass().getResourceAsStream("/robot_3_ranger_movement/move_front_2.png")));
+		Utils utils = new Utils();
 
-			this.sprite.down.addSprite(
-					ImageIO.read(getClass().getResourceAsStream("/robot_3_ranger_movement/move_back_1.png")));
-			this.sprite.down.addSprite(
-					ImageIO.read(getClass().getResourceAsStream("/robot_3_ranger_movement/move_back_2.png")));
-
-			this.sprite.left.addSprite(
-					ImageIO.read(getClass().getResourceAsStream("/robot_3_ranger_movement/move_left_1.png")));
-			this.sprite.left.addSprite(
-					ImageIO.read(getClass().getResourceAsStream("/robot_3_ranger_movement/move_left_2.png")));
-
-			this.sprite.right.addSprite(
-					ImageIO.read(getClass().getResourceAsStream("/robot_3_ranger_movement/move_right_1.png")));
-			this.sprite.right.addSprite(
-					ImageIO.read(getClass().getResourceAsStream("/robot_3_ranger_movement/move_right_2.png")));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.sprite.up.addSprite(
+				utils.getAndScaleImage("/robot_3_ranger_movement/move_front_1.png", gp.tileSize, gp.tileSize));
+		this.sprite.up.addSprite(
+				utils.getAndScaleImage("/robot_3_ranger_movement/move_front_2.png", gp.tileSize, gp.tileSize));
+		
+		this.sprite.down.addSprite(
+				utils.getAndScaleImage("/robot_3_ranger_movement/move_back_1.png", gp.tileSize, gp.tileSize));
+		this.sprite.down.addSprite(
+				utils.getAndScaleImage("/robot_3_ranger_movement/move_back_2.png", gp.tileSize, gp.tileSize));
+		
+		this.sprite.left.addSprite(
+				utils.getAndScaleImage("/robot_3_ranger_movement/move_left_1.png", gp.tileSize, gp.tileSize));
+		this.sprite.left.addSprite(
+				utils.getAndScaleImage("/robot_3_ranger_movement/move_left_2.png", gp.tileSize, gp.tileSize));
+		
+		this.sprite.right.addSprite(
+				utils.getAndScaleImage("/robot_3_ranger_movement/move_right_1.png", gp.tileSize, gp.tileSize));
+		this.sprite.right.addSprite(
+				utils.getAndScaleImage("/robot_3_ranger_movement/move_right_2.png", gp.tileSize, gp.tileSize));
 	}
 
 	@Override
@@ -76,7 +72,7 @@ public class Player extends Entity implements Renderable {
 
 	@Override
 	public void draw(Graphics2D g2) {
-		g2.drawImage(this.sprite.getSprite(), this.screenX, this.screenY, gp.tileSize, gp.tileSize, null);
+		g2.drawImage(this.sprite.getSprite(), this.screenX, this.screenY, null);
 	}
 
 	private void updateDirection() {
@@ -120,11 +116,11 @@ public class Player extends Entity implements Renderable {
 			if (hitObject.isSolid) {
 				this.movementDisabled = true;
 			}
-			
+
 			this.inventory.addInventoryItem(hitObject);
 			gp.om.removeObject(hitObject.name);
 			System.out.println("Player Inventory: ");
-			for (GameObject o: this.inventory.getItems()) {
+			for (GameObject o : this.inventory.getItems()) {
 				System.out.println(o.name);
 			}
 		}

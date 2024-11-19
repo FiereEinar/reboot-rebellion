@@ -3,17 +3,25 @@ package main;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class KeyHandler extends KeyHandlerTemplate implements KeyListener {
+public class KeyHandler implements KeyListener {
+	
+	private GamePanel gp;
 
-	public KeyHandler() {
+	public Boolean UP;
+	public Boolean DOWN;
+	public Boolean LEFT;
+	public Boolean RIGHT;
+	public Boolean SHOOTING;
+
+	public KeyHandler(GamePanel gp) {
 		UP = false; 
 		DOWN = false;
 		LEFT = false;
 		RIGHT = false;
 		SHOOTING = false;
+		this.gp = gp;
 	}
 	
-	@Override
 	public Boolean isMoving() {
 		return UP || DOWN || LEFT || RIGHT;
 	}
@@ -46,6 +54,10 @@ public class KeyHandler extends KeyHandlerTemplate implements KeyListener {
 			SHOOTING = true;
 		}
 		
+		if (code == KeyEvent.VK_P) {
+			if (gp.gameState == gp.STATE_PLAY) gp.gameState = gp.STATE_PAUSE;
+			else if (gp.gameState == gp.STATE_PAUSE) gp.gameState = gp.STATE_PLAY;
+		}
 	}
 
 	@Override

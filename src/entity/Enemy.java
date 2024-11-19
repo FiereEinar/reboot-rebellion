@@ -6,18 +6,15 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import main.GamePanel;
-import main.KeyHandlerTemplate;
 import main.Renderable;
 
 public class Enemy extends Entity implements Renderable {
 
-	KeyHandlerTemplate keys;
 	GamePanel gp;
 	
-	public Enemy(GamePanel gp, KeyHandlerTemplate keys) {
+	public Enemy(GamePanel gp) {
 		this.gp = gp;
-		this.keys = keys;
-		
+
 		this.worldX = 50;
 		this.worldY = 50;
 		
@@ -47,22 +44,6 @@ public class Enemy extends Entity implements Renderable {
 
 	@Override
 	public void update() {
-		if (keys.UP) {	
-			this.setDirection("up");
-			this.worldY -= this.getSpeed();
-		}
-		if (keys.DOWN) {
-			this.setDirection("down");
-			this.worldY += this.getSpeed();
-		}
-		if (keys.LEFT) {
-			this.setDirection("left");
-			this.worldX -= this.getSpeed();
-		}
-		if (keys.RIGHT) {
-			this.setDirection("right");
-			this.worldX += this.getSpeed();
-		}
 	}
 
 	@Override

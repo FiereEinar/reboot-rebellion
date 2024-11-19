@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import entity.Player;
 import object.ObjectManager;
 import tile.TileManager;
+import ui.UI;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -33,18 +34,23 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private Thread thread = null;
 	
-	private KeyHandler keys = new KeyHandler();
+	private KeyHandler keys = new KeyHandler(this);
 	public Player player = new Player(this, keys);
 	public TileManager tm = new TileManager(this);
 	public CollisionDetector cd = new CollisionDetector(this);
-
 	public ObjectManager om = new ObjectManager(this);
+	public UI ui = new UI(this);
+	
+	public int gameState;
+	public final int STATE_PAUSE = 1;
+	public final int STATE_PLAY = 2;
 	
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
 		this.addKeyListener(keys);
+		this.gameState = STATE_PLAY;
 	}
 
 	public void startGameThread() {
@@ -73,8 +79,14 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void update() {
-		om.update();
-		player.update();
+		if (gameState == STATE_PLAY) {
+			om.update();
+			player.update();
+		}
+		
+		if (gameState == STATE_PAUSE) {
+			
+		}
 	}
 
 	public void paintComponent(Graphics g) {
@@ -85,6 +97,7 @@ public class GamePanel extends JPanel implements Runnable {
 		tm.draw(g2);
 		om.draw(g2);
 		player.draw(g2);
+		ui.draw(g2);
 		
 		g2.dispose();
 	}
