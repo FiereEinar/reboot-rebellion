@@ -10,6 +10,7 @@ public class ObjectManager implements Renderable {
 	
 	GamePanel gp;
 	private ArrayList<GameObject> objects = new ArrayList<>();
+	public final int GUN_INDEX = 0;
 	
 	public ObjectManager(GamePanel gp) {
 		this.gp = gp;
@@ -17,7 +18,7 @@ public class ObjectManager implements Renderable {
 	}
 	
 	private void loadObjects() {
-		objects.add(new GunOBJ());
+		objects.add(new OBJ_Gun(gp.tileSize * 3, gp.tileSize * 3));
 	}
 	
 	public ArrayList<GameObject> getObjects() {

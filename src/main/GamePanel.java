@@ -36,14 +36,16 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private Thread thread = null;
 
-	private KeyHandler keys = new KeyHandler(this);
+	public KeyHandler keys = new KeyHandler(this);
 	public Player player = new Player(this, keys);
 	public TileManager tm = new TileManager(this);
 	public CollisionDetector cd = new CollisionDetector(this);
 	public ObjectManager om = new ObjectManager(this);
 	public UI ui = new UI(this);
 	public EntityManager em = new EntityManager(this);
-
+	public EventHandler eh = new EventHandler(this);
+	private Logger logger = new Logger(this);
+	
 	public int gameState;
 	public final int STATE_MENU_SCREEN = 0;
 	public final int STATE_PAUSE = 1;
@@ -85,6 +87,8 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void update() {
+		logger.update();
+		
 		if (gameState == STATE_PLAY) {
 			om.update();
 			em.update();

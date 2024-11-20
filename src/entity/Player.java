@@ -86,6 +86,7 @@ public class Player extends Entity implements Renderable {
 		gp.cd.checkWorldCollision(this);
 		checkObjectCollisions();
 		checkEntitiesCollision();
+		gp.eh.checkEvent();
 		updateCoordinates();
 	}
 

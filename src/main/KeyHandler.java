@@ -7,18 +7,14 @@ public class KeyHandler implements KeyListener {
 	
 	private GamePanel gp;
 
-	public Boolean UP;
-	public Boolean DOWN;
-	public Boolean LEFT;
-	public Boolean RIGHT;
-	public Boolean SHOOTING;
+	public Boolean UP = false;
+	public Boolean DOWN = false;
+	public Boolean LEFT = false;
+	public Boolean RIGHT = false;
+	public Boolean SHOOTING = false;
+	public Boolean LOG_SWITCH = false;
 
 	public KeyHandler(GamePanel gp) {
-		UP = false; 
-		DOWN = false;
-		LEFT = false;
-		RIGHT = false;
-		SHOOTING = false;
 		this.gp = gp;
 	}
 	
@@ -52,6 +48,10 @@ public class KeyHandler implements KeyListener {
 		
 		if (code == KeyEvent.VK_SPACE) {
 			SHOOTING = true;
+		}
+		
+		if (code == KeyEvent.VK_L) {
+			LOG_SWITCH = !LOG_SWITCH;
 		}
 		
 		if (code == KeyEvent.VK_UP || code == KeyEvent.VK_W) {

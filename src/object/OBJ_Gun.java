@@ -4,11 +4,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class GunOBJ extends GameObject {
+public class OBJ_Gun extends GameObject {
 
-	public GunOBJ() {
-		this.worldX = 48 * 3;
-		this.worldY = 48 * 3;
+	public OBJ_Gun(int x, int y) {
+		this.worldX = x;
+		this.worldY = y;
 		this.name = "gun_1";
 		loadSprites();
 	}
@@ -20,4 +20,5 @@ public class GunOBJ extends GameObject {
 			e.printStackTrace();
 		}
 	}
+
 }
