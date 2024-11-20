@@ -29,9 +29,9 @@ public class Player extends Entity implements Renderable {
 		this.screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 		
 		this.maxHealth = 6;
-		this.health = maxHealth;
+		this.health = maxHealth - 2;
 
-		this.setSpeed(5);
+		this.setSpeed(4);
 		this.setDirection("down");
 
 		this.setSolidArea(new Rectangle(8, 16, 32, 32));
@@ -43,24 +43,40 @@ public class Player extends Entity implements Renderable {
 		Utils utils = new Utils();
 
 		this.sprite.up.addSprite(
-				utils.getAndScaleImage("/robot_3_ranger_movement/move_front_1.png", gp.tileSize, gp.tileSize));
+				utils.getAndScaleImage("/skeleton/skeleton2_v2_left_1.png", gp.tileSize, gp.tileSize));
 		this.sprite.up.addSprite(
-				utils.getAndScaleImage("/robot_3_ranger_movement/move_front_2.png", gp.tileSize, gp.tileSize));
-		
+				utils.getAndScaleImage("/skeleton/skeleton2_v2_left_2.png", gp.tileSize, gp.tileSize));
+		this.sprite.up.addSprite(
+				utils.getAndScaleImage("/skeleton/skeleton2_v2_left_3.png", gp.tileSize, gp.tileSize));
+		this.sprite.up.addSprite(
+				utils.getAndScaleImage("/skeleton/skeleton2_v2_left_4.png", gp.tileSize, gp.tileSize));
+
 		this.sprite.down.addSprite(
-				utils.getAndScaleImage("/robot_3_ranger_movement/move_back_1.png", gp.tileSize, gp.tileSize));
+				utils.getAndScaleImage("/skeleton/skeleton2_v2_right_1.png", gp.tileSize, gp.tileSize));
 		this.sprite.down.addSprite(
-				utils.getAndScaleImage("/robot_3_ranger_movement/move_back_2.png", gp.tileSize, gp.tileSize));
+				utils.getAndScaleImage("/skeleton/skeleton2_v2_right_2.png", gp.tileSize, gp.tileSize));
+		this.sprite.down.addSprite(
+				utils.getAndScaleImage("/skeleton/skeleton2_v2_right_3.png", gp.tileSize, gp.tileSize));
+		this.sprite.down.addSprite(
+				utils.getAndScaleImage("/skeleton/skeleton2_v2_right_4.png", gp.tileSize, gp.tileSize));
 		
 		this.sprite.left.addSprite(
-				utils.getAndScaleImage("/robot_3_ranger_movement/move_left_1.png", gp.tileSize, gp.tileSize));
+				utils.getAndScaleImage("/skeleton/skeleton2_v2_right_1.png", gp.tileSize, gp.tileSize));
 		this.sprite.left.addSprite(
-				utils.getAndScaleImage("/robot_3_ranger_movement/move_left_2.png", gp.tileSize, gp.tileSize));
+				utils.getAndScaleImage("/skeleton/skeleton2_v2_right_2.png", gp.tileSize, gp.tileSize));
+		this.sprite.left.addSprite(
+				utils.getAndScaleImage("/skeleton/skeleton2_v2_right_3.png", gp.tileSize, gp.tileSize));
+		this.sprite.left.addSprite(
+				utils.getAndScaleImage("/skeleton/skeleton2_v2_right_4.png", gp.tileSize, gp.tileSize));
 		
 		this.sprite.right.addSprite(
-				utils.getAndScaleImage("/robot_3_ranger_movement/move_right_1.png", gp.tileSize, gp.tileSize));
+				utils.getAndScaleImage("/skeleton/skeleton2_v2_left_1.png", gp.tileSize, gp.tileSize));
 		this.sprite.right.addSprite(
-				utils.getAndScaleImage("/robot_3_ranger_movement/move_right_2.png", gp.tileSize, gp.tileSize));
+				utils.getAndScaleImage("/skeleton/skeleton2_v2_left_2.png", gp.tileSize, gp.tileSize));
+		this.sprite.right.addSprite(
+				utils.getAndScaleImage("/skeleton/skeleton2_v2_left_3.png", gp.tileSize, gp.tileSize));
+		this.sprite.right.addSprite(
+				utils.getAndScaleImage("/skeleton/skeleton2_v2_left_4.png", gp.tileSize, gp.tileSize));
 	}
 
 	@Override

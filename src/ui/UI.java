@@ -104,7 +104,7 @@ public class UI implements Renderable {
 		g2.setColor(new Color(0, 0, 0, 0));
 
 		for (int i = 0; i < playerMaxHealth; i++) {
-			if (i > playerCurrentHealth) {
+			if (i >= playerCurrentHealth) {
 				g2.drawImage(heart.emptyHeart.getSprite(), 16 + i * healthBarWidth, 16, null);
 			} else {
 				g2.drawImage(heart.fullHeart.getSprite(), 16 + i * healthBarWidth, 16, null);
