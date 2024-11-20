@@ -50,6 +50,22 @@ public class Enemy_Robot_1 extends Entity implements Renderable {
 
 	@Override
 	public void update() {
+		setRandomDirection();
+		checkEntitiesAndPlayerCollision();
+		updateCoordinates();
+	}
+	
+	private void checkEntitiesAndPlayerCollision() {
+		Entity hitEntity = gp.cd.checkEntityCollision(this);
+		System.out.println(gp.cd.isCollidingWithPlayer(this));
+		if (hitEntity != null || gp.cd.isCollidingWithPlayer(this)) {
+			this.movementDisabled = true;
+		} else {
+			this.movementDisabled = false;
+		}
+	}
+	
+	private void setRandomDirection() {
 		actionLockCounter++;
 		
 		if (actionLockCounter == 120) {
@@ -71,6 +87,11 @@ public class Enemy_Robot_1 extends Entity implements Renderable {
 
 			actionLockCounter = 0;
 		}
+	}
+	
+	private void updateCoordinates() {
+		if (this.movementDisabled)
+			return;
 		
 		if (this.getDirection().equalsIgnoreCase("up")) {
 			this.worldY -= this.getSpeed();

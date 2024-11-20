@@ -85,4 +85,43 @@ public class CollisionDetector {
 		
 		return hitObject;
 	}
+	
+	public Entity checkEntityCollision(Entity entity) {
+		Entity hitEntity = null;
+		Rectangle rec1 = entity.getSolidAreaRelativeToWorld();
+
+		for (Entity e : gp.em.getEnities()) {
+			if (e == null || entity == e) continue;
+			
+			Rectangle rec2 = e.getSolidAreaRelativeToWorld();
+
+			switch (entity.getDirection()) {
+			case "up":
+				rec1.y -= entity.getSpeed();
+				break;
+			case "down":
+				rec1.y += entity.getSpeed();
+				break;
+			case "left":
+				rec1.x -= entity.getSpeed();
+				break;
+			case "right":
+				rec1.x += entity.getSpeed();
+				break;
+			}
+
+			if (rec1.intersects(rec2))
+				hitEntity = e;
+		}
+		
+		return hitEntity;
+	}
+	
+	public Boolean isCollidingWithPlayer(Entity entity) {
+		Rectangle rec1 = entity.getSolidAreaRelativeToWorld();
+		Rectangle rec2 = gp.player.getSolidAreaRelativeToWorld();
+		
+		if (rec1.intersects(rec2)) return true;
+		return false;
+	}
 }

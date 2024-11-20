@@ -18,6 +18,10 @@ public class EntityManager implements Renderable {
 	private void initNPCs() {
 		entities[0] = new Enemy_Robot_1(gp);
 	}
+	
+	public Entity[] getEnities() {
+		return this.entities;
+	}
 
 	@Override
 	public void update() {

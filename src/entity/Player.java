@@ -66,6 +66,7 @@ public class Player extends Entity implements Renderable {
 		this.movementDisabled = false;
 		gp.cd.checkWorldCollision(this);
 		checkObjectCollisions();
+		checkEntitiesCollision();
 		updateCoordinates();
 	}
 
@@ -111,6 +112,7 @@ public class Player extends Entity implements Renderable {
 
 	private void checkObjectCollisions() {
 		GameObject hitObject = gp.cd.checkEntityObjectCollision(this, true);
+		
 		if (hitObject != null) {
 			if (hitObject.isSolid) {
 				this.movementDisabled = true;
@@ -122,6 +124,15 @@ public class Player extends Entity implements Renderable {
 			for (GameObject o : this.inventory.getItems()) {
 				System.out.println(o.name);
 			}
+		}
+	}
+	
+	private void checkEntitiesCollision() {
+		Entity hitEntity = gp.cd.checkEntityCollision(this);
+		
+		if (hitEntity != null) {
+			this.movementDisabled = true;
+			System.out.println("hitting an entity");
 		}
 	}
 
