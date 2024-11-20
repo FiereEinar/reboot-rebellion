@@ -15,6 +15,9 @@ public class Entity extends BaseEntity implements Renderable {
 	public Boolean movementDisabled = false;
 	public int actionLockCounter = 0;
 	
+	public int maxHealth;
+	public int health;
+	
 	public Entity(GamePanel gp) {
 		this.gp = gp;
 	}

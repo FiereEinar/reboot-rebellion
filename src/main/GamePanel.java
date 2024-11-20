@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -34,7 +35,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int worldHeight = worldRow * tileSize;
 
 	private Thread thread = null;
-	
+
 	private KeyHandler keys = new KeyHandler(this);
 	public Player player = new Player(this, keys);
 	public TileManager tm = new TileManager(this);
@@ -42,17 +43,20 @@ public class GamePanel extends JPanel implements Runnable {
 	public ObjectManager om = new ObjectManager(this);
 	public UI ui = new UI(this);
 	public EntityManager em = new EntityManager(this);
-	
+
 	public int gameState;
+	public final int STATE_MENU_SCREEN = 0;
 	public final int STATE_PAUSE = 1;
 	public final int STATE_PLAY = 2;
-	
+	public final int STATE_DIALOGUE = 3;
+
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
+		this.setBackground(Color.BLACK);
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
 		this.addKeyListener(keys);
-		this.gameState = STATE_PLAY;
+		this.gameState = STATE_MENU_SCREEN;
 	}
 
 	public void startGameThread() {
@@ -86,9 +90,13 @@ public class GamePanel extends JPanel implements Runnable {
 			em.update();
 			player.update();
 		}
-		
+
 		if (gameState == STATE_PAUSE) {
-			
+
+		}
+
+		if (gameState == STATE_DIALOGUE) {
+
 		}
 	}
 
@@ -97,12 +105,19 @@ public class GamePanel extends JPanel implements Runnable {
 
 		Graphics2D g2 = (Graphics2D) g;
 
-		tm.draw(g2);
-		om.draw(g2);
-		em.draw(g2);
-		player.draw(g2);
-		ui.draw(g2);
-		
+		switch (gameState) {
+		case STATE_MENU_SCREEN:
+			ui.draw(g2);
+			break;
+		default:
+			tm.draw(g2);
+			om.draw(g2);
+			em.draw(g2);
+			player.draw(g2);
+			ui.draw(g2);
+			break;
+		}
+
 		g2.dispose();
 	}
 

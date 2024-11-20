@@ -27,6 +27,9 @@ public class Player extends Entity implements Renderable {
 
 		this.screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
 		this.screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
+		
+		this.maxHealth = 6;
+		this.health = maxHealth;
 
 		this.setSpeed(5);
 		this.setDirection("down");
@@ -132,7 +135,7 @@ public class Player extends Entity implements Renderable {
 		
 		if (hitEntity != null) {
 			this.movementDisabled = true;
-			System.out.println("hitting an entity");
+			
 		}
 	}
 

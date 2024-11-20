@@ -54,9 +54,29 @@ public class KeyHandler implements KeyListener {
 			SHOOTING = true;
 		}
 		
+		if (code == KeyEvent.VK_UP || code == KeyEvent.VK_W) {
+			gp.ui.selectedMenuNum--;
+			if (gp.ui.selectedMenuNum < 0) gp.ui.selectedMenuNum = gp.ui.menuItems - 1;
+		}
+		
+		if (code == KeyEvent.VK_DOWN || code == KeyEvent.VK_S) {
+			gp.ui.selectedMenuNum++;
+			if (gp.ui.selectedMenuNum == gp.ui.menuItems) gp.ui.selectedMenuNum = 0;
+		}
+		
 		if (code == KeyEvent.VK_P) {
 			if (gp.gameState == gp.STATE_PLAY) gp.gameState = gp.STATE_PAUSE;
 			else if (gp.gameState == gp.STATE_PAUSE) gp.gameState = gp.STATE_PLAY;
+		}
+		
+		if (code == KeyEvent.VK_ENTER) {
+			if (gp.ui.selectedMenuNum == gp.ui.MENU_OPTION_START) {
+				gp.gameState = gp.STATE_PLAY;
+			}
+			
+			if (gp.ui.selectedMenuNum == gp.ui.MENU_OPTION_EXIT) {
+				System.exit(0);
+			}
 		}
 	}
 

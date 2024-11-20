@@ -57,7 +57,7 @@ public class Enemy_Robot_1 extends Entity implements Renderable {
 	
 	private void checkEntitiesAndPlayerCollision() {
 		Entity hitEntity = gp.cd.checkEntityCollision(this);
-		System.out.println(gp.cd.isCollidingWithPlayer(this));
+
 		if (hitEntity != null || gp.cd.isCollidingWithPlayer(this)) {
 			this.movementDisabled = true;
 		} else {
