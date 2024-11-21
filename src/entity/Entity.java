@@ -16,6 +16,10 @@ public class Entity extends BaseEntity implements Renderable {
 	public Boolean movementDisabled = false;
 	public int actionLockCounter = 0;
 	public Boolean isPlayer = false;
+	public Boolean isInvincible = false;
+	public int damage = 1;
+	public int invincibleTime = 60;
+	public int invincibilityCounter = 0;
 	
 	public int maxHealth;
 	public int health;
@@ -86,15 +90,44 @@ public class Entity extends BaseEntity implements Renderable {
 		}
 	}
 	
-	private void checkEntitiesAndPlayerCollision() {
+	public void recieveDamage(int damage) {
+		if (!isInvincible) {
+			this.health -= damage;
+			isInvincible = true;
+		}
+	}
+	
+	private void checkIfCollidingWithPlayer() {
 		if (this.isPlayer) return;
-		
-		Entity hitEntity = gp.cd.checkEntityCollision(this);
 
-		if (hitEntity != null || gp.cd.isCollidingWithPlayer(this)) {
+		if (gp.cd.isCollidingWithPlayer(this)) {
 			this.movementDisabled = true;
-		} else {
-			this.movementDisabled = false;
+			gp.player.recieveDamage(damage);
+		}
+	}
+	
+	protected void checkWorldCollision() {
+		if (gp.cd.checkWorldCollision(this)) {
+			this.movementDisabled = true;
+		}
+	}
+	
+	private void checkEntitiesCollision() {
+		Entity entity = gp.cd.checkEntityCollision(this);
+		
+		if (entity != null) {
+			this.movementDisabled = true;
+		}
+	}
+	
+	protected void updateInvincibilityFrame() {
+		if (isInvincible) {
+			invincibilityCounter++;
+			
+			if (invincibilityCounter == invincibleTime) {
+				invincibilityCounter = 0;
+				isInvincible = false;
+			}
 		}
 	}
 
@@ -102,14 +135,17 @@ public class Entity extends BaseEntity implements Renderable {
 	public void update() {
 		this.movementDisabled = false;
 		updateDirection();
-		gp.cd.checkWorldCollision(this);
-		gp.cd.checkEntityCollision(this);
-		checkEntitiesAndPlayerCollision();
+		updateInvincibilityFrame();
+		checkWorldCollision();
+		checkEntitiesCollision();
+		checkIfCollidingWithPlayer();
 		updateCoordinates();
 	}
 
 	@Override
 	public void draw(Graphics2D g2) {
+		if (this.health <= 0) return;
+		
 		int screenX = worldX - gp.player.worldX + gp.player.screenX;
 		int screenY = worldY - gp.player.worldY + gp.player.screenY;
 		g2.drawImage(this.sprite.getSprite(), screenX, screenY, gp.tileSize, gp.tileSize, null);

@@ -15,16 +15,11 @@ public class EntityManager implements Renderable {
 
 	public EntityManager(GamePanel gp) {
 		this.gp = gp;
-		initNPCs();
 		initEnemies();
 	}
 	
-	private void initNPCs() {
-		entities.add(new Enemy_Robot_1(gp));
-	}
-	
 	private void initEnemies() {
-		entities.add(new ENM_Ranger_1(gp, 600, 1000));
+		entities.add(new ENM_Ranger_1(gp, gp.tileSize * 21, gp.tileSize * 1));
 		entities.add(new ENM_Skeleton(gp, 200, 1200));
 		entities.add(new ENM_Skeleton(gp, 400, 1400));
 	}

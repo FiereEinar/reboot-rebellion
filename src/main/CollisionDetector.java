@@ -13,7 +13,7 @@ public class CollisionDetector {
 		this.gp = gp;
 	}
 
-	public void checkWorldCollision(Entity entity) {
+	public Boolean checkWorldCollision(Entity entity) {
 		int entityLeftWorldX = entity.worldX + entity.getSolidArea().x;
 		int entityRightWorldX = entity.worldX + entity.getSolidArea().x + entity.getSolidArea().width;
 		int entityTopWorldY = entity.worldY + entity.getSolidArea().y;
@@ -53,8 +53,10 @@ public class CollisionDetector {
 		}
 
 		if (gp.tm.isTileSolid(tileNum1) || gp.tm.isTileSolid(tileNum2)) {
-			entity.movementDisabled = true;
+			return true;
 		}
+		
+		return false;
 	}
 
 	public GameObject checkEntityObjectCollision(Entity entity, Boolean isPlayer) {

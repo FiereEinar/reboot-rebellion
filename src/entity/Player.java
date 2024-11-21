@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
@@ -77,22 +78,6 @@ public class Player extends Entity implements Renderable {
 	}
 
 	@Override
-	public void update() {
-		this.movementDisabled = false;
-		updateDirection();
-		gp.cd.checkWorldCollision(this);
-		checkObjectCollisions();
-		checkEntitiesCollision();
-		gp.eh.checkEvent();
-		updateCoordinates();
-	}
-
-	@Override
-	public void draw(Graphics2D g2) {
-		g2.drawImage(this.sprite.getSprite(), this.screenX, this.screenY, null);
-	}
-
-	@Override
 	public void updateDirection() {
 		if (keys.UP) {
 			this.setDirection("up");
@@ -145,13 +130,37 @@ public class Player extends Entity implements Renderable {
 			}
 		}
 	}
-
+	
 	private void checkEntitiesCollision() {
-		Entity hitEntity = gp.cd.checkEntityCollision(this);
-
-		if (hitEntity != null) {
+		Entity entity = gp.cd.checkEntityCollision(this);
+		
+		if (entity != null) {
 			this.movementDisabled = true;
+			recieveDamage(entity.damage);
 		}
+	}
+
+	@Override
+	public void update() {
+		this.movementDisabled = false;
+		updateDirection();
+		updateInvincibilityFrame();
+		checkWorldCollision();
+		checkEntitiesCollision();
+
+		checkObjectCollisions();
+		gp.eh.checkEvent();
+		updateCoordinates();
+	}
+	
+	@Override
+	public void draw(Graphics2D g2) {
+		if (isInvincible) {
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+		}
+		
+		g2.drawImage(this.sprite.getSprite(), this.screenX, this.screenY, null);
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 	}
 
 }
