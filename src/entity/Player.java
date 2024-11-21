@@ -29,7 +29,7 @@ public class Player extends Entity implements Renderable {
 		this.screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 		
 		this.maxHealth = 6;
-		this.health = maxHealth - 2;
+		this.health = maxHealth;
 
 		this.setSpeed(4);
 		this.setDirection("down");

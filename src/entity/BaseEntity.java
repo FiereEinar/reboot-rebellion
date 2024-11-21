@@ -20,7 +20,9 @@ public class BaseEntity {
 	public Rectangle getSolidAreaRelativeToWorld() {
 		this.solidAreaRelativeToWorld.x = this.worldX + this.solidArea.x;
 		this.solidAreaRelativeToWorld.y = this.worldY + this.solidArea.y;
-
+		this.solidAreaRelativeToWorld.width = solidArea.width;
+		this.solidAreaRelativeToWorld.height = solidArea.height;
+		
 		return this.solidAreaRelativeToWorld;
 	}
 
