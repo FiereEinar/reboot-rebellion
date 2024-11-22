@@ -6,6 +6,7 @@ import java.util.Random;
 import main.GamePanel;
 import main.Renderable;
 import sprite.SpriteManager;
+import states.StateManager;
 
 public class Entity extends BaseEntity implements Renderable {
 
@@ -16,10 +17,8 @@ public class Entity extends BaseEntity implements Renderable {
 	public Boolean movementDisabled = false;
 	public int actionLockCounter = 0;
 	public Boolean isPlayer = false;
-	public Boolean isInvincible = false;
 	public int damage = 1;
-	public int invincibleTime = 60;
-	public int invincibilityCounter = 0;
+	public StateManager state = new StateManager();
 	
 	public int maxHealth;
 	public int health;
@@ -91,9 +90,9 @@ public class Entity extends BaseEntity implements Renderable {
 	}
 	
 	public void recieveDamage(int damage) {
-		if (!isInvincible) {
+		if (!state.isInvincible()) {
 			this.health -= damage;
-			isInvincible = true;
+			state.setIsInvincible(true);
 		}
 	}
 	
@@ -120,22 +119,32 @@ public class Entity extends BaseEntity implements Renderable {
 		}
 	}
 	
-	protected void updateInvincibilityFrame() {
-		if (isInvincible) {
-			invincibilityCounter++;
-			
-			if (invincibilityCounter == invincibleTime) {
-				invincibilityCounter = 0;
-				isInvincible = false;
-			}
-		}
+//	protected void updateInvincibilityFrame() {
+//		if (isInvincible) {
+//			invincibilityCounter++;
+//			
+//			if (invincibilityCounter == invincibleTime) {
+//				invincibilityCounter = 0;
+//				isInvincible = false;
+//			}
+//		}
+//	}
+	
+	public Vector2 getScreenLocation() {
+		Vector2 res = new Vector2();
+		
+		res.x = worldX - gp.player.worldX + gp.player.screenX;
+		res.y = worldY - gp.player.worldY + gp.player.screenY;
+		
+		return res;
 	}
-
+	
 	@Override
 	public void update() {
 		this.movementDisabled = false;
 		updateDirection();
-		updateInvincibilityFrame();
+		state.update();
+//		updateInvincibilityFrame();
 		checkWorldCollision();
 		checkEntitiesCollision();
 		checkIfCollidingWithPlayer();
@@ -146,9 +155,9 @@ public class Entity extends BaseEntity implements Renderable {
 	public void draw(Graphics2D g2) {
 		if (this.health <= 0) return;
 		
-		int screenX = worldX - gp.player.worldX + gp.player.screenX;
-		int screenY = worldY - gp.player.worldY + gp.player.screenY;
-		g2.drawImage(this.sprite.getSprite(), screenX, screenY, gp.tileSize, gp.tileSize, null);
+		Vector2 screen = getScreenLocation();
+		
+		g2.drawImage(this.sprite.getSprite(), screen.x, screen.y, gp.tileSize, gp.tileSize, null);
 	}
 
 }

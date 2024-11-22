@@ -20,7 +20,7 @@ public class EntityManager implements Renderable {
 	}
 	
 	private void initEnemies() {
-		int enemyCount = 100;
+		int enemyCount = 20;
 		
 		for (int i = 0; i < enemyCount; i++) {
 			int rand = (int) Math.floor(Math.random() * 2);

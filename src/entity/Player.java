@@ -36,7 +36,7 @@ public class Player extends Entity implements Renderable {
 		this.setSpeed(4);
 		this.setDirection("down");
 
-		this.setSolidArea(new Rectangle(8, 16, 32, 32));
+		this.setSolidArea(new Rectangle(10, 16, 28, 28));
 
 		loadSprites();
 	}
@@ -109,10 +109,10 @@ public class Player extends Entity implements Renderable {
 			}
 		}
 	}
-	
+
 	private void checkEntitiesCollision() {
 		Entity entity = gp.cd.checkEntityCollision(this);
-		
+
 		if (entity != null) {
 			this.movementDisabled = true;
 			recieveDamage(entity.damage);
@@ -123,23 +123,24 @@ public class Player extends Entity implements Renderable {
 	public void update() {
 		this.movementDisabled = false;
 		updateDirection();
-		updateInvincibilityFrame();
+		state.update();
 		checkWorldCollision();
 		checkEntitiesCollision();
 
 		checkObjectCollisions();
 		gp.eh.checkEvent();
-		if (keys.isMoving()) updateCoordinates();
+		if (keys.isMoving())
+			updateCoordinates();
 	}
-	
+
 	@Override
 	public void draw(Graphics2D g2) {
-		if (isInvincible) {
+		if (state.isInvincible()) {
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
 		}
-		
+
 		g2.drawImage(this.sprite.getSprite(), this.screenX, this.screenY, null);
-		
+
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 	}
 

@@ -44,7 +44,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public UI ui = new UI(this);
 	public EntityManager em = new EntityManager(this);
 	public EventHandler eh = new EventHandler(this);
-	private Logger logger = new Logger(this);
+	private Debug debug = new Debug(this);
 	
 	public int gameState;
 	public final int STATE_MENU_SCREEN = 0;
@@ -87,7 +87,7 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void update() {
-		logger.update();
+		debug.update();
 		
 		if (gameState == STATE_PLAY) {
 			om.update();
@@ -121,6 +121,8 @@ public class GamePanel extends JPanel implements Runnable {
 			ui.draw(g2);
 			break;
 		}
+
+		debug.draw(g2);
 
 		g2.dispose();
 	}
