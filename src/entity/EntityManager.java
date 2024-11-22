@@ -2,6 +2,7 @@ package entity;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Random;
 
 import enemy.ENM_Ranger_1;
 import enemy.ENM_Skeleton;
@@ -19,9 +20,21 @@ public class EntityManager implements Renderable {
 	}
 	
 	private void initEnemies() {
-		entities.add(new ENM_Ranger_1(gp, gp.tileSize * 21, gp.tileSize * 1));
-		entities.add(new ENM_Skeleton(gp, 200, 1200));
-		entities.add(new ENM_Skeleton(gp, 400, 1400));
+		int enemyCount = 100;
+		
+		for (int i = 0; i < enemyCount; i++) {
+			int rand = (int) Math.floor(Math.random() * 2);
+			
+			Random random = new Random();
+			int randX = random.nextInt(gp.worldWidth);
+			int randY = random.nextInt(gp.worldHeight);
+			
+			if (rand == 1) {
+				entities.add(new ENM_Ranger_1(gp, randX, randY));
+			} else {
+				entities.add(new ENM_Skeleton(gp, randX, randY));
+			}
+		}
 	}
 	
 	public ArrayList<Entity> getEnities() {

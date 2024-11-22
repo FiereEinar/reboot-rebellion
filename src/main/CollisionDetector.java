@@ -63,23 +63,23 @@ public class CollisionDetector {
 		GameObject hitObject = null;
 		Rectangle rec1 = entity.getSolidAreaRelativeToWorld();
 
+		switch (entity.getDirection()) {
+		case "up":
+			rec1.y -= entity.getSpeed();
+			break;
+		case "down":
+			rec1.y += entity.getSpeed();
+			break;
+		case "left":
+			rec1.x -= entity.getSpeed();
+			break;
+		case "right":
+			rec1.x += entity.getSpeed();
+			break;
+		}
+		
 		for (GameObject o : gp.om.getObjects()) {
 			Rectangle rec2 = o.getSolidAreaRelativeToWorld();
-
-			switch (entity.getDirection()) {
-			case "up":
-				rec1.y -= entity.getSpeed();
-				break;
-			case "down":
-				rec1.y += entity.getSpeed();
-				break;
-			case "left":
-				rec1.x -= entity.getSpeed();
-				break;
-			case "right":
-				rec1.x += entity.getSpeed();
-				break;
-			}
 
 			if (rec1.intersects(rec2))
 				hitObject = o;
@@ -91,26 +91,26 @@ public class CollisionDetector {
 	public Entity checkEntityCollision(Entity entity) {
 		Entity hitEntity = null;
 		Rectangle rec1 = entity.getSolidAreaRelativeToWorld();
+		
+		switch (entity.getDirection()) {
+		case "up":
+			rec1.y -= entity.getSpeed();
+			break;
+		case "down":
+			rec1.y += entity.getSpeed();
+			break;
+		case "left":
+			rec1.x -= entity.getSpeed();
+			break;
+		case "right":
+			rec1.x += entity.getSpeed();
+			break;
+		}
 
 		for (Entity e : gp.em.getEnities()) {
 			if (e == null || entity == e) continue;
 			
 			Rectangle rec2 = e.getSolidAreaRelativeToWorld();
-
-			switch (entity.getDirection()) {
-			case "up":
-				rec1.y -= entity.getSpeed();
-				break;
-			case "down":
-				rec1.y += entity.getSpeed();
-				break;
-			case "left":
-				rec1.x -= entity.getSpeed();
-				break;
-			case "right":
-				rec1.x += entity.getSpeed();
-				break;
-			}
 
 			if (rec1.intersects(rec2))
 				hitEntity = e;

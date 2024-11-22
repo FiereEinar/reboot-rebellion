@@ -139,6 +139,7 @@ public class Player extends Entity implements Renderable {
 		}
 		
 		g2.drawImage(this.sprite.getSprite(), this.screenX, this.screenY, null);
+		
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 	}
 

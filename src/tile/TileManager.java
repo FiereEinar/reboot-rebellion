@@ -90,8 +90,9 @@ public class TileManager implements Renderable {
 	}
 
 	public int getMapTileNumber(int col, int row) {
-		if (col < 0 || row < 0)
+		if (col < 0 || row < 0 || col >= gp.worldCol || row >= gp.worldRow)
 			return 0;
+		
 		return map[col][row];
 	}
 
