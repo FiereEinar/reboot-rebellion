@@ -68,7 +68,7 @@ public class Entity extends BaseEntity implements Renderable {
 		}
 	}
 	
-	public void updateCoordinates() {
+	protected void updateCoordinates() {
 		if (this.movementDisabled)
 			return;
 

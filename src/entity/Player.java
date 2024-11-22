@@ -93,27 +93,6 @@ public class Player extends Entity implements Renderable {
 		}
 	}
 
-	@Override
-	public void updateCoordinates() {
-		if (this.movementDisabled)
-			return;
-		if (!keys.isMoving())
-			return;
-
-		if (this.getDirection().equalsIgnoreCase("up") || keys.UP) {
-			this.worldY -= this.getSpeed();
-		}
-		if (this.getDirection().equalsIgnoreCase("down") || keys.DOWN) {
-			this.worldY += this.getSpeed();
-		}
-		if (this.getDirection().equalsIgnoreCase("left") || keys.LEFT) {
-			this.worldX -= this.getSpeed();
-		}
-		if (this.getDirection().equalsIgnoreCase("right") || keys.RIGHT) {
-			this.worldX += this.getSpeed();
-		}
-	}
-
 	private void checkObjectCollisions() {
 		GameObject hitObject = gp.cd.checkEntityObjectCollision(this, true);
 
@@ -150,7 +129,7 @@ public class Player extends Entity implements Renderable {
 
 		checkObjectCollisions();
 		gp.eh.checkEvent();
-		updateCoordinates();
+		if (keys.isMoving()) updateCoordinates();
 	}
 	
 	@Override
