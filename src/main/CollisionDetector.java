@@ -2,6 +2,7 @@ package main;
 
 import java.awt.Rectangle;
 
+import entity.BaseEntity;
 import entity.Entity;
 import object.GameObject;
 
@@ -58,6 +59,24 @@ public class CollisionDetector {
 		
 		return false;
 	}
+	
+	public Boolean checkWorldCollision(BaseEntity entity, float speedX, float speedY) {
+		Rectangle rec = entity.getSolidAreaRelativeToWorld();
+
+		float nextX = rec.x + speedX - gp.tileSize / 2;
+	    float nextY = rec.y + speedY - gp.tileSize / 2;
+
+	    int nextWorldCol = Math.round(nextX / gp.tileSize);
+	    int nextWorldRow = Math.round(nextY / gp.tileSize);
+
+	    if (nextWorldCol < 0 || nextWorldRow < 0 || nextWorldCol >= gp.worldWidth || nextWorldRow >= gp.worldHeight) {
+	        return true; 
+	    }
+
+	    int nextTileIndex = gp.tm.getMapTileNumber(nextWorldCol, nextWorldRow);
+
+	    return gp.tm.isTileSolid(nextTileIndex);
+	}
 
 	public GameObject checkEntityObjectCollision(Entity entity, Boolean isPlayer) {
 		GameObject hitObject = null;
@@ -106,6 +125,22 @@ public class CollisionDetector {
 			rec1.x += entity.getSpeed();
 			break;
 		}
+
+		for (Entity e : gp.em.getEnities()) {
+			if (e == null || entity == e) continue;
+			
+			Rectangle rec2 = e.getSolidAreaRelativeToWorld();
+
+			if (rec1.intersects(rec2))
+				hitEntity = e;
+		}
+		
+		return hitEntity;
+	}
+	
+	public Entity checkEntityCollision(BaseEntity entity) {
+		Entity hitEntity = null;
+		Rectangle rec1 = entity.getSolidAreaRelativeToWorld();
 
 		for (Entity e : gp.em.getEnities()) {
 			if (e == null || entity == e) continue;

@@ -2,6 +2,7 @@ package entity;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 import enemy.ENM_Ranger_1;
@@ -13,6 +14,7 @@ public class EntityManager implements Renderable {
 
 	GamePanel gp;
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
+	private ArrayList<Projectile> bullets = new ArrayList<Projectile>();
 
 	public EntityManager(GamePanel gp) {
 		this.gp = gp;
@@ -37,22 +39,43 @@ public class EntityManager implements Renderable {
 		}
 	}
 	
+	public void addBullets(Projectile bullet) {
+		bullets.add(bullet);
+	}
+	
 	public ArrayList<Entity> getEnities() {
 		return this.entities;
+	}
+	
+	public ArrayList<Projectile> getProjectiles() {
+		return this.bullets;
 	}
 
 	@Override
 	public void update() {
-		for (Entity e: entities) {
-			if (e != null) e.update();
-		}
+		Iterator<Entity> iterator = entities.iterator();
+        while (iterator.hasNext()) {
+        	Entity entity = iterator.next();
+        	entity.update();
+            if (entity.getHealth() <= 0) {
+                iterator.remove();
+            }
+        }
+        
+		Iterator<Projectile> iterator1 = bullets.iterator();
+        while (iterator1.hasNext()) {
+        	Projectile bullet = iterator1.next();
+            bullet.update();
+            if (bullet.isDead) {
+            	iterator1.remove();
+            }
+        }
 	}
 
 	@Override
 	public void draw(Graphics2D g2) {
-		for (Entity e: entities) {
-			if (e != null) e.draw(g2);
-		}
+		for (Entity e: entities)  e.draw(g2);
+		for (Projectile b: bullets) b.draw(g2);
 	}
 
 }

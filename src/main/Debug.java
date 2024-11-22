@@ -6,6 +6,7 @@ import java.awt.MouseInfo;
 import java.awt.Point;
 
 import entity.Entity;
+import entity.Projectile;
 import entity.Vector2;
 
 public class Debug implements Renderable {
@@ -37,8 +38,14 @@ public class Debug implements Renderable {
 			// entities hitbox
 			for (Entity e: gp.em.getEnities()) {
 				Vector2 screen = e.getScreenLocation();
-				g2.drawRect(screen.x + gp.player.getSolidArea().x, screen.y + gp.player.getSolidArea().y,
-						gp.player.getSolidArea().width, gp.player.getSolidArea().height);
+				g2.drawRect(screen.x + e.getSolidArea().x, screen.y + e.getSolidArea().y,
+						e.getSolidArea().width, e.getSolidArea().height);
+			}
+			
+			for (Projectile p: gp.em.getProjectiles()) {	
+				Vector2 screen = p.getScreenLocation();
+				g2.drawRect(screen.x + p.getSolidArea().x, screen.y + p.getSolidArea().y,
+						p.getSolidArea().width, p.getSolidArea().height);
 			}
 		}
 	}

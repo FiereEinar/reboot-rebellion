@@ -14,8 +14,8 @@ public class ENM_Ranger_1 extends Entity {
 		this.worldX = x;
 		this.worldY = y;
 		
-		this.maxHealth = 3;
-		this.health = maxHealth;
+		this.setMaxHealth(100);
+		this.setHealth(getMaxHealth());
 
 		this.setSpeed(2);
 		this.setDirection("down");

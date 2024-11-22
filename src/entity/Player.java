@@ -7,11 +7,10 @@ import java.awt.Rectangle;
 import inventory.Inventory;
 import main.GamePanel;
 import main.KeyHandler;
-import main.Renderable;
 import main.Utils;
 import object.GameObject;
 
-public class Player extends Entity implements Renderable {
+public class Player extends Entity {
 
 	KeyHandler keys;
 	Inventory inventory = new Inventory();
@@ -30,8 +29,8 @@ public class Player extends Entity implements Renderable {
 		this.screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
 		this.screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 
-		this.maxHealth = 6;
-		this.health = maxHealth;
+		this.setMaxHealth(6);
+		this.setHealth(getMaxHealth());
 
 		this.setSpeed(4);
 		this.setDirection("down");
@@ -75,6 +74,27 @@ public class Player extends Entity implements Renderable {
 				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_3.png", gp.tileSize, gp.tileSize));
 		this.sprite.right
 				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_4.png", gp.tileSize, gp.tileSize));
+	}
+	
+	public void shootProjectile() {
+		float mouseX = gp.mouse.mouseX;
+		float mouseY = gp.mouse.mouseY;
+
+		float directionX = mouseX - screenX;
+        float directionY = mouseY - screenY;
+
+        float magnitude = (float) Math.sqrt(directionX * directionX + directionY * directionY);
+        float normalizedX = directionX / magnitude;
+        float normalizedY = directionY / magnitude;
+
+        float speed = 16;
+        float speedX = normalizedX * speed;
+        float speedY = normalizedY * speed;
+        
+        int centerWorldX = worldX + (gp.tileSize / 2);
+        int centerWorldY = worldY + (gp.tileSize / 2);
+
+        gp.em.addBullets(new Projectile(gp, centerWorldX, centerWorldY, speedX, speedY, damage));
 	}
 
 	@Override
@@ -129,8 +149,8 @@ public class Player extends Entity implements Renderable {
 
 		checkObjectCollisions();
 		gp.eh.checkEvent();
-		if (keys.isMoving())
-			updateCoordinates();
+		if (gp.keys.isMoving()) updateCoordinates();
+		if (gp.mouse.SHOOTING) shootProjectile();
 	}
 
 	@Override

@@ -37,6 +37,7 @@ public class GamePanel extends JPanel implements Runnable {
 	private Thread thread = null;
 
 	public KeyHandler keys = new KeyHandler(this);
+	public MouseHandler mouse = new MouseHandler(this);
 	public Player player = new Player(this, keys);
 	public TileManager tm = new TileManager(this);
 	public CollisionDetector cd = new CollisionDetector(this);
@@ -58,6 +59,8 @@ public class GamePanel extends JPanel implements Runnable {
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
 		this.addKeyListener(keys);
+		this.addMouseListener(mouse);
+		this.addMouseMotionListener(mouse);
 		this.gameState = STATE_MENU_SCREEN;
 	}
 

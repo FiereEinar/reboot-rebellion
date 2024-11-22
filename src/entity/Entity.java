@@ -1,5 +1,7 @@
 package entity;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Random;
 
@@ -19,10 +21,10 @@ public class Entity extends BaseEntity implements Renderable {
 	public Boolean isPlayer = false;
 	public int damage = 1;
 	public StateManager state = new StateManager();
-	
-	public int maxHealth;
-	public int health;
-	
+
+	private int maxHealth;
+	private int health;
+
 	public Entity(GamePanel gp) {
 		this.gp = gp;
 	}
@@ -43,13 +45,29 @@ public class Entity extends BaseEntity implements Renderable {
 		this.direction = direction;
 	}
 	
+	public int getHealth() {
+		return this.health;
+	}
+	
+	public void setHealth(int health) {
+		this.health = health;
+	}
+	
+	public void setMaxHealth(int health) {
+		this.maxHealth = health;
+	}
+	
+	public int getMaxHealth() {
+		return this.maxHealth;
+	}
+
 	public void updateDirection() {
 		actionLockCounter++;
-		
+
 		if (actionLockCounter == 120) {
 			Random random = new Random();
 			int i = random.nextInt(100) + 1;
-			
+
 			if (i <= 25) {
 				setDirection("up");
 			}
@@ -66,85 +84,92 @@ public class Entity extends BaseEntity implements Renderable {
 			actionLockCounter = 0;
 		}
 	}
-	
+
 	protected void updateCoordinates() {
 		if (this.movementDisabled)
 			return;
 
 		if (this.getDirection().equalsIgnoreCase("up")) {
-			if ((this.worldY - this.getSpeed()) < 0) return;
+			if ((this.worldY - this.getSpeed()) < 0)
+				return;
 			this.worldY -= this.getSpeed();
 		}
 		if (this.getDirection().equalsIgnoreCase("down")) {
-			if ((this.worldY + this.getSpeed()) > gp.worldHeight) return;
+			if ((this.worldY + this.getSpeed()) > gp.worldHeight)
+				return;
 			this.worldY += this.getSpeed();
 		}
 		if (this.getDirection().equalsIgnoreCase("left")) {
-			if ((this.worldX - this.getSpeed()) < 0) return;
+			if ((this.worldX - this.getSpeed()) < 0)
+				return;
 			this.worldX -= this.getSpeed();
 		}
 		if (this.getDirection().equalsIgnoreCase("right")) {
-			if ((this.worldX + this.getSpeed()) > gp.worldWidth) return;
+			if ((this.worldX + this.getSpeed()) > gp.worldWidth)
+				return;
 			this.worldX += this.getSpeed();
 		}
 	}
-	
+
 	public void recieveDamage(int damage) {
 		if (!state.isInvincible()) {
 			this.health -= damage;
-			state.setIsInvincible(true);
+			if (isPlayer) state.setIsInvincible(true);
 		}
 	}
-	
+
 	private void checkIfCollidingWithPlayer() {
-		if (this.isPlayer) return;
+		if (this.isPlayer)
+			return;
 
 		if (gp.cd.isCollidingWithPlayer(this)) {
 			this.movementDisabled = true;
 			gp.player.recieveDamage(damage);
 		}
 	}
-	
+
 	protected void checkWorldCollision() {
 		if (gp.cd.checkWorldCollision(this)) {
 			this.movementDisabled = true;
 		}
 	}
-	
+
 	private void checkEntitiesCollision() {
 		Entity entity = gp.cd.checkEntityCollision(this);
-		
+
 		if (entity != null) {
 			this.movementDisabled = true;
 		}
 	}
-	
-//	protected void updateInvincibilityFrame() {
-//		if (isInvincible) {
-//			invincibilityCounter++;
-//			
-//			if (invincibilityCounter == invincibleTime) {
-//				invincibilityCounter = 0;
-//				isInvincible = false;
-//			}
-//		}
-//	}
-	
+
 	public Vector2 getScreenLocation() {
 		Vector2 res = new Vector2();
-		
+
 		res.x = worldX - gp.player.worldX + gp.player.screenX;
 		res.y = worldY - gp.player.worldY + gp.player.screenY;
-		
+
 		return res;
 	}
-	
+
+	private void drawHealthBar(Graphics2D g2) {
+		Vector2 screen = getScreenLocation();
+
+		double oneScale = (double) gp.tileSize / maxHealth;
+		double healthBarWidth = oneScale * health;
+
+		g2.setColor(Color.GRAY);
+		g2.fillRect(screen.x - 1, screen.y - 16, gp.tileSize + 2, 12);
+
+		g2.setColor(Color.RED);
+		g2.fillRect(screen.x, screen.y - 15, (int) healthBarWidth, 10);
+
+	}
+
 	@Override
 	public void update() {
 		this.movementDisabled = false;
 		updateDirection();
 		state.update();
-//		updateInvincibilityFrame();
 		checkWorldCollision();
 		checkEntitiesCollision();
 		checkIfCollidingWithPlayer();
@@ -153,11 +178,18 @@ public class Entity extends BaseEntity implements Renderable {
 
 	@Override
 	public void draw(Graphics2D g2) {
-		if (this.health <= 0) return;
-		
+		if (state.isInvincible()) {
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+		}
+		if (this.health <= 0)
+			return;
+
 		Vector2 screen = getScreenLocation();
-		
+
 		g2.drawImage(this.sprite.getSprite(), screen.x, screen.y, gp.tileSize, gp.tileSize, null);
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+		
+		drawHealthBar(g2);
 	}
 
 }

@@ -3,7 +3,6 @@ package ui;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 
 import main.GamePanel;
 import main.Renderable;
@@ -97,8 +96,8 @@ public class UI implements Renderable {
 	}
 	
 	private void drawPlayerHealth() {
-		int playerCurrentHealth = gp.player.health;
-		int playerMaxHealth = gp.player.maxHealth;
+		int playerCurrentHealth = gp.player.getHealth();
+		int playerMaxHealth = gp.player.getMaxHealth();
 		int healthBarWidth = gp.tileSize;
 		
 		g2.setColor(new Color(0, 0, 0, 0));
