@@ -186,7 +186,7 @@ public class Entity extends BaseEntity implements Renderable {
 
 		Vector2 screen = getScreenLocation();
 
-		g2.drawImage(this.sprite.getSprite(), screen.x, screen.y, gp.tileSize, gp.tileSize, null);
+		g2.drawImage(this.sprite.getSprite(), screen.x, screen.y, null);
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 		
 		drawHealthBar(g2);

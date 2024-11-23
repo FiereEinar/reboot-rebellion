@@ -28,6 +28,10 @@ public class ObjectManager implements Renderable {
 	public void removeObject(String name) {
 		objects.removeIf(t -> t.name == name);
 	}
+	
+	public GameObject getObject(int index) {
+		return objects.get(index);
+	}
 
 	@Override
 	public void update() {
