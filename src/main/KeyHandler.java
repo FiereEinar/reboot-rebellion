@@ -73,6 +73,14 @@ public class KeyHandler implements KeyListener {
 				System.exit(0);
 			}
 		}
+		
+		if (code == KeyEvent.VK_1) {
+			gp.player.inventory.selectedGun = 0;
+		}
+		
+		if (code == KeyEvent.VK_2) {
+			gp.player.inventory.selectedGun = 1;
+		}
 	}
 
 	@Override

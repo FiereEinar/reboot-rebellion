@@ -15,7 +15,7 @@ import object.GameObject;
 public class Player extends Entity {
 
 	KeyHandler keys;
-	Inventory inventory = new Inventory();
+	public Inventory inventory = new Inventory();
 
 	public int screenX;
 	public int screenY;
@@ -82,13 +82,14 @@ public class Player extends Entity {
 		if (inventory.arsenal.size() == 0) return;
 		if (inventory.selectedGun >= inventory.arsenal.size()) return;
 		
-		GunObject gun = inventory.arsenal.get(inventory.selectedGun);
+		GunObject gun = inventory.getSelectedGun();
 		
 		if (!gun.canShoot()) return;
 		
 		int BULLET_SPREAD = gun.bulletSpread;
 		int BULLET_SPEED = gun.bulletSpeed;
 		int BULLET_MULTIPLIER = gun.bulletMultiplier;
+		int BULLET_DAMAGE = gun.damage;
 		
 		float mouseX = gp.mouse.mouseX;
 		float mouseY = gp.mouse.mouseY;
@@ -118,7 +119,7 @@ public class Player extends Entity {
 			int centerWorldX = worldX + (GamePanel.tileSize / 2);
 			int centerWorldY = worldY + (GamePanel.tileSize / 2);
 
-			gp.em.addBullets(new Projectile(gp, centerWorldX, centerWorldY, speedX, speedY, gun.damage));
+			gp.em.addBullets(new Projectile(gp, centerWorldX, centerWorldY, speedX, speedY, BULLET_DAMAGE));
 		}
 
 		gun.recordShot();
@@ -165,10 +166,6 @@ public class Player extends Entity {
 		if (hitGun != null) {
 			this.inventory.arsenal.add(hitGun);
 			gp.om.removeGun(hitGun.name);
-			System.out.println("Player arsenal: ");
-			for (GunObject o : this.inventory.arsenal) {
-				System.out.println(o.name);
-			}
 		}
 	}
 
@@ -186,15 +183,11 @@ public class Player extends Entity {
 		
 		if (inventory.selectedGun >= inventory.arsenal.size()) return;
 		
-		GunObject gun = inventory.arsenal.get(inventory.selectedGun);
-		
-		Utils utils = new Utils();
-		int size = 40;
+		GunObject gun = inventory.getSelectedGun();
 
 		double angle = Math.atan2(gp.mouse.mouseY - screenY, gp.mouse.mouseX - screenX);
 
 		BufferedImage image = gun.sprite.getSprite();
-		image = utils.scaleImage(image, size, size);
 
 		int width = image.getWidth();
 		int height = image.getHeight();

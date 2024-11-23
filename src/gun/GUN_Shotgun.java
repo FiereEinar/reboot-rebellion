@@ -1,11 +1,9 @@
 package gun;
 
-import main.GamePanel;
-
 public class GUN_Shotgun extends GunObject {
 
 	public GUN_Shotgun(int x, int y) {
-		this.damage = 25;
+		this.damage = 20;
 		this.bulletSpeed = 45;
 		this.bulletSpread = 35;
 		this.bulletMultiplier = 5;
@@ -20,7 +18,7 @@ public class GUN_Shotgun extends GunObject {
 	}
 	
 	private void loadSprites() {
-		this.sprite.addSprite(utils.getAndScaleImage("/guns/shotgun.png", GamePanel.tileSize, GamePanel.tileSize));
+		this.sprite.addSprite(utils.getAndScaleImage("/guns/shotgun.png", 79, 24));
 	}
 
 }

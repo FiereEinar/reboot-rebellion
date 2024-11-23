@@ -11,5 +11,9 @@ public class Inventory {
 	
 	public Inventory() {
 	}
+	
+	public GunObject getSelectedGun() {
+		return arsenal.get(selectedGun);
+	}
 
 }
