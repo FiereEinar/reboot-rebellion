@@ -7,30 +7,28 @@ import java.awt.image.BufferedImage;
 
 import main.GamePanel;
 import main.Renderable;
-import object.OBJ_HealthBar;
-import object.OBJ_Heart;
 
 public class UI implements Renderable {
 
 	GamePanel gp;
+	Graphics2D g2;
+
 	Font normalText;
 	Font normalBoldText;
-	Graphics2D g2;
+
 	public int selectedMenuNum = 0;
 	public int menuItems = 2;
-	public final int MENU_OPTION_START = 0;
-	public final int MENU_OPTION_EXIT = 1;
-	OBJ_Heart heart;
-	OBJ_HealthBar healthbar;
+	
+	Asset healthbar = new Asset(64 * 3, 32 * 3);
 	Asset buttons = new Asset(64 * 3, 32 * 3);
 	
+	public final int MENU_OPTION_START = 0;
+	public final int MENU_OPTION_EXIT = 1;
 	public static int START_BUTTON = 0;
 	public static int EXIT_BUTTON = 1;
 	
 	public UI(GamePanel gp) {
 		this.gp = gp;
-		this.heart = new OBJ_Heart(gp);
-		this.healthbar = new OBJ_HealthBar(gp);
 		this.normalText = new Font("Arial", Font.PLAIN, 40);
 		this.normalBoldText = new Font("Arial", Font.BOLD, 80);
 		loadAssets();
@@ -39,35 +37,14 @@ public class UI implements Renderable {
 	private void loadAssets() {
 		this.buttons.set("/ui/Start_Button.png");
 		this.buttons.set("/ui/Exit_Button.png");
-	}
-
-	@Override
-	public void update() {
 		
-	}
-
-	@Override
-	public void draw(Graphics2D g2) {
-		this.g2 = g2;
-		
-		g2.setFont(normalText);
-		g2.setColor(Color.WHITE);
-		
-		if (gp.gameState == gp.STATE_MENU_SCREEN) {
-			menuScreenHandler();
-		}
-		
-		if (gp.gameState == gp.STATE_PLAY) {
-			playScreenHandler();
-		}
-		
-		if (gp.gameState == gp.STATE_PAUSE) {
-			pausedScreenHandler();
-		}
-
-		if (gp.gameState == gp.STATE_DIALOGUE) {
-			dialogueScreenHandler();
-		}
+		this.healthbar.set("/healthbar/Health_Bar1.png");
+		this.healthbar.set("/healthbar/Health_Bar2.png");
+		this.healthbar.set("/healthbar/Health_Bar3.png");
+		this.healthbar.set("/healthbar/Health_Bar4.png");
+		this.healthbar.set("/healthbar/Health_Bar5.png");
+		this.healthbar.set("/healthbar/Health_Bar6.png");
+		this.healthbar.set("/healthbar/Health_Bar7.png");
 	}
 	
 	private void menuScreenHandler() {
@@ -120,25 +97,25 @@ public class UI implements Renderable {
 
 		switch (playerCurrentHealth) {
 		case 6: 
-			g2.drawImage(healthbar.sprite.getSpriteByIndex(0), 18, 0, null);
+			g2.drawImage(healthbar.image.getSpriteByIndex(0), 18, 0, null);
 			break;
 		case 5: 
-			g2.drawImage(healthbar.sprite.getSpriteByIndex(1), 18, 0, null);
+			g2.drawImage(healthbar.image.getSpriteByIndex(1), 18, 0, null);
 			break;
 		case 4: 
-			g2.drawImage(healthbar.sprite.getSpriteByIndex(2), 18, 0, null);
+			g2.drawImage(healthbar.image.getSpriteByIndex(2), 18, 0, null);
 			break;
 		case 3: 
-			g2.drawImage(healthbar.sprite.getSpriteByIndex(3), 18, 0, null);
+			g2.drawImage(healthbar.image.getSpriteByIndex(3), 18, 0, null);
 			break;
 		case 2: 
-			g2.drawImage(healthbar.sprite.getSpriteByIndex(4), 18, 0, null);
+			g2.drawImage(healthbar.image.getSpriteByIndex(4), 18, 0, null);
 			break;
 		case 1: 
-			g2.drawImage(healthbar.sprite.getSpriteByIndex(5), 18, 0, null);
+			g2.drawImage(healthbar.image.getSpriteByIndex(5), 18, 0, null);
 			break;
 		default: 
-			g2.drawImage(healthbar.sprite.getSpriteByIndex(6), 18, 0, null);
+			g2.drawImage(healthbar.image.getSpriteByIndex(6), 18, 0, null);
 			break;
 		}
 	}
@@ -153,6 +130,35 @@ public class UI implements Renderable {
 		g2.drawString(text, x + 3, y + 3);
 		g2.setColor(Color.WHITE);
 		g2.drawString(text, x, y);
+	}
+	
+	@Override
+	public void update() {
+		
+	}
+	
+	@Override
+	public void draw(Graphics2D g2) {
+		this.g2 = g2;
+		
+		g2.setFont(normalText);
+		g2.setColor(Color.WHITE);
+		
+		if (gp.gameState == gp.STATE_MENU_SCREEN) {
+			menuScreenHandler();
+		}
+		
+		if (gp.gameState == gp.STATE_PLAY) {
+			playScreenHandler();
+		}
+		
+		if (gp.gameState == gp.STATE_PAUSE) {
+			pausedScreenHandler();
+		}
+		
+		if (gp.gameState == gp.STATE_DIALOGUE) {
+			dialogueScreenHandler();
+		}
 	}
 
 }

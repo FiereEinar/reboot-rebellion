@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import entity.EntityManager;
 import entity.Player;
+import event.EventHandler;
 import object.ObjectManager;
 import tile.TileManager;
 import ui.UI;

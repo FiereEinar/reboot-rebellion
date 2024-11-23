@@ -1,8 +1,8 @@
-package main;
+package event;
 
 import java.awt.Rectangle;
 
-import event.EventState;
+import main.GamePanel;
 
 public class EventHandler {
 	
