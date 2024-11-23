@@ -56,19 +56,19 @@ public class EntityManager implements Renderable {
 		Iterator<Entity> iterator = entities.iterator();
         while (iterator.hasNext()) {
         	Entity entity = iterator.next();
+        	if (entity.isDead) {
+        		iterator.remove();
+        	} 
         	entity.update();
-            if (entity.isDead) {
-                iterator.remove();
-            }
         }
         
 		Iterator<Projectile> iterator1 = bullets.iterator();
         while (iterator1.hasNext()) {
         	Projectile bullet = iterator1.next();
-            bullet.update();
             if (bullet.isDead) {
             	iterator1.remove();
             }
+            bullet.update();
         }
 	}
 

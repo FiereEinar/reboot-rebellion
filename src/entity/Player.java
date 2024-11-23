@@ -169,12 +169,12 @@ public class Player extends Entity {
 		}
 	}
 
-	private void checkEntitiesCollision() {
+	protected void checkEntitiesCollision() {
 		Entity entity = gp.cd.checkEntityCollision(this);
 
-		if (entity != null) {
+		if (entity != null && !entity.isDead) {
 			this.movementDisabled = true;
-			recieveDamage(entity.damage);
+			if (!entity.state.dying.getState()) recieveDamage(entity.damage);
 		}
 	}
 

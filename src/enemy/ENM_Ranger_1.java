@@ -2,11 +2,10 @@ package enemy;
 
 import java.awt.Rectangle;
 
-import entity.Entity;
 import main.GamePanel;
 import main.Utils;
 
-public class ENM_Ranger_1 extends Entity {
+public class ENM_Ranger_1 extends Enemy {
 
 	public ENM_Ranger_1(GamePanel gp, int x, int y) {
 		super(gp);

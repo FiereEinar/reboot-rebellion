@@ -1,7 +1,5 @@
 package entity;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Random;
 
@@ -23,8 +21,8 @@ public class Entity extends BaseEntity implements Renderable {
 	public int damage = 1;
 	public StateManager state = new StateManager();
 
-	private int maxHealth;
-	private int health;
+	protected int maxHealth;
+	protected int health;
 
 	public Entity(GamePanel gp) {
 		this.gp = gp;
@@ -69,6 +67,8 @@ public class Entity extends BaseEntity implements Renderable {
 	}
 
 	public void updateDirection() {
+		if (state.dying.getState()) return;
+		
 		actionLockCounter++;
 
 		if (actionLockCounter == 120) {
@@ -93,7 +93,7 @@ public class Entity extends BaseEntity implements Renderable {
 	}
 
 	protected void updateCoordinates() {
-		if (this.movementDisabled)
+		if (this.movementDisabled || state.dying.getState())
 			return;
 
 		if (this.getDirection().equalsIgnoreCase("up")) {
@@ -126,29 +126,20 @@ public class Entity extends BaseEntity implements Renderable {
 		}
 	}
 
-	private void checkIfCollidingWithPlayer() {
-		if (this.isPlayer)
-			return;
-
-		if (gp.cd.isCollidingWithPlayer(this)) {
-			this.movementDisabled = true;
-			gp.player.recieveDamage(damage);
-		}
-	}
-
 	protected void checkWorldCollision() {
 		if (gp.cd.checkWorldCollision(this)) {
 			this.movementDisabled = true;
 		}
 	}
 
-	private void checkEntitiesCollision() {
+	protected void checkEntitiesCollision() {
 		Entity entity = gp.cd.checkEntityCollision(this);
 
 		if (entity != null) {
 			this.movementDisabled = true;
 		}
 	}
+
 
 	public Vector2 getScreenLocation() {
 		Vector2 res = new Vector2();
@@ -158,25 +149,9 @@ public class Entity extends BaseEntity implements Renderable {
 
 		return res;
 	}
-
-	private void drawHealthBar(Graphics2D g2) {
-		Vector2 screen = getScreenLocation();
-
-		double oneScale = (double) GamePanel.tileSize / maxHealth;
-		double healthBarWidth = oneScale * health;
-
-		g2.setColor(Color.GRAY);
-		g2.fillRect(screen.x - 1, screen.y - 16, GamePanel.tileSize + 2, 12);
-
-		g2.setColor(Color.RED);
-		g2.fillRect(screen.x, screen.y - 15, (int) healthBarWidth, 10);
-
-	}
-
-	@Override
-	public void update() {
-		state.update();
-
+	
+	
+	protected void checkState() {
 		if (state.dying.isTriggered()) {
 			isDead = true;
 			return;
@@ -186,27 +161,32 @@ public class Entity extends BaseEntity implements Renderable {
 			state.invincibility.setState(!state.invincibility.getState());
 			return;
 		}
-		
-		this.movementDisabled = false;
-		updateDirection();
-		checkWorldCollision();
-		checkEntitiesCollision();
-		checkIfCollidingWithPlayer();
-		updateCoordinates();
+	}
+
+	@Override
+	public void update() {
+//		state.update();
+//		checkState();
+//		this.movementDisabled = false;
+//		updateDirection();
+//		checkWorldCollision();
+//		checkEntitiesCollision();
+//		checkIfCollidingWithPlayer();
+//		updateCoordinates();
 	}
 
 	@Override
 	public void draw(Graphics2D g2) {
-		if (state.invincibility.getState()) {
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
-		}
-
-		Vector2 screen = getScreenLocation();
-
-		g2.drawImage(this.sprite.getSprite(), screen.x, screen.y, null);
-		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-		
-		drawHealthBar(g2);
+//		if (state.invincibility.getState()) {
+//			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+//		}
+//
+//		Vector2 screen = getScreenLocation();
+//
+//		g2.drawImage(this.sprite.getSprite(), screen.x, screen.y, null);
+//		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+//		
+//		drawHealthBar(g2);
 	}
 
 }

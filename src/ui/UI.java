@@ -144,19 +144,19 @@ public class UI implements Renderable {
 		g2.setFont(normalText);
 		g2.setColor(Color.WHITE);
 		
-		if (gp.gameState == gp.STATE_MENU_SCREEN) {
+		if (gp.gameState == GamePanel.STATE_MENU_SCREEN) {
 			menuScreenHandler();
 		}
 		
-		if (gp.gameState == gp.STATE_PLAY) {
+		if (gp.gameState == GamePanel.STATE_PLAY) {
 			playScreenHandler();
 		}
 		
-		if (gp.gameState == gp.STATE_PAUSE) {
+		if (gp.gameState == GamePanel.STATE_PAUSE) {
 			pausedScreenHandler();
 		}
 		
-		if (gp.gameState == gp.STATE_DIALOGUE) {
+		if (gp.gameState == GamePanel.STATE_DIALOGUE) {
 			dialogueScreenHandler();
 		}
 	}

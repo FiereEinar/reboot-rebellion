@@ -49,10 +49,10 @@ public class GamePanel extends JPanel implements Runnable {
 	private Debug debug = new Debug(this);
 	
 	public int gameState;
-	public final int STATE_MENU_SCREEN = 0;
-	public final int STATE_PAUSE = 1;
-	public final int STATE_PLAY = 2;
-	public final int STATE_DIALOGUE = 3;
+	public static final int STATE_MENU_SCREEN = 0;
+	public static final int STATE_PAUSE = 1;
+	public static final int STATE_PLAY = 2;
+	public static final int STATE_DIALOGUE = 3;
 
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));

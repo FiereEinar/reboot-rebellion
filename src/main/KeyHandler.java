@@ -60,13 +60,13 @@ public class KeyHandler implements KeyListener {
 		}
 		
 		if (code == KeyEvent.VK_P) {
-			if (gp.gameState == gp.STATE_PLAY) gp.gameState = gp.STATE_PAUSE;
-			else if (gp.gameState == gp.STATE_PAUSE) gp.gameState = gp.STATE_PLAY;
+			if (gp.gameState == GamePanel.STATE_PLAY) gp.gameState = GamePanel.STATE_PAUSE;
+			else if (gp.gameState == GamePanel.STATE_PAUSE) gp.gameState = GamePanel.STATE_PLAY;
 		}
 		
 		if (code == KeyEvent.VK_ENTER) {
 			if (gp.ui.selectedMenuNum == gp.ui.MENU_OPTION_START) {
-				gp.gameState = gp.STATE_PLAY;
+				gp.gameState = GamePanel.STATE_PLAY;
 			}
 			
 			if (gp.ui.selectedMenuNum == gp.ui.MENU_OPTION_EXIT) {
