@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.util.LinkedList;
 
 import gun.GUN_Pistol_1;
+import gun.GUN_Shotgun;
 import gun.GunObject;
 import main.GamePanel;
 import main.Renderable;
@@ -26,6 +27,7 @@ public class ObjectManager implements Renderable {
 	
 	private void loadGuns() {
 		guns.add(new GUN_Pistol_1(GamePanel.tileSize * 3, GamePanel.tileSize * 3));
+		guns.add(new GUN_Shotgun(GamePanel.tileSize * 3, GamePanel.tileSize * 9));
 	}
 	
 	public LinkedList<GameObject> getObjects() {
