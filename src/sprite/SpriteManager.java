@@ -20,7 +20,7 @@ public class SpriteManager {
 
 	public BufferedImage getSprite() {
 		if (entity.state.dying.getState()) {
-			
+			return dying.getSprite();
 		}
 		if (entity.getDirection().equals("up")) {
 			return up.getSprite();

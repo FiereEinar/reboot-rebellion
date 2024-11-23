@@ -21,7 +21,9 @@ public class ENM_Ranger_1 extends Entity {
 		this.setDirection("down");
 
 		this.setSolidArea(new Rectangle(8, 16, 32, 32));
+		
 		loadSprites();
+		updateSpritesInterval();
 	}
 	
 	private void loadSprites() {

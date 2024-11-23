@@ -8,7 +8,7 @@ public class StateManager {
 
 	public StateManager() {
 	}
-	// set the sprite interval = state duration / sprite size
+	
 	// updater function
 	public void update() {
 		invincibility.update();

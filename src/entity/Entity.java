@@ -29,6 +29,12 @@ public class Entity extends BaseEntity implements Renderable {
 	public Entity(GamePanel gp) {
 		this.gp = gp;
 	}
+	
+	protected void updateSpritesInterval() {
+		int dyingSpriteLen = this.sprite.dying.getSpritesSize();
+		int dyingStateDuration = this.state.dying.getStateDuration();
+		this.sprite.dying.setInterval(dyingStateDuration / dyingSpriteLen);
+	}
 
 	public int getSpeed() {
 		return speed;

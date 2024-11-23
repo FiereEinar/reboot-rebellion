@@ -23,6 +23,10 @@ public class Sprite {
 		this.fps = interval;
 	}
 	
+	public int getSpritesSize() {
+		return sprites.size();
+	}
+	
 	public BufferedImage getSprite() {
 		if (sprites.size() == 0) {
 			System.out.println("You forgot to add some sprites you dimwit");
