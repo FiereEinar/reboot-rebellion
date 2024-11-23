@@ -3,6 +3,7 @@ package ui;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 import main.GamePanel;
 import main.Renderable;
@@ -21,6 +22,10 @@ public class UI implements Renderable {
 	public final int MENU_OPTION_EXIT = 1;
 	OBJ_Heart heart;
 	OBJ_HealthBar healthbar;
+	Asset buttons = new Asset(64 * 3, 32 * 3);
+	
+	public static int START_BUTTON = 0;
+	public static int EXIT_BUTTON = 1;
 	
 	public UI(GamePanel gp) {
 		this.gp = gp;
@@ -28,6 +33,12 @@ public class UI implements Renderable {
 		this.healthbar = new OBJ_HealthBar(gp);
 		this.normalText = new Font("Arial", Font.PLAIN, 40);
 		this.normalBoldText = new Font("Arial", Font.BOLD, 80);
+		loadAssets();
+	}
+	
+	private void loadAssets() {
+		this.buttons.set("/ui/Start_Button.png");
+		this.buttons.set("/ui/Exit_Button.png");
 	}
 
 	@Override
@@ -65,21 +76,25 @@ public class UI implements Renderable {
 		g2.setColor(new Color(51, 153, 255));
 		g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
 		
+		int x, y = 0;
+		
 		ScreenText screenTitle = new ScreenText("REBOOT REBELLION");
 		screenTitle.setPos(getXForCenteredText(screenTitle.text), GamePanel.tileSize * 3);
 		drawTextWithShadow(screenTitle.text, screenTitle.pos.x, screenTitle.pos.y);
 		
 		g2.setFont(normalText);
 		
-		ScreenText start = new ScreenText("START");
-		start.setPos(getXForCenteredText(start.text), GamePanel.tileSize * 5);
-		drawTextWithShadow(start.text, start.pos.x, start.pos.y);
-		if (selectedMenuNum == MENU_OPTION_START) drawTextWithShadow(">", start.pos.x - GamePanel.tileSize, start.pos.y);
+		BufferedImage startButton = buttons.image.getSpriteByIndex(UI.START_BUTTON);
+		x = gp.screenWidth / 2 - startButton.getWidth() / 2;
+		y = GamePanel.tileSize * 4;
+		g2.drawImage(startButton, x, y, null);
+		if (selectedMenuNum == MENU_OPTION_START) drawTextWithShadow(">", x - GamePanel.tileSize / 2, y + 64);
 		
-		ScreenText exit = new ScreenText("EXIT");
-		exit.setPos(getXForCenteredText(exit.text), GamePanel.tileSize * 6);
-		drawTextWithShadow(exit.text, exit.pos.x, exit.pos.y);
-		if (selectedMenuNum == MENU_OPTION_EXIT) drawTextWithShadow(">", exit.pos.x - GamePanel.tileSize, exit.pos.y);
+		BufferedImage exitButton = buttons.image.getSpriteByIndex(UI.EXIT_BUTTON);
+		x = gp.screenWidth / 2 - exitButton.getWidth() / 2;
+		y = GamePanel.tileSize * 5 + 16;
+		g2.drawImage(exitButton, x, y, null);
+		if (selectedMenuNum == MENU_OPTION_EXIT) drawTextWithShadow(">", x - GamePanel.tileSize / 2, y + 64);
 	}
 	
 	private void dialogueScreenHandler() {
@@ -100,8 +115,6 @@ public class UI implements Renderable {
 	
 	private void drawPlayerHealth() {
 		int playerCurrentHealth = gp.player.getHealth();
-		int playerMaxHealth = gp.player.getMaxHealth();
-		int healthBarWidth = GamePanel.tileSize;
 		
 		g2.setColor(new Color(0, 0, 0, 0));
 
