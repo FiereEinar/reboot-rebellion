@@ -27,6 +27,10 @@ public class Sprite {
 		return sprites.size();
 	}
 	
+	public BufferedImage getSpriteByIndex(int index) {
+		return sprites.get(index);
+	}
+	
 	public BufferedImage getSprite() {
 		if (sprites.size() == 0) {
 			System.out.println("You forgot to add some sprites you dimwit");

@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 
 import main.GamePanel;
 import main.Renderable;
+import object.OBJ_HealthBar;
 import object.OBJ_Heart;
 
 public class UI implements Renderable {
@@ -19,10 +20,12 @@ public class UI implements Renderable {
 	public final int MENU_OPTION_START = 0;
 	public final int MENU_OPTION_EXIT = 1;
 	OBJ_Heart heart;
+	OBJ_HealthBar healthbar;
 	
 	public UI(GamePanel gp) {
 		this.gp = gp;
 		this.heart = new OBJ_Heart(gp);
+		this.healthbar = new OBJ_HealthBar(gp);
 		this.normalText = new Font("Arial", Font.PLAIN, 40);
 		this.normalBoldText = new Font("Arial", Font.BOLD, 80);
 	}
@@ -102,12 +105,28 @@ public class UI implements Renderable {
 		
 		g2.setColor(new Color(0, 0, 0, 0));
 
-		for (int i = 0; i < playerMaxHealth; i++) {
-			if (i >= playerCurrentHealth) {
-				g2.drawImage(heart.emptyHeart.getSprite(), 16 + i * healthBarWidth, 16, null);
-			} else {
-				g2.drawImage(heart.fullHeart.getSprite(), 16 + i * healthBarWidth, 16, null);
-			}
+		switch (playerCurrentHealth) {
+		case 6: 
+			g2.drawImage(healthbar.sprite.getSpriteByIndex(0), 18, 0, null);
+			break;
+		case 5: 
+			g2.drawImage(healthbar.sprite.getSpriteByIndex(1), 18, 0, null);
+			break;
+		case 4: 
+			g2.drawImage(healthbar.sprite.getSpriteByIndex(2), 18, 0, null);
+			break;
+		case 3: 
+			g2.drawImage(healthbar.sprite.getSpriteByIndex(3), 18, 0, null);
+			break;
+		case 2: 
+			g2.drawImage(healthbar.sprite.getSpriteByIndex(4), 18, 0, null);
+			break;
+		case 1: 
+			g2.drawImage(healthbar.sprite.getSpriteByIndex(5), 18, 0, null);
+			break;
+		default: 
+			g2.drawImage(healthbar.sprite.getSpriteByIndex(6), 18, 0, null);
+			break;
 		}
 	}
 	
