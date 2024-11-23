@@ -46,6 +46,13 @@ public class ENM_Ranger_1 extends Entity {
 				utils.getAndScaleImage("/robot_3_ranger_movement/move_right_1.png", gp.tileSize, gp.tileSize));
 		this.sprite.right.addSprite(
 				utils.getAndScaleImage("/robot_3_ranger_movement/move_right_2.png", gp.tileSize, gp.tileSize));
+		
+		this.sprite.dying.addSprite(
+				utils.getAndScaleImage("/robot_3_ranger_dying/Dead 1.png", gp.tileSize, gp.tileSize));
+		this.sprite.dying.addSprite(
+				utils.getAndScaleImage("/robot_3_ranger_dying/Dead 2.png", gp.tileSize, gp.tileSize));
+		this.sprite.dying.addSprite(
+				utils.getAndScaleImage("/robot_3_ranger_dying/Dead 3.png", gp.tileSize, gp.tileSize));
 	}
 
 }

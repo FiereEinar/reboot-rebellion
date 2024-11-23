@@ -10,6 +10,7 @@ public class SpriteManager {
 	public Sprite right = new Sprite();
 	public Sprite up = new Sprite();
 	public Sprite down = new Sprite();
+	public Sprite dying = new Sprite();
 
 	Entity entity;
 
@@ -18,6 +19,9 @@ public class SpriteManager {
 	}
 
 	public BufferedImage getSprite() {
+		if (entity.state.dying.getState()) {
+			
+		}
 		if (entity.getDirection().equals("up")) {
 			return up.getSprite();
 		}

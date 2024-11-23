@@ -19,6 +19,7 @@ public class Entity extends BaseEntity implements Renderable {
 	public Boolean movementDisabled = false;
 	public int actionLockCounter = 0;
 	public Boolean isPlayer = false;
+	public Boolean isDead = false;
 	public int damage = 1;
 	public StateManager state = new StateManager();
 
@@ -112,9 +113,10 @@ public class Entity extends BaseEntity implements Renderable {
 	}
 
 	public void recieveDamage(int damage) {
-		if (!state.isInvincible()) {
+		if (!state.invincibility.getState()) {
 			this.health -= damage;
-			if (isPlayer) state.setIsInvincible(true);
+			if (this.health <= 0) state.dying.setState(true);
+			if (isPlayer) state.invincibility.setState(true);
 		}
 	}
 
@@ -167,9 +169,20 @@ public class Entity extends BaseEntity implements Renderable {
 
 	@Override
 	public void update() {
+		state.update();
+
+		if (state.dying.isTriggered()) {
+			isDead = true;
+			return;
+		}
+		
+		if (state.dying.getState()) {
+			state.invincibility.setState(!state.invincibility.getState());
+			return;
+		}
+		
 		this.movementDisabled = false;
 		updateDirection();
-		state.update();
 		checkWorldCollision();
 		checkEntitiesCollision();
 		checkIfCollidingWithPlayer();
@@ -178,11 +191,9 @@ public class Entity extends BaseEntity implements Renderable {
 
 	@Override
 	public void draw(Graphics2D g2) {
-		if (state.isInvincible()) {
+		if (state.invincibility.getState()) {
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
 		}
-		if (this.health <= 0)
-			return;
 
 		Vector2 screen = getScreenLocation();
 

@@ -188,9 +188,9 @@ public class Player extends Entity {
 
 	@Override
 	public void update() {
+		state.update();
 		this.movementDisabled = false;
 		updateDirection();
-		state.update();
 		checkWorldCollision();
 		checkEntitiesCollision();
 
@@ -204,7 +204,7 @@ public class Player extends Entity {
 
 	@Override
 	public void draw(Graphics2D g2) {
-		if (state.isInvincible()) {
+		if (state.invincibility.getState()) {
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
 		}
 

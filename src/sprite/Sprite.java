@@ -8,7 +8,7 @@ public class Sprite {
 	private ArrayList<BufferedImage> sprites;
 	private int spriteCounter;
 	private int fpsCounter = 0;
-	private final int fps = 12;
+	private int fps = 12;
 	
 	public Sprite() {
 		this.sprites = new ArrayList<>();
@@ -17,6 +17,10 @@ public class Sprite {
 	
 	public void addSprite(BufferedImage sprite) {
 		sprites.add(sprite);
+	}
+	
+	public void setInterval(int interval) {
+		this.fps = interval;
 	}
 	
 	public BufferedImage getSprite() {

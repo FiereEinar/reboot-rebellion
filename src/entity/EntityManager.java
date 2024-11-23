@@ -57,7 +57,7 @@ public class EntityManager implements Renderable {
         while (iterator.hasNext()) {
         	Entity entity = iterator.next();
         	entity.update();
-            if (entity.getHealth() <= 0) {
+            if (entity.isDead) {
                 iterator.remove();
             }
         }

@@ -7,7 +7,7 @@ import main.GamePanel;
 import main.Renderable;
 
 public class Projectile extends BaseEntity implements Renderable {
-	
+
 	GamePanel gp;
 	float speedX, speedY;
 	int damage;
@@ -17,20 +17,20 @@ public class Projectile extends BaseEntity implements Renderable {
 		this.gp = gp;
 		this.worldX = x;
 		this.worldY = y;
-		
+
 		this.speedX = speedX;
 		this.speedY = speedY;
-		
+
 		this.damage = damage;
-		
+
 		this.setSolidArea(new Rectangle(0, 0, 8, 8));
-		
+
 		loadSprites();
 	}
 
 	private void loadSprites() {
 	}
-	
+
 	public Vector2 getScreenLocation() {
 		Vector2 res = new Vector2();
 
@@ -44,21 +44,29 @@ public class Projectile extends BaseEntity implements Renderable {
 	public void update() {
 		worldX += speedX;
 		worldY += speedY;
-		
+
 		if (gp.cd.checkWorldCollision(this, speedX, speedY)) {
 			isDead = true;
 		}
-		
+
 		Entity hitEntity = gp.cd.checkEntityCollision(this);
-		
+
 		if (hitEntity != null) {
 			hitEntity.recieveDamage(damage);
 			isDead = true;
 		}
-		
-        if (worldX < 0 || worldX > gp.worldWidth || worldY < 0 || worldY > gp.worldHeight) {
-            isDead = true;
-        }
+
+		// the range for when the bullets gets deleted 
+		//if it gets too far from the player
+		int range = 500;
+
+		if (gp.player.worldX - worldX > range || 
+			gp.player.worldX + range < worldX || 
+			gp.player.worldY - worldY > range || 
+			gp.player.worldY + range < worldY
+		) {
+			isDead = true;
+		}
 	}
 
 	@Override

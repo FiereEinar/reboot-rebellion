@@ -2,25 +2,17 @@ package states;
 
 public class StateManager {
 	
-	private Invincibility inv = new Invincibility(60);
+	private final int DEFAULT_STATE_DURATION = 60;
+	public State invincibility = new State(DEFAULT_STATE_DURATION);
+	public State dying = new State(DEFAULT_STATE_DURATION);
 
 	public StateManager() {
 	}
-	
-	public void setInvincibilityDuration(int duration) {
-		inv.setDuration(duration);
-	}
-	
-	public Boolean isInvincible() {
-		return inv.isInvincible;
-	}
-	
-	public void setIsInvincible(Boolean s) {
-		inv.isInvincible = s;
-	}
-	
+	// set the sprite interval = state duration / sprite size
+	// updater function
 	public void update() {
-		inv.update();
+		invincibility.update();
+		dying.update();
 	}
 
 }
