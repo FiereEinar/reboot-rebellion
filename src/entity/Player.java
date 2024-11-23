@@ -84,6 +84,8 @@ public class Player extends Entity {
 		
 		GunObject gun = inventory.arsenal.get(inventory.selectedGun);
 		
+		if (!gun.canShoot()) return;
+		
 		int BULLET_SPREAD = gun.bulletSpread;
 		int BULLET_SPEED = gun.bulletSpeed;
 		
@@ -115,6 +117,7 @@ public class Player extends Entity {
 		int centerWorldY = worldY + (GamePanel.tileSize / 2);
 
 		gp.em.addBullets(new Projectile(gp, centerWorldX, centerWorldY, speedX, speedY, damage));
+		gun.recordShot();
 	}
 
 	@Override
