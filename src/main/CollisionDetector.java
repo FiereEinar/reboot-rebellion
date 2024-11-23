@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 
 import entity.BaseEntity;
 import entity.Entity;
+import gun.GunObject;
 import object.GameObject;
 
 public class CollisionDetector {
@@ -20,31 +21,31 @@ public class CollisionDetector {
 		int entityTopWorldY = entity.worldY + entity.getSolidArea().y;
 		int entityBottomWorldY = entity.worldY + entity.getSolidArea().y + entity.getSolidArea().height;
 
-		int entityLeftCol = entityLeftWorldX / gp.tileSize;
-		int entityRightCol = entityRightWorldX / gp.tileSize;
-		int entityTopRow = entityTopWorldY / gp.tileSize;
-		int entityBottomRow = entityBottomWorldY / gp.tileSize;
+		int entityLeftCol = entityLeftWorldX / GamePanel.tileSize;
+		int entityRightCol = entityRightWorldX / GamePanel.tileSize;
+		int entityTopRow = entityTopWorldY / GamePanel.tileSize;
+		int entityBottomRow = entityBottomWorldY / GamePanel.tileSize;
 
 		int tileNum1 = 0, tileNum2 = 0;
 
 		switch (entity.getDirection()) {
 		case "up":
-			entityTopRow = (entityTopWorldY - entity.getSpeed()) / gp.tileSize;
+			entityTopRow = (entityTopWorldY - entity.getSpeed()) / GamePanel.tileSize;
 			tileNum1 = gp.tm.getMapTileNumber(entityLeftCol, entityTopRow);
 			tileNum2 = gp.tm.getMapTileNumber(entityRightCol, entityTopRow);
 			break;
 		case "down":
-			entityBottomRow = (entityBottomWorldY + entity.getSpeed()) / gp.tileSize;
+			entityBottomRow = (entityBottomWorldY + entity.getSpeed()) / GamePanel.tileSize;
 			tileNum1 = gp.tm.getMapTileNumber(entityLeftCol, entityBottomRow);
 			tileNum2 = gp.tm.getMapTileNumber(entityRightCol, entityBottomRow);
 			break;
 		case "left":
-			entityLeftCol = (entityLeftWorldX - entity.getSpeed()) / gp.tileSize;
+			entityLeftCol = (entityLeftWorldX - entity.getSpeed()) / GamePanel.tileSize;
 			tileNum1 = gp.tm.getMapTileNumber(entityLeftCol, entityTopRow);
 			tileNum2 = gp.tm.getMapTileNumber(entityLeftCol, entityBottomRow);
 			break;
 		case "right":
-			entityRightCol = (entityRightWorldX + entity.getSpeed()) / gp.tileSize;
+			entityRightCol = (entityRightWorldX + entity.getSpeed()) / GamePanel.tileSize;
 			tileNum1 = gp.tm.getMapTileNumber(entityRightCol, entityTopRow);
 			tileNum2 = gp.tm.getMapTileNumber(entityRightCol, entityBottomRow);
 			break;
@@ -63,11 +64,11 @@ public class CollisionDetector {
 	public Boolean checkWorldCollision(BaseEntity entity, float speedX, float speedY) {
 		Rectangle rec = entity.getSolidAreaRelativeToWorld();
 
-		float nextX = rec.x + speedX - gp.tileSize / 2;
-	    float nextY = rec.y + speedY - gp.tileSize / 2;
+		float nextX = rec.x + speedX - GamePanel.tileSize / 2;
+	    float nextY = rec.y + speedY - GamePanel.tileSize / 2;
 
-	    int nextWorldCol = Math.round(nextX / gp.tileSize);
-	    int nextWorldRow = Math.round(nextY / gp.tileSize);
+	    int nextWorldCol = Math.round(nextX / GamePanel.tileSize);
+	    int nextWorldRow = Math.round(nextY / GamePanel.tileSize);
 
 	    if (nextWorldCol < 0 || nextWorldRow < 0 || nextWorldCol >= gp.worldWidth || nextWorldRow >= gp.worldHeight) {
 	        return true; 
@@ -98,6 +99,20 @@ public class CollisionDetector {
 		}
 		
 		for (GameObject o : gp.om.getObjects()) {
+			Rectangle rec2 = o.getSolidAreaRelativeToWorld();
+
+			if (rec1.intersects(rec2))
+				hitObject = o;
+		}
+		
+		return hitObject;
+	}
+	
+	public GunObject checkEntityGunsCollision(Entity entity) {
+		GunObject hitObject = null;
+		Rectangle rec1 = entity.getSolidAreaRelativeToWorld();
+		
+		for (GunObject o : gp.om.getGuns()) {
 			Rectangle rec2 = o.getSolidAreaRelativeToWorld();
 
 			if (rec1.intersects(rec2))

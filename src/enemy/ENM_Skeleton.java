@@ -27,37 +27,37 @@ public class ENM_Skeleton extends Entity {
 	private void loadSprites() {
 		Utils utils = new Utils();
 
-		this.sprite.up.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_1.png", gp.tileSize, gp.tileSize));
-		this.sprite.up.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_2.png", gp.tileSize, gp.tileSize));
-		this.sprite.up.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_3.png", gp.tileSize, gp.tileSize));
-		this.sprite.up.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_4.png", gp.tileSize, gp.tileSize));
+		this.sprite.up.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_1.png", GamePanel.tileSize, GamePanel.tileSize));
+		this.sprite.up.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_2.png", GamePanel.tileSize, GamePanel.tileSize));
+		this.sprite.up.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_3.png", GamePanel.tileSize, GamePanel.tileSize));
+		this.sprite.up.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_4.png", GamePanel.tileSize, GamePanel.tileSize));
 
 		this.sprite.down
-				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_1.png", gp.tileSize, gp.tileSize));
+				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_1.png", GamePanel.tileSize, GamePanel.tileSize));
 		this.sprite.down
-				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_2.png", gp.tileSize, gp.tileSize));
+				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_2.png", GamePanel.tileSize, GamePanel.tileSize));
 		this.sprite.down
-				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_3.png", gp.tileSize, gp.tileSize));
+				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_3.png", GamePanel.tileSize, GamePanel.tileSize));
 		this.sprite.down
-				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_4.png", gp.tileSize, gp.tileSize));
+				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_4.png", GamePanel.tileSize, GamePanel.tileSize));
 
 		this.sprite.left
-				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_1.png", gp.tileSize, gp.tileSize));
+				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_1.png", GamePanel.tileSize, GamePanel.tileSize));
 		this.sprite.left
-				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_2.png", gp.tileSize, gp.tileSize));
+				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_2.png", GamePanel.tileSize, GamePanel.tileSize));
 		this.sprite.left
-				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_3.png", gp.tileSize, gp.tileSize));
+				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_3.png", GamePanel.tileSize, GamePanel.tileSize));
 		this.sprite.left
-				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_4.png", gp.tileSize, gp.tileSize));
+				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_4.png", GamePanel.tileSize, GamePanel.tileSize));
 
 		this.sprite.right
-				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_1.png", gp.tileSize, gp.tileSize));
+				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_1.png", GamePanel.tileSize, GamePanel.tileSize));
 		this.sprite.right
-				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_2.png", gp.tileSize, gp.tileSize));
+				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_2.png", GamePanel.tileSize, GamePanel.tileSize));
 		this.sprite.right
-				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_3.png", gp.tileSize, gp.tileSize));
+				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_3.png", GamePanel.tileSize, GamePanel.tileSize));
 		this.sprite.right
-				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_4.png", gp.tileSize, gp.tileSize));
+				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_4.png", GamePanel.tileSize, GamePanel.tileSize));
 	}
 
 }

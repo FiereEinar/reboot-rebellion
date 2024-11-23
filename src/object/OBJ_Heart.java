@@ -21,8 +21,8 @@ public class OBJ_Heart extends GameObject {
 	private void loadSprites() {
 		Utils utils = new Utils();
 		
-		emptyHeart.addSprite(utils.getAndScaleImage("/heart/heart_empty.png", gp.tileSize, gp.tileSize));
-		fullHeart.addSprite(utils.getAndScaleImage("/heart/heart_full.png", gp.tileSize, gp.tileSize));
+		emptyHeart.addSprite(utils.getAndScaleImage("/heart/heart_empty.png", GamePanel.tileSize, GamePanel.tileSize));
+		fullHeart.addSprite(utils.getAndScaleImage("/heart/heart_full.png", GamePanel.tileSize, GamePanel.tileSize));
 	}
 
 }

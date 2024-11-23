@@ -3,7 +3,6 @@ package main;
 import java.awt.Rectangle;
 
 import event.EventState;
-import object.OBJ_Gun;
 
 public class EventHandler {
 	
@@ -18,9 +17,11 @@ public class EventHandler {
 	}
 	
 	private void setupEvents() {
-		OBJ_Gun gun = (OBJ_Gun)gp.om.getObjects().get(gp.om.GUN_INDEX);
-		
-		gunTrigger.setCoordinate(gun.worldX, gun.worldY, gp.tileSize);
+//		OBJ_Gun gun = (OBJ_Gun)gp.om.getObjects().get(gp.om.GUN_INDEX);
+//		
+//		if (gun == null) return;
+//		
+//		gunTrigger.setCoordinate(gun.worldX, gun.worldY, GamePanel.tileSize);
 	}
 	
 	public void checkEvent() {

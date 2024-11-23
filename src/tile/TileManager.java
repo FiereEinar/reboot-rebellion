@@ -28,10 +28,10 @@ public class TileManager implements Renderable {
 	private void loadTiles() {
 		Utils utils = new Utils();
 		
-		tiles[0] = new Tile(utils.getAndScaleImage("/tiles/grass.png", gp.tileSize, gp.tileSize));
-		tiles[1] = new Tile(utils.getAndScaleImage("/tiles/water.png", gp.tileSize, gp.tileSize));
+		tiles[0] = new Tile(utils.getAndScaleImage("/tiles/grass.png", GamePanel.tileSize, GamePanel.tileSize));
+		tiles[1] = new Tile(utils.getAndScaleImage("/tiles/water.png", GamePanel.tileSize, GamePanel.tileSize));
 		tiles[1].isSolid = true;
-		tiles[2] = new Tile(utils.getAndScaleImage("/tiles/floor.png", gp.tileSize, gp.tileSize));
+		tiles[2] = new Tile(utils.getAndScaleImage("/tiles/floor.png", GamePanel.tileSize, GamePanel.tileSize));
 	}
 
 	private void loadMap() {
@@ -72,15 +72,15 @@ public class TileManager implements Renderable {
 			for (int j = 0; j < map[i].length; j++) {
 				BufferedImage image = tiles[map[i][j]].getSprite();
 
-				int worldX = i * gp.tileSize;
-				int worldY = j * gp.tileSize;
+				int worldX = i * GamePanel.tileSize;
+				int worldY = j * GamePanel.tileSize;
 				int screenX = worldX - gp.player.worldX + gp.player.screenX;
 				int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-				Boolean isInView = worldX + gp.tileSize > gp.player.worldX - gp.player.screenX
-						&& worldX - gp.tileSize < gp.player.worldX + gp.player.screenX
-						&& worldY + gp.tileSize > gp.player.worldY - gp.player.screenY
-						&& worldY - gp.tileSize < gp.player.worldY + gp.player.screenY;
+				Boolean isInView = worldX + GamePanel.tileSize > gp.player.worldX - gp.player.screenX
+						&& worldX - GamePanel.tileSize < gp.player.worldX + gp.player.screenX
+						&& worldY + GamePanel.tileSize > gp.player.worldY - gp.player.screenY
+						&& worldY - GamePanel.tileSize < gp.player.worldY + gp.player.screenY;
 
 				if (isInView) {
 					g2.drawImage(image, screenX, screenY, null);

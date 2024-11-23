@@ -2,7 +2,7 @@ package states;
 
 public class StateManager {
 	
-	private final int DEFAULT_STATE_DURATION = 60;
+	private final int DEFAULT_STATE_DURATION = 120;
 	public State invincibility = new State(DEFAULT_STATE_DURATION);
 	public State dying = new State(DEFAULT_STATE_DURATION);
 

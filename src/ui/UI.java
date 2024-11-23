@@ -63,20 +63,20 @@ public class UI implements Renderable {
 		g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
 		
 		ScreenText screenTitle = new ScreenText("REBOOT REBELLION");
-		screenTitle.setPos(getXForCenteredText(screenTitle.text), gp.tileSize * 3);
+		screenTitle.setPos(getXForCenteredText(screenTitle.text), GamePanel.tileSize * 3);
 		drawTextWithShadow(screenTitle.text, screenTitle.pos.x, screenTitle.pos.y);
 		
 		g2.setFont(normalText);
 		
 		ScreenText start = new ScreenText("START");
-		start.setPos(getXForCenteredText(start.text), gp.tileSize * 5);
+		start.setPos(getXForCenteredText(start.text), GamePanel.tileSize * 5);
 		drawTextWithShadow(start.text, start.pos.x, start.pos.y);
-		if (selectedMenuNum == MENU_OPTION_START) drawTextWithShadow(">", start.pos.x - gp.tileSize, start.pos.y);
+		if (selectedMenuNum == MENU_OPTION_START) drawTextWithShadow(">", start.pos.x - GamePanel.tileSize, start.pos.y);
 		
 		ScreenText exit = new ScreenText("EXIT");
-		exit.setPos(getXForCenteredText(exit.text), gp.tileSize * 6);
+		exit.setPos(getXForCenteredText(exit.text), GamePanel.tileSize * 6);
 		drawTextWithShadow(exit.text, exit.pos.x, exit.pos.y);
-		if (selectedMenuNum == MENU_OPTION_EXIT) drawTextWithShadow(">", exit.pos.x - gp.tileSize, exit.pos.y);
+		if (selectedMenuNum == MENU_OPTION_EXIT) drawTextWithShadow(">", exit.pos.x - GamePanel.tileSize, exit.pos.y);
 	}
 	
 	private void dialogueScreenHandler() {
@@ -98,7 +98,7 @@ public class UI implements Renderable {
 	private void drawPlayerHealth() {
 		int playerCurrentHealth = gp.player.getHealth();
 		int playerMaxHealth = gp.player.getMaxHealth();
-		int healthBarWidth = gp.tileSize;
+		int healthBarWidth = GamePanel.tileSize;
 		
 		g2.setColor(new Color(0, 0, 0, 0));
 

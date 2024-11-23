@@ -17,10 +17,10 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 
-	private final int originalTileSize = 16;
-	private final int scale = 3;
+	private static final int originalTileSize = 16;
+	private static final int scale = 3;
 
-	public final int tileSize = originalTileSize * scale;
+	public static final int tileSize = originalTileSize * scale;
 	public final int col = 20;
 	public final int row = 12;
 
