@@ -9,11 +9,26 @@ import main.Renderable;
 public class Projectile extends BaseEntity implements Renderable {
 
 	GamePanel gp;
+	
 	float speedX, speedY;
 	int damage;
+	
 	Boolean isDead = false;
+	Boolean fromPlayer = false;
+	
+	public static final int DESPAWN_RANGE = 600;
+	public static final int SIZE = 8;
 
 	public Projectile(GamePanel gp, int x, int y, float speedX, float speedY, int damage) {
+		__init__(gp, x, y, speedX, speedY, damage);
+	}
+	
+	public Projectile(GamePanel gp, int x, int y, float speedX, float speedY, int damage, Boolean fromPlayer) {
+		__init__(gp, x, y, speedX, speedY, damage);
+		this.fromPlayer = fromPlayer;
+	}
+	
+	private void __init__(GamePanel gp, int x, int y, float speedX, float speedY, int damage) {
 		this.gp = gp;
 		this.worldX = x;
 		this.worldY = y;
@@ -23,7 +38,7 @@ public class Projectile extends BaseEntity implements Renderable {
 
 		this.damage = damage;
 
-		this.setSolidArea(new Rectangle(0, 0, 8, 8));
+		this.setSolidArea(new Rectangle(0, 0, SIZE, SIZE));
 
 		loadSprites();
 	}
@@ -39,26 +54,9 @@ public class Projectile extends BaseEntity implements Renderable {
 
 		return res;
 	}
-
-	@Override
-	public void update() {
-		worldX += speedX;
-		worldY += speedY;
-
-		if (gp.cd.checkWorldCollision(this, speedX, speedY)) {
-			isDead = true;
-		}
-
-		Entity hitEntity = gp.cd.checkEntityCollision(this);
-
-		if (hitEntity != null) {
-			hitEntity.recieveDamage(damage);
-			isDead = true;
-		}
-
-		// the range for when the bullets gets deleted 
-		//if it gets too far from the player
-		int range = 500;
+	
+	private void checkIfTooFarFromPlayer() {
+		int range = DESPAWN_RANGE;
 
 		if (gp.player.worldX - worldX > range || 
 			gp.player.worldX + range < worldX || 
@@ -67,6 +65,34 @@ public class Projectile extends BaseEntity implements Renderable {
 		) {
 			isDead = true;
 		}
+	}
+	
+	private void checkCollisions() {
+		if (gp.cd.checkWorldCollision(this, speedX, speedY)) {
+			isDead = true;
+		}
+		
+		if (fromPlayer) {
+			Entity hitEntity = gp.cd.checkEntityCollision(this);
+			
+			if (hitEntity != null) {
+				hitEntity.recieveDamage(damage);
+				isDead = true;
+			}
+		} else {
+			if (gp.cd.isCollidingWithPlayer(this)) {
+				gp.player.recieveDamage(damage);
+				isDead = true;
+			}
+		}
+	}
+
+	@Override
+	public void update() {
+		worldX += speedX;
+		worldY += speedY;
+		checkCollisions();
+		checkIfTooFarFromPlayer();
 	}
 
 	@Override

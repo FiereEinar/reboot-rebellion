@@ -40,7 +40,6 @@ public class TileManager implements Renderable {
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
 			int row = 0;
-			;
 
 			while (row < gp.worldRow) {
 				int col = 0;

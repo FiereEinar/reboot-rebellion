@@ -119,14 +119,13 @@ public class Player extends Entity {
 			int centerWorldX = worldX + (GamePanel.tileSize / 2);
 			int centerWorldY = worldY + (GamePanel.tileSize / 2);
 
-			gp.em.addBullets(new Projectile(gp, centerWorldX, centerWorldY, speedX, speedY, BULLET_DAMAGE));
+			gp.em.addBullets(new Projectile(gp, centerWorldX, centerWorldY, speedX, speedY, BULLET_DAMAGE, true));
 		}
 
 		gun.recordShot();
 	}
 
-	@Override
-	public void updateDirection() {
+	private void updateDirection() {
 		if (keys.UP) {
 			this.setDirection("up");
 		}
@@ -148,15 +147,8 @@ public class Player extends Entity {
 			if (hitObject.isSolid) {
 				this.movementDisabled = true;
 			}
-
 			
 			// pick up object logic
-//			this.inventory.addInventoryItem(hitObject);
-//			gp.om.removeObject(hitObject.name);
-//			System.out.println("Player Inventory: ");
-//			for (GameObject o : this.inventory.getItems()) {
-//				System.out.println(o.name);
-//			}
 		}
 	}
 	
@@ -166,15 +158,6 @@ public class Player extends Entity {
 		if (hitGun != null) {
 			this.inventory.arsenal.add(hitGun);
 			gp.om.removeGun(hitGun.name);
-		}
-	}
-
-	protected void checkEntitiesCollision() {
-		Entity entity = gp.cd.checkEntityCollision(this);
-
-		if (entity != null && !entity.isDead) {
-			this.movementDisabled = true;
-			if (!entity.state.dying.getState()) recieveDamage(entity.damage);
 		}
 	}
 
@@ -209,6 +192,16 @@ public class Player extends Entity {
 
 		// Dispose of the copy to reset the transform
 		gCopy.dispose();
+	}
+
+	@Override
+	protected void checkEntitiesCollision() {
+		Entity entity = gp.cd.checkEntityCollision(this);
+
+		if (entity != null && !entity.isDead) {
+			this.movementDisabled = true;
+			if (!entity.state.dying.getState()) recieveDamage(entity.damage);
+		}
 	}
 
 	@Override

@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 import main.GamePanel;
 import main.Utils;
 
-public class ENM_Ranger_1 extends Enemy {
+public class ENM_Ranger_1 extends ShootingEnemy {
 
 	public ENM_Ranger_1(GamePanel gp, int x, int y) {
 		super(gp);
@@ -55,5 +55,12 @@ public class ENM_Ranger_1 extends Enemy {
 		this.sprite.dying.addSprite(
 				utils.getAndScaleImage("/robot_3_ranger_dying/Dead 3.png", GamePanel.tileSize, GamePanel.tileSize));
 	}
+	
+	@Override
+	protected void attack() {
+		moveToPlayer();
+		shootProjectile();
+	}
+
 
 }

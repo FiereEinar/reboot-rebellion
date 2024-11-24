@@ -169,24 +169,9 @@ public class CollisionDetector {
 		return hitEntity;
 	}
 	
-	public Boolean isCollidingWithPlayer(Entity entity) {
+	public Boolean isCollidingWithPlayer(BaseEntity entity) {
 		Rectangle rec1 = entity.getSolidAreaRelativeToWorld();
 		Rectangle rec2 = gp.player.getSolidAreaRelativeToWorld();
-		
-		switch (entity.getDirection()) {
-		case "up":
-			rec1.y -= entity.getSpeed();
-			break;
-		case "down":
-			rec1.y += entity.getSpeed();
-			break;
-		case "left":
-			rec1.x -= entity.getSpeed();
-			break;
-		case "right":
-			rec1.x += entity.getSpeed();
-			break;
-		}
 		
 		if (rec1.intersects(rec2)) return true;
 		return false;

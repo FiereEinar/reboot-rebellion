@@ -3,6 +3,7 @@ package enemy;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.Random;
 
 import entity.Entity;
 import entity.Player;
@@ -27,6 +28,32 @@ public class Enemy extends Entity {
 		}
 	}
 	
+	protected void roamEntity() {
+		if (state.dying.getState()) return;
+		
+		actionLockCounter++;
+		
+		if (actionLockCounter == 120) {
+			Random random = new Random();
+			int i = random.nextInt(100) + 1;
+			
+			if (i <= 25) {
+				setDirection("up");
+			}
+			if (i > 25 && i <= 50) {
+				setDirection("down");
+			}
+			if (i > 50 && i <= 75) {
+				setDirection("left");
+			}
+			if (i > 75 && i <= 100) {
+				setDirection("right");
+			}
+			
+			actionLockCounter = 0;
+		}
+	}
+	
 	private void drawHealthBar(Graphics2D g2) {
 		Vector2 screen = getScreenLocation();
 
@@ -40,7 +67,7 @@ public class Enemy extends Entity {
 		g2.fillRect(screen.x, screen.y - 15, (int) healthBarWidth, 10);
 	}
 	
-	private void checkIfCloseToPlayer() {
+	protected Boolean isCloseToPlayer() {
 		int width = Entity.DETECTION_RANGE_WIDTH;
 		int height = Entity.DETECTION_RANGE_HEIGHT;
 		int offsetW = width / 2;
@@ -53,36 +80,51 @@ public class Enemy extends Entity {
 		gp.player.attackDetectionRange.y = gp.player.worldY - offsetH;
 		
 		if (attackDetectionRange.intersects(gp.player.attackDetectionRange)) {
-			System.out.println("CLOSE");
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private void checkIfCloseToPlayer() {
+		if (isCloseToPlayer()) {
 			lockToPlayer = true;
 		} else {
 			lockToPlayer = false;
 		}
 	}
 	
-	private void moveToPlayer() {
+	protected void moveToPlayer() {
+		if (movementDisabled) return;
+		
 		Player player = gp.player;
 		
-		if (this.worldX - getSpeed() > player.worldX) {
-			setDirection("left");
-		} else if (this.worldX + getSpeed() < player.worldX) {
-			setDirection("right");
-		}
+		Boolean isFartherFromX = Math.abs(this.worldX - player.worldX) > Math.abs(this.worldY - player.worldY);
 		
-		if (this.worldY - getSpeed() > player.worldY) {
-			setDirection("up");
-		} else if (this.worldY + getSpeed() < player.worldY) {
-			setDirection("down");
+		if (isFartherFromX) {
+			if (this.worldX - getSpeed() > player.worldX) {
+				setDirection("left");
+			} else if (this.worldX + getSpeed() < player.worldX) {
+				setDirection("right");
+			}
+		} else {
+			if (this.worldY - getSpeed() > player.worldY) {
+				setDirection("up");
+			} else if (this.worldY + getSpeed() < player.worldY) {
+				setDirection("down");
+			}
 		}
-		
 	}
 
-	@Override
+	// override this when extending to have specific attacks
+	protected void attack() {
+	}
+
 	protected void updateDirection() {
 		if (state.dying.getState()) return;
 		
 		if (lockToPlayer) {
-			moveToPlayer();
+			attack();
 		} else {
 			roamEntity();
 		}
@@ -90,15 +132,15 @@ public class Enemy extends Entity {
 	
 	@Override
 	public void update() {
-		if (isDead) return;
 		state.update();
 		checkState();
+		if (isDead) return;
 		checkIfCloseToPlayer();
 		this.movementDisabled = false;
+		checkIfCollidingWithPlayer();
 		updateDirection();
 		checkWorldCollision();
 		checkEntitiesCollision();
-		checkIfCollidingWithPlayer();
 		updateCoordinates();
 	}
 

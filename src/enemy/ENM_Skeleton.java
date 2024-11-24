@@ -58,5 +58,10 @@ public class ENM_Skeleton extends Enemy {
 		this.sprite.right
 				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_4.png", GamePanel.tileSize, GamePanel.tileSize));
 	}
+	
+	@Override
+	protected void attack() {
+		moveToPlayer();
+	}
 
 }
