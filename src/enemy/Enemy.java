@@ -5,22 +5,25 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import entity.Entity;
+import entity.Player;
 import entity.Vector2;
 import main.GamePanel;
 
 public class Enemy extends Entity {
 	
+	private Boolean lockToPlayer = true;
+	
 	public Enemy(GamePanel gp) {
 		super(gp);
 	}
-	
+
 	private void checkIfCollidingWithPlayer() {
 		if (this.isPlayer)
 			return;
 
 		if (gp.cd.isCollidingWithPlayer(this)) {
 			this.movementDisabled = true;
-			if (!state.dying.getState()) gp.player.recieveDamage(damage);
+			if (!state.dying.getState() && !isDead) gp.player.recieveDamage(damage);
 		}
 	}
 	
@@ -36,13 +39,61 @@ public class Enemy extends Entity {
 		g2.setColor(Color.RED);
 		g2.fillRect(screen.x, screen.y - 15, (int) healthBarWidth, 10);
 	}
+	
+	private void checkIfCloseToPlayer() {
+		int width = Entity.DETECTION_RANGE_WIDTH;
+		int height = Entity.DETECTION_RANGE_HEIGHT;
+		int offsetW = width / 2;
+		int offsetH = height / 2;
+		
+		attackDetectionRange.x = worldX - offsetW;
+		attackDetectionRange.y = worldY - offsetH;
+		
+		gp.player.attackDetectionRange.x = gp.player.worldX - offsetW;
+		gp.player.attackDetectionRange.y = gp.player.worldY - offsetH;
+		
+		if (attackDetectionRange.intersects(gp.player.attackDetectionRange)) {
+			System.out.println("CLOSE");
+			lockToPlayer = true;
+		} else {
+			lockToPlayer = false;
+		}
+	}
+	
+	private void moveToPlayer() {
+		Player player = gp.player;
+		
+		if (this.worldX - getSpeed() > player.worldX) {
+			setDirection("left");
+		} else if (this.worldX + getSpeed() < player.worldX) {
+			setDirection("right");
+		}
+		
+		if (this.worldY - getSpeed() > player.worldY) {
+			setDirection("up");
+		} else if (this.worldY + getSpeed() < player.worldY) {
+			setDirection("down");
+		}
+		
+	}
 
+	@Override
+	protected void updateDirection() {
+		if (state.dying.getState()) return;
+		
+		if (lockToPlayer) {
+			moveToPlayer();
+		} else {
+			roamEntity();
+		}
+	}
 	
 	@Override
 	public void update() {
 		if (isDead) return;
 		state.update();
 		checkState();
+		checkIfCloseToPlayer();
 		this.movementDisabled = false;
 		updateDirection();
 		checkWorldCollision();

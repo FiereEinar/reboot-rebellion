@@ -1,6 +1,7 @@
 package entity;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.Random;
 
 import main.GamePanel;
@@ -11,15 +12,20 @@ import states.StateManager;
 public class Entity extends BaseEntity implements Renderable {
 
 	public GamePanel gp;
+	public static final int DETECTION_RANGE_WIDTH = 400;
+	public static final int DETECTION_RANGE_HEIGHT = 250;
 	private int speed;
 	private String direction;
-	public SpriteManager sprite = new SpriteManager(this);
+	public int damage = 1;
+	
 	public Boolean movementDisabled = false;
 	public int actionLockCounter = 0;
 	public Boolean isPlayer = false;
 	public Boolean isDead = false;
-	public int damage = 1;
+	
+	public SpriteManager sprite = new SpriteManager(this);
 	public StateManager state = new StateManager();
+	public Rectangle attackDetectionRange = new Rectangle(0, 0, DETECTION_RANGE_WIDTH, DETECTION_RANGE_HEIGHT);
 
 	protected int maxHealth;
 	protected int health;
@@ -66,15 +72,19 @@ public class Entity extends BaseEntity implements Renderable {
 		return this.maxHealth;
 	}
 
-	public void updateDirection() {
+	protected void updateDirection() {
+		roamEntity();
+	}
+	
+	protected void roamEntity() {
 		if (state.dying.getState()) return;
 		
 		actionLockCounter++;
-
+		
 		if (actionLockCounter == 120) {
 			Random random = new Random();
 			int i = random.nextInt(100) + 1;
-
+			
 			if (i <= 25) {
 				setDirection("up");
 			}
@@ -87,7 +97,7 @@ public class Entity extends BaseEntity implements Renderable {
 			if (i > 75 && i <= 100) {
 				setDirection("right");
 			}
-
+			
 			actionLockCounter = 0;
 		}
 	}
