@@ -14,8 +14,15 @@ public class Asset {
 		this.height = h;
 	}
 	
+	public Asset() {
+	}
+	
 	public void set(String filepath) {
 		image.addSprite(utils.getAndScaleImage(filepath, width, height));
+	}
+	
+	public void load(String filepath) {
+		image.addSprite(utils.getSpriteSheet(filepath));
 	}
 
 }

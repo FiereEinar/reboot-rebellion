@@ -32,5 +32,24 @@ public class Utils {
 		
 		return scaledImage;
 	}
+	
+	public BufferedImage getSpriteSheet(String path) {
+        try {
+            return ImageIO.read(getClass().getResourceAsStream(path));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public BufferedImage cropSprite(BufferedImage sheet, int x, int y, int width, int height) {
+        return sheet.getSubimage(x, y, width, height);
+    }
+    
+    public BufferedImage cropSprite(BufferedImage sheet, int x, int y, int width, int height, int resizeW, int resizeH) {
+        BufferedImage image = sheet.getSubimage(x, y, width, height);
+        image = scaleImage(image, resizeW, resizeH);
+        return image;
+    }
 
 }

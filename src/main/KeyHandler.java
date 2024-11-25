@@ -69,7 +69,7 @@ public class KeyHandler implements KeyListener {
 				gp.gameState = GamePanel.STATE_PLAY;
 			}
 			
-			if (gp.ui.selectedMenuNum == gp.ui.MENU_OPTION_EXIT) {
+			if (gp.ui.selectedMenuNum == gp.ui.MENU_OPTION_EXIT && gp.gameState == GamePanel.STATE_MENU_SCREEN) {
 				System.exit(0);
 			}
 		}

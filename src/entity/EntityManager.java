@@ -22,7 +22,7 @@ public class EntityManager implements Renderable {
 	}
 	
 	private void initEnemies() {
-		int enemyCount = 20;
+		int enemyCount = 100;
 		
 		for (int i = 0; i < enemyCount; i++) {
 			int rand = (int) Math.floor(Math.random() * 2);
@@ -75,7 +75,7 @@ public class EntityManager implements Renderable {
 	@Override
 	public void draw(Graphics2D g2) {
 		for (Entity e: entities)  e.draw(g2);
-		for (Projectile b: bullets) b.draw(g2);
+		for (Projectile b: new ArrayList<>(bullets)) b.draw(g2);
 	}
 
 }

@@ -10,7 +10,20 @@ public class SpriteManager {
 	public Sprite right = new Sprite();
 	public Sprite up = new Sprite();
 	public Sprite down = new Sprite();
+	
 	public Sprite dying = new Sprite();
+	public Sprite idleRight = new Sprite();
+	public Sprite idleLeft = new Sprite();
+	
+	public Sprite attackingLeft = new Sprite();
+	public Sprite attackingRight = new Sprite();
+	public Sprite attackingUp = new Sprite();
+	public Sprite attackingDown = new Sprite();
+	
+	public Sprite attackedLeft = new Sprite();
+	public Sprite attackedRight = new Sprite();
+	public Sprite attackedUp = new Sprite();
+	public Sprite attackedDown = new Sprite();
 
 	Entity entity;
 
@@ -20,18 +33,63 @@ public class SpriteManager {
 
 	public BufferedImage getSprite() {
 		if (entity.state.dying.getState()) {
-			return dying.getSprite();
+			if (dying.getSpritesSize() != 0) {
+				return dying.getSprite();				
+			}
+			return down.getSprite();
 		}
+
+		if (!entity.gp.keys.isMoving() && idleLeft.getSpritesSize() != 0 && idleRight.getSpritesSize() != 0) {
+			if (entity.getSpriteDirection().equalsIgnoreCase("left")) {
+				if (entity.state.attacked.getState()) return attackedLeft.getSprite();
+				if (entity.state.attacking.getState()) return attackingLeft.getSprite();
+				return idleLeft.getSprite();
+			} else {
+				if (entity.state.attacked.getState()) return attackedRight.getSprite();
+				if (entity.state.attacking.getState()) return attackingRight.getSprite();
+				return idleRight.getSprite();
+			}
+		}
+		
+		if (entity.isPlayer) {
+			return getPlayerSprite();
+		} else {
+			return getEntitySprite();
+		}
+	}
+	
+	private BufferedImage getPlayerSprite() {
+		if (entity.getSpriteDirection().equalsIgnoreCase("left")) {
+			if (entity.state.attacked.getState()) return attackedLeft.getSprite();
+			if (entity.state.attacking.getState()) return attackingLeft.getSprite();
+			return left.getSprite();
+		} else {
+			if (entity.state.attacked.getState()) return attackedRight.getSprite();
+			if (entity.state.attacking.getState()) return attackingRight.getSprite();
+			return right.getSprite();
+		}
+	}
+	
+	private BufferedImage getEntitySprite() {
 		if (entity.getDirection().equals("up")) {
+			if (entity.state.attacked.getState()) return attackedUp.getSprite();
+			if (entity.state.attacking.getState()) return attackingUp.getSprite();
 			return up.getSprite();
 		}
 		if (entity.getDirection().equals("left")) {
+			if (entity.state.attacked.getState()) return attackedLeft.getSprite();
+			if (entity.state.attacking.getState()) return attackingLeft.getSprite();
 			return left.getSprite();
 		}
 		if (entity.getDirection().equals("right")) {
+			if (entity.state.attacked.getState()) return attackedRight.getSprite();
+			if (entity.state.attacking.getState()) return attackingRight.getSprite();
 			return right.getSprite();
 		}
+
 		// default return sprite
+		if (entity.state.attacked.getState()) return attackedDown.getSprite();
+		if (entity.state.attacking.getState()) return attackingDown.getSprite();
 		return down.getSprite();
 	}
 

@@ -132,11 +132,11 @@ public class Enemy extends Entity {
 	
 	@Override
 	public void update() {
+		this.movementDisabled = false;
 		state.update();
 		checkState();
 		if (isDead) return;
 		checkIfCloseToPlayer();
-		this.movementDisabled = false;
 		checkIfCollidingWithPlayer();
 		updateDirection();
 		checkWorldCollision();

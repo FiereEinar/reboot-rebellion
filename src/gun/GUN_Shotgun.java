@@ -18,7 +18,7 @@ public class GUN_Shotgun extends GunObject {
 	}
 	
 	private void loadSprites() {
-		this.sprite.addSprite(utils.getAndScaleImage("/guns/shotgun.png", 79, 24));
+		this.sprite.addSprite(utils.getAndScaleImage("/guns/shotgun.png", 66, 20));
 	}
 
 }

@@ -26,12 +26,17 @@ public class ENM_Skeleton extends Enemy {
 	private void loadSprites() {
 		Utils utils = new Utils();
 
+		this.sprite.dying.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_1.png", GamePanel.tileSize, GamePanel.tileSize));
+		
+		this.sprite.attackedUp.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_1.png", GamePanel.tileSize, GamePanel.tileSize));
 		this.sprite.up.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_1.png", GamePanel.tileSize, GamePanel.tileSize));
 		this.sprite.up.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_2.png", GamePanel.tileSize, GamePanel.tileSize));
 		this.sprite.up.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_3.png", GamePanel.tileSize, GamePanel.tileSize));
 		this.sprite.up.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_4.png", GamePanel.tileSize, GamePanel.tileSize));
 
 		this.sprite.down
+				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_1.png", GamePanel.tileSize, GamePanel.tileSize));
+		this.sprite.attackedDown
 				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_1.png", GamePanel.tileSize, GamePanel.tileSize));
 		this.sprite.down
 				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_2.png", GamePanel.tileSize, GamePanel.tileSize));
@@ -41,6 +46,8 @@ public class ENM_Skeleton extends Enemy {
 				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_4.png", GamePanel.tileSize, GamePanel.tileSize));
 
 		this.sprite.left
+				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_1.png", GamePanel.tileSize, GamePanel.tileSize));
+		this.sprite.attackedLeft
 				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_1.png", GamePanel.tileSize, GamePanel.tileSize));
 		this.sprite.left
 				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_2.png", GamePanel.tileSize, GamePanel.tileSize));
@@ -50,6 +57,8 @@ public class ENM_Skeleton extends Enemy {
 				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_right_4.png", GamePanel.tileSize, GamePanel.tileSize));
 
 		this.sprite.right
+				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_1.png", GamePanel.tileSize, GamePanel.tileSize));
+		this.sprite.attackedRight
 				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_1.png", GamePanel.tileSize, GamePanel.tileSize));
 		this.sprite.right
 				.addSprite(utils.getAndScaleImage("/skeleton/skeleton2_v2_left_2.png", GamePanel.tileSize, GamePanel.tileSize));

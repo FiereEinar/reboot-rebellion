@@ -12,8 +12,8 @@ public class ShootingEnemy extends Enemy {
 		super(gp);
 	}
 		
-	protected void shootProjectile() {
-		if (!gun.canShoot()) return;
+	protected Boolean shootProjectile() {
+		if (!gun.canShoot()) return false;
 		
 		int BULLET_SPREAD = gun.bulletSpread;
 		int BULLET_SPEED = gun.bulletSpeed;
@@ -49,6 +49,7 @@ public class ShootingEnemy extends Enemy {
 		}
 
 		gun.recordShot();
+		return true;
 	}
 
 }

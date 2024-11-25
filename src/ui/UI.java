@@ -21,6 +21,7 @@ public class UI implements Renderable {
 	
 	Asset healthbar = new Asset(64 * 3, 32 * 3);
 	Asset buttons = new Asset(64 * 3, 32 * 3);
+	Asset background = new Asset();
 	
 	public final int MENU_OPTION_START = 0;
 	public final int MENU_OPTION_EXIT = 1;
@@ -45,6 +46,8 @@ public class UI implements Renderable {
 		this.healthbar.set("/healthbar/Health_Bar5.png");
 		this.healthbar.set("/healthbar/Health_Bar6.png");
 		this.healthbar.set("/healthbar/Health_Bar7.png");
+		
+		this.background.load("/ui/menu_background.jpg");
 	}
 	
 	private void menuScreenHandler() {
@@ -53,11 +56,13 @@ public class UI implements Renderable {
 		g2.setColor(new Color(51, 153, 255));
 		g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
 		
+		g2.drawImage(background.image.getSprite(), 0, 0, gp.screenWidth, gp.screenHeight, null);
+		
 		int x, y = 0;
 		
-		ScreenText screenTitle = new ScreenText("REBOOT REBELLION");
-		screenTitle.setPos(getXForCenteredText(screenTitle.text), GamePanel.tileSize * 3);
-		drawTextWithShadow(screenTitle.text, screenTitle.pos.x, screenTitle.pos.y);
+//		ScreenText screenTitle = new ScreenText("REBOOT REBELLION");
+//		screenTitle.setPos(getXForCenteredText(screenTitle.text), GamePanel.tileSize * 3);
+//		drawTextWithShadow(screenTitle.text, screenTitle.pos.x, screenTitle.pos.y);
 		
 		g2.setFont(normalText);
 		

@@ -17,7 +17,7 @@ public class Projectile extends BaseEntity implements Renderable {
 	Boolean fromPlayer = false;
 	
 	public static final int DESPAWN_RANGE = 600;
-	public static final int SIZE = 8;
+	public static final int SIZE = 16;
 
 	public Projectile(GamePanel gp, int x, int y, float speedX, float speedY, int damage) {
 		__init__(gp, x, y, speedX, speedY, damage);

@@ -11,10 +11,11 @@ import states.StateManager;
 public class Entity extends BaseEntity implements Renderable {
 
 	public GamePanel gp;
-	public static final int DETECTION_RANGE_WIDTH = 400;
-	public static final int DETECTION_RANGE_HEIGHT = 250;
+	public static final int DETECTION_RANGE_WIDTH = 500;
+	public static final int DETECTION_RANGE_HEIGHT = 350;
 	private int speed;
 	private String direction;
+	private String spriteDirection = "left";
 	public int damage = 1;
 	
 	public Boolean movementDisabled = false;
@@ -33,11 +34,27 @@ public class Entity extends BaseEntity implements Renderable {
 		this.gp = gp;
 	}
 	
+	// used AFTER loading entity sprites so that the interval adjusts based in sprites len
 	protected void updateSpritesInterval() {
 		// for dying state
 		int dyingSpriteLen = this.sprite.dying.getSpritesSize();
 		int dyingStateDuration = this.state.dying.getStateDuration();
-		this.sprite.dying.setInterval(dyingStateDuration / dyingSpriteLen);
+		if (dyingSpriteLen != 0) {
+			this.sprite.dying.setInterval(dyingStateDuration / dyingSpriteLen);
+		}
+		
+		// for attacking state
+		// REMINDINERS: attackingSpriteLen is based on DOWN since all sprites have the same len
+		// change this when the sprites differs in sizes
+		int attackingSpriteLen = this.sprite.attackingDown.getSpritesSize();
+		int attackingStateDuration = this.state.attacking.getStateDuration();
+		if (attackingSpriteLen == 0) {
+			int interval = attackingStateDuration / attackingSpriteLen;
+			this.sprite.attackingDown.setInterval(interval);
+			this.sprite.attackingUp.setInterval(interval);
+			this.sprite.attackingLeft.setInterval(interval);
+			this.sprite.attackingRight.setInterval(interval);
+		}
 	}
 
 	public int getSpeed() {
@@ -74,6 +91,7 @@ public class Entity extends BaseEntity implements Renderable {
 
 	public void recieveDamage(int damage) {
 		if (!state.invincibility.getState()) {
+			this.state.attacked.setState(true);
 			this.health -= damage;
 			if (this.health <= 0) state.dying.setState(true);
 			if (isPlayer) state.invincibility.setState(true);
@@ -130,6 +148,10 @@ public class Entity extends BaseEntity implements Renderable {
 			state.invincibility.setState(!state.invincibility.getState());
 			return;
 		}
+		
+		if (state.attacking.getState()) {
+			movementDisabled = true;
+		}
 	}
 
 	public Vector2 getScreenLocation() {
@@ -147,6 +169,14 @@ public class Entity extends BaseEntity implements Renderable {
 
 	@Override
 	public void draw(Graphics2D g2) {
+	}
+
+	public String getSpriteDirection() {
+		return spriteDirection;
+	}
+
+	public void setSpriteDirection(String spriteDirection) {
+		this.spriteDirection = spriteDirection;
 	}
 
 }

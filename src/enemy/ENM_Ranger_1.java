@@ -1,6 +1,7 @@
 package enemy;
 
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 import main.GamePanel;
 import main.Utils;
@@ -27,40 +28,47 @@ public class ENM_Ranger_1 extends ShootingEnemy {
 	
 	private void loadSprites() {
 		Utils utils = new Utils();
+		
+		// Load the sprite sheet
+	    BufferedImage spritesheet = utils.getSpriteSheet("/robot_ranger/Robot_3_All.png");
 
-		this.sprite.up.addSprite(
-				utils.getAndScaleImage("/robot_3_ranger_movement/move_front_1.png", GamePanel.tileSize, GamePanel.tileSize));
-		this.sprite.up.addSprite(
-				utils.getAndScaleImage("/robot_3_ranger_movement/move_front_2.png", GamePanel.tileSize, GamePanel.tileSize));
-		
-		this.sprite.down.addSprite(
-				utils.getAndScaleImage("/robot_3_ranger_movement/move_back_1.png", GamePanel.tileSize, GamePanel.tileSize));
-		this.sprite.down.addSprite(
-				utils.getAndScaleImage("/robot_3_ranger_movement/move_back_2.png", GamePanel.tileSize, GamePanel.tileSize));
-		
-		this.sprite.left.addSprite(
-				utils.getAndScaleImage("/robot_3_ranger_movement/move_left_1.png", GamePanel.tileSize, GamePanel.tileSize));
-		this.sprite.left.addSprite(
-				utils.getAndScaleImage("/robot_3_ranger_movement/move_left_2.png", GamePanel.tileSize, GamePanel.tileSize));
-		
-		this.sprite.right.addSprite(
-				utils.getAndScaleImage("/robot_3_ranger_movement/move_right_1.png", GamePanel.tileSize, GamePanel.tileSize));
-		this.sprite.right.addSprite(
-				utils.getAndScaleImage("/robot_3_ranger_movement/move_right_2.png", GamePanel.tileSize, GamePanel.tileSize));
-		
-		this.sprite.dying.addSprite(
-				utils.getAndScaleImage("/robot_3_ranger_dying/Dead 1.png", GamePanel.tileSize, GamePanel.tileSize));
-		this.sprite.dying.addSprite(
-				utils.getAndScaleImage("/robot_3_ranger_dying/Dead 2.png", GamePanel.tileSize, GamePanel.tileSize));
-		this.sprite.dying.addSprite(
-				utils.getAndScaleImage("/robot_3_ranger_dying/Dead 3.png", GamePanel.tileSize, GamePanel.tileSize));
+	    int width = 51;
+	    int height = 51;
+
+	    // Load attacking sprites
+	    for (int i = 0; i < 5; i++) { 
+	        this.sprite.attackingRight.addSprite(utils.cropSprite(spritesheet, i * width, 0, width, height));
+	        this.sprite.attackingLeft.addSprite(utils.cropSprite(spritesheet, i * width, height, width, height));
+	        this.sprite.attackingDown.addSprite(utils.cropSprite(spritesheet, i * width, 2 * height, width, height));
+	        this.sprite.attackingUp.addSprite(utils.cropSprite(spritesheet, i * width, 3 * height, width, height));
+	    }
+	    
+	    // Load movement sprites
+	    for (int i = 0; i < 2; i++) {
+	    	this.sprite.right.addSprite(utils.cropSprite(spritesheet, i * width, 4 * height, width, height));
+	    	this.sprite.left.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
+	    	this.sprite.down.addSprite(utils.cropSprite(spritesheet, i * width, 6 * height, width, height));
+	    	this.sprite.up.addSprite(utils.cropSprite(spritesheet, i * width, 7 * height, width, height));
+	    }
+	    
+	    // Load attacked sprites
+	    for (int i = 0; i < 3; i++) {
+	    	this.sprite.attackedRight.addSprite(utils.cropSprite(spritesheet, i * width, 8 * height, width, height));
+	    	this.sprite.attackedLeft.addSprite(utils.cropSprite(spritesheet, i * width, 9 * height, width, height));
+	    	this.sprite.attackedDown.addSprite(utils.cropSprite(spritesheet, i * width, 10 * height, width, height));
+	    	this.sprite.attackedUp.addSprite(utils.cropSprite(spritesheet, i * width, 11 * height, width, height));
+	    }
+
+	    // Load dying sprites
+	    for (int i = 0; i < 3; i++) { 
+	        this.sprite.dying.addSprite(utils.cropSprite(spritesheet, i * width, 12 * height, width, height));
+	    }
 	}
 	
 	@Override
 	protected void attack() {
 		moveToPlayer();
-		shootProjectile();
+		if (shootProjectile()) state.attacking.setState(true);
 	}
-
 
 }
