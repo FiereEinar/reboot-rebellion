@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
+import enemy.ENM_Bomber_1;
+import enemy.ENM_Boss_1;
+import enemy.ENM_Melee_1;
 import enemy.ENM_Ranger_1;
-import enemy.ENM_Skeleton;
 import main.GamePanel;
 import main.Renderable;
 
@@ -25,16 +27,22 @@ public class EntityManager implements Renderable {
 		int enemyCount = 100;
 		
 		for (int i = 0; i < enemyCount; i++) {
-			int rand = (int) Math.floor(Math.random() * 2);
+			int rand = (int) Math.floor(Math.random() * 3);
 			
 			Random random = new Random();
 			int randX = random.nextInt(gp.worldWidth);
 			int randY = random.nextInt(gp.worldHeight);
 			
-			if (rand == 1) {
+			if (i % 20 == 0) {
+				entities.add(new ENM_Boss_1(gp, randX, randY));
+			}
+			
+			if (rand == 0) {
 				entities.add(new ENM_Ranger_1(gp, randX, randY));
+			} else if (rand == 1) {
+				entities.add(new ENM_Melee_1(gp, randX, randY));
 			} else {
-				entities.add(new ENM_Skeleton(gp, randX, randY));
+				entities.add(new ENM_Bomber_1(gp, randX, randY));
 			}
 		}
 	}

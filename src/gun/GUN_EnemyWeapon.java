@@ -4,7 +4,7 @@ public class GUN_EnemyWeapon extends GunObject {
 
 	public GUN_EnemyWeapon() {
 		this.damage = 1;
-		this.bulletSpeed = 20;
+		this.bulletSpeed = 10;
 		this.bulletSpread = 1;
 		this.bulletMultiplier = 1;
 		this.fireRate = (float) 0.5;

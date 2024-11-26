@@ -39,19 +39,20 @@ public class SpriteManager {
 			return down.getSprite();
 		}
 
-		if (!entity.gp.keys.isMoving() && idleLeft.getSpritesSize() != 0 && idleRight.getSpritesSize() != 0) {
-			if (entity.getSpriteDirection().equalsIgnoreCase("left")) {
-				if (entity.state.attacked.getState()) return attackedLeft.getSprite();
-				if (entity.state.attacking.getState()) return attackingLeft.getSprite();
-				return idleLeft.getSprite();
-			} else {
-				if (entity.state.attacked.getState()) return attackedRight.getSprite();
-				if (entity.state.attacking.getState()) return attackingRight.getSprite();
-				return idleRight.getSprite();
-			}
-		}
 		
 		if (entity.isPlayer) {
+			if (!entity.gp.keys.isMoving() && idleLeft.getSpritesSize() != 0 && idleRight.getSpritesSize() != 0) {
+				if (entity.getSpriteDirection().equalsIgnoreCase("left")) {
+					if (entity.state.attacked.getState()) return attackedLeft.getSprite();
+					if (entity.state.attacking.getState()) return attackingLeft.getSprite();
+					return idleLeft.getSprite();
+				} else {
+					if (entity.state.attacked.getState()) return attackedRight.getSprite();
+					if (entity.state.attacking.getState()) return attackingRight.getSprite();
+					return idleRight.getSprite();
+				}
+			}
+
 			return getPlayerSprite();
 		} else {
 			return getEntitySprite();
@@ -72,24 +73,24 @@ public class SpriteManager {
 	
 	private BufferedImage getEntitySprite() {
 		if (entity.getDirection().equals("up")) {
-			if (entity.state.attacked.getState()) return attackedUp.getSprite();
 			if (entity.state.attacking.getState()) return attackingUp.getSprite();
+			if (entity.state.attacked.getState()) return attackedUp.getSprite();
 			return up.getSprite();
 		}
 		if (entity.getDirection().equals("left")) {
-			if (entity.state.attacked.getState()) return attackedLeft.getSprite();
 			if (entity.state.attacking.getState()) return attackingLeft.getSprite();
+			if (entity.state.attacked.getState()) return attackedLeft.getSprite();
 			return left.getSprite();
 		}
 		if (entity.getDirection().equals("right")) {
-			if (entity.state.attacked.getState()) return attackedRight.getSprite();
 			if (entity.state.attacking.getState()) return attackingRight.getSprite();
+			if (entity.state.attacked.getState()) return attackedRight.getSprite();
 			return right.getSprite();
 		}
 
 		// default return sprite
-		if (entity.state.attacked.getState()) return attackedDown.getSprite();
 		if (entity.state.attacking.getState()) return attackingDown.getSprite();
+		if (entity.state.attacked.getState()) return attackedDown.getSprite();
 		return down.getSprite();
 	}
 

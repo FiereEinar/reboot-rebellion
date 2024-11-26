@@ -1,8 +1,8 @@
 package enemy;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.Random;
 
 import entity.Entity;
@@ -13,9 +13,18 @@ import main.GamePanel;
 public class Enemy extends Entity {
 	
 	private Boolean lockToPlayer = true;
-	
+	private Rectangle attackRange = new Rectangle(0, 0, GamePanel.tileSize, GamePanel.tileSize);
+
 	public Enemy(GamePanel gp) {
 		super(gp);
+	}
+
+	public Rectangle getAttackRange() {
+		return attackRange;
+	}
+
+	public void setAttackRange(Rectangle attackRange) {
+		this.attackRange = attackRange;
 	}
 
 	private void checkIfCollidingWithPlayer() {
@@ -140,20 +149,21 @@ public class Enemy extends Entity {
 		checkIfCollidingWithPlayer();
 		updateDirection();
 		checkWorldCollision();
-		checkEntitiesCollision();
 		updateCoordinates();
 	}
 
 	@Override
 	public void draw(Graphics2D g2) {
-		if (state.invincibility.getState()) {
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
-		}
+		if (isDead) return;
+		
+//		if (state.invincibility.getState()) {
+//			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+//		}
 
 		Vector2 screen = getScreenLocation();
 
 		g2.drawImage(this.sprite.getSprite(), screen.x, screen.y, null);
-		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+//		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 		
 		drawHealthBar(g2);
 	}

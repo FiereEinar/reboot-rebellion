@@ -30,10 +30,10 @@ public class Player extends Entity {
 		this.screenX = gp.screenWidth / 2 - (GamePanel.tileSize / 2);
 		this.screenY = gp.screenHeight / 2 - (GamePanel.tileSize / 2);
 
-		this.setMaxHealth(6);
+		this.setMaxHealth(4);
 		this.setHealth(getMaxHealth());
 
-		this.setSpeed(4);
+		this.setSpeed(5);
 		this.setDirection("right");
 
 		this.setSolidArea(new Rectangle(10, 16, 28, 28));
@@ -217,7 +217,7 @@ public class Player extends Entity {
 		Entity entity = gp.cd.checkEntityCollision(this);
 
 		if (entity != null && !entity.isDead) {
-			this.movementDisabled = true;
+//			this.movementDisabled = true;
 			if (!entity.state.dying.getState()) recieveDamage(entity.damage);
 		}
 	}

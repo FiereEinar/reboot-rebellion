@@ -2,9 +2,8 @@ package main;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.MouseInfo;
-import java.awt.Point;
 
+import enemy.Enemy;
 import entity.Entity;
 import entity.Projectile;
 import entity.Vector2;
@@ -30,20 +29,25 @@ public class Debug implements Renderable {
 	@Override
 	public void draw(Graphics2D g2) {
 		if (gp.keys.LOG_SWITCH) {
+			
 			// player hitbox
 			g2.setColor(Color.RED);
 			g2.drawRect(gp.player.screenX + gp.player.getSolidArea().x, gp.player.screenY + gp.player.getSolidArea().y,
 					gp.player.getSolidArea().width, gp.player.getSolidArea().height);
-
+			
 			// entities hitbox
-			for (Entity e: gp.em.getEnities()) {
-				Vector2 screen = e.getScreenLocation();
+			for (Entity en: gp.em.getEnities()) {
+				Enemy e = (Enemy) en;
+				
+				Vector2 screen = en.getScreenLocation();
+				g2.setColor(Color.RED);
 				g2.drawRect(screen.x + e.getSolidArea().x, screen.y + e.getSolidArea().y,
 						e.getSolidArea().width, e.getSolidArea().height);
 			}
 			
 			for (Projectile p: gp.em.getProjectiles()) {	
 				Vector2 screen = p.getScreenLocation();
+				g2.setColor(Color.RED);
 				g2.drawRect(screen.x + p.getSolidArea().x, screen.y + p.getSolidArea().y,
 						p.getSolidArea().width, p.getSolidArea().height);
 			}

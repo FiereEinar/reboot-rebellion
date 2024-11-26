@@ -48,7 +48,7 @@ public class Entity extends BaseEntity implements Renderable {
 		// change this when the sprites differs in sizes
 		int attackingSpriteLen = this.sprite.attackingDown.getSpritesSize();
 		int attackingStateDuration = this.state.attacking.getStateDuration();
-		if (attackingSpriteLen == 0) {
+		if (attackingSpriteLen != 0) {
 			int interval = attackingStateDuration / attackingSpriteLen;
 			this.sprite.attackingDown.setInterval(interval);
 			this.sprite.attackingUp.setInterval(interval);
@@ -142,15 +142,6 @@ public class Entity extends BaseEntity implements Renderable {
 		if (state.dying.isTriggered()) {
 			isDead = true;
 			return;
-		}
-		
-		if (state.dying.getState()) {
-			state.invincibility.setState(!state.invincibility.getState());
-			return;
-		}
-		
-		if (state.attacking.getState()) {
-			movementDisabled = true;
 		}
 	}
 

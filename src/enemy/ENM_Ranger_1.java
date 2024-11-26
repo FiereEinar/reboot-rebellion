@@ -3,6 +3,7 @@ package enemy;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import entity.Entity;
 import main.GamePanel;
 import main.Utils;
 
@@ -14,13 +15,14 @@ public class ENM_Ranger_1 extends ShootingEnemy {
 		this.worldX = x;
 		this.worldY = y;
 		
-		this.setMaxHealth(100);
+		this.setMaxHealth(70);
 		this.setHealth(getMaxHealth());
 
 		this.setSpeed(2);
 		this.setDirection("down");
 
 		this.setSolidArea(new Rectangle(8, 16, 32, 32));
+		this.setAttackRange(new Rectangle(0, 0, Entity.DETECTION_RANGE_WIDTH, Entity.DETECTION_RANGE_HEIGHT));
 		
 		loadSprites();
 		updateSpritesInterval();
@@ -30,7 +32,7 @@ public class ENM_Ranger_1 extends ShootingEnemy {
 		Utils utils = new Utils();
 		
 		// Load the sprite sheet
-	    BufferedImage spritesheet = utils.getSpriteSheet("/robot_ranger/Robot_3_All.png");
+	    BufferedImage spritesheet = utils.getSpriteSheet("/enemies/Robot_3_ranger.png");
 
 	    int width = 51;
 	    int height = 51;
@@ -68,7 +70,10 @@ public class ENM_Ranger_1 extends ShootingEnemy {
 	@Override
 	protected void attack() {
 		moveToPlayer();
-		if (shootProjectile()) state.attacking.setState(true);
+		if (shootProjectile()) {
+			state.attacking.setState(true);
+			movementDisabled = true;
+		}
 	}
 
 }
