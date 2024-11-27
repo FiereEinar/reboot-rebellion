@@ -47,7 +47,7 @@ public class UI implements Renderable {
 		this.healthbar.set("/healthbar/Health_Bar6.png");
 		this.healthbar.set("/healthbar/Health_Bar7.png");
 		
-		this.background.load("/ui/menu_background.jpg");
+		this.background.load("/ui/menu_background.png");
 	}
 	
 	private void menuScreenHandler() {

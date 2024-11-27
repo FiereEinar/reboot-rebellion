@@ -3,11 +3,20 @@ package enemy;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import entity.Projectile;
+import gun.GUN_EnemyWeapon;
 import main.GamePanel;
 import main.Utils;
+import states.State;
 
 public class ENM_Boss_1 extends ShootingEnemy {
 
+	GUN_EnemyWeapon secondGun = new GUN_EnemyWeapon(); 
+	State attackCooldown = new State(240);
+	int maxProjectileShotCount = 9;
+	int projectileShotCount = 0;
+	
+	
 	public ENM_Boss_1(GamePanel gp, int x, int y) {
 		super(gp);
 		
@@ -30,9 +39,9 @@ public class ENM_Boss_1 extends ShootingEnemy {
 		int attackRangeHeight= height + tileSize;
 		this.setAttackRange(new Rectangle(-halfTile, -halfTile, attackRangeWidth, attackRangeHeight));
 		this.state.attacking.setDuration(240);
-		
-		this.gun.bulletMultiplier = 9;
-		this.gun.bulletSpread = 20;
+
+		this.gun.fireRate = (float) 0.3;
+		this.secondGun.fireRate = 5;
 		
 		loadSprites();
 		updateSpritesInterval();
@@ -56,7 +65,7 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	    }
 	    
 	    // Load attacking sprites
-	    for (int i = 0; i < 33; i++) {
+	    for (int i = 0; i < 19; i++) {
 	    	this.sprite.attackingRight.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
 	    	this.sprite.attackingLeft.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
 	    	this.sprite.attackingDown.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
@@ -64,11 +73,11 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	    }
 	    
 	    // Load attacked sprites
-	    for (int i = 0; i < 33; i++) {
-	    	this.sprite.attackedRight.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
-	    	this.sprite.attackedLeft.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
-	    	this.sprite.attackedDown.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
-	    	this.sprite.attackedUp.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
+	    for (int i = 0; i < 4; i++) {
+	    	this.sprite.attackedRight.addSprite(utils.cropSprite(spritesheet, i * width, height, width, height));
+	        this.sprite.attackedLeft.addSprite(utils.cropSprite(spritesheet, i * width, 2 * height, width, height));
+	        this.sprite.attackedDown.addSprite(utils.cropSprite(spritesheet, i * width, 3 * height, width, height));
+	        this.sprite.attackedUp.addSprite(utils.cropSprite(spritesheet, i * width, 4 * height, width, height));
 	    }
 
 	    // Load dying sprites
@@ -77,13 +86,64 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	    }
 	}
 	
+	private Boolean firstAttack() {
+	    if (!gun.canShoot()) return false;
+
+	    int BULLET_SPEED = gun.bulletSpeed;
+	    int BULLET_DAMAGE = gun.damage;
+
+	    int centerWorldX = worldX + getSolidArea().x + (getSolidArea().width / 2);
+	    int centerWorldY = worldY + getSolidArea().y + (getSolidArea().height / 2);
+
+	    // Fire projectiles at fixed angles (e.g., 10-degree intervals)
+	    for (int degree = 0; degree < 360; degree += 30) { // Change 10 to your desired interval
+	        // Convert degree to radians
+	        double angle = Math.toRadians(degree);
+
+	        // Calculate direction based on the angle
+	        float directionX = (float) Math.cos(angle);
+	        float directionY = (float) Math.sin(angle);
+
+	        // Calculate bullet speed
+	        float speedX = directionX * BULLET_SPEED;
+	        float speedY = directionY * BULLET_SPEED;
+
+	        // Spawn the bullet
+	        gp.em.addBullets(new Projectile(gp, centerWorldX, centerWorldY, speedX, speedY, BULLET_DAMAGE));
+	    }
+
+	    gun.recordShot();
+	    return true;
+	}
+	
+	private Boolean secondAttack() {
+		if (attackCooldown.getState()) return false;
+		
+		if (!shootProjectile(secondGun)) return false;
+		
+		return true;
+	}
+	
 	@Override
 	protected void attack() {
 		moveToPlayer();
-		if (shootProjectile()) {
-			state.attacking.setState(true);
-			movementDisabled = true;
+		if (secondAttack()) {
+			projectileShotCount++;
+			
+			if (projectileShotCount == maxProjectileShotCount) {
+				attackCooldown.setState(true);
+				projectileShotCount = 0;
+			} else {
+				state.attacking.setState(true);
+				movementDisabled = true;
+			}
 		}
+	}
+	
+	@Override
+	public void update() {
+		super.update();
+		attackCooldown.update();
 	}
 
 }

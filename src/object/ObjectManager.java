@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import gun.GUN_MachineGun;
 import gun.GUN_Pistol_1;
 import gun.GUN_Shotgun;
+import gun.GUN_Sniper;
 import gun.GunObject;
 import main.GamePanel;
 import main.Renderable;
@@ -30,6 +31,7 @@ public class ObjectManager implements Renderable {
 		guns.add(new GUN_Pistol_1(GamePanel.tileSize * 3, GamePanel.tileSize * 3));
 		guns.add(new GUN_Shotgun(GamePanel.tileSize * 3, GamePanel.tileSize * 9));
 		guns.add(new GUN_MachineGun(GamePanel.tileSize * 3, GamePanel.tileSize * 12));
+		guns.add(new GUN_Sniper(GamePanel.tileSize * 3, GamePanel.tileSize * 15));
 	}
 	
 	public LinkedList<GameObject> getObjects() {

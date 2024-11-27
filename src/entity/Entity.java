@@ -99,7 +99,7 @@ public class Entity extends BaseEntity implements Renderable {
 	}
 
 	protected void updateCoordinates() {
-		if (this.movementDisabled || state.dying.getState())
+		if (this.movementDisabled || state.dying.getState() && !isPlayer)
 			return;
 
 		if (this.getDirection().equalsIgnoreCase("up")) {
@@ -142,6 +142,10 @@ public class Entity extends BaseEntity implements Renderable {
 		if (state.dying.isTriggered()) {
 			isDead = true;
 			return;
+		}
+		
+		if (state.attacking.getState() && !isPlayer) {
+			movementDisabled = true;
 		}
 	}
 
