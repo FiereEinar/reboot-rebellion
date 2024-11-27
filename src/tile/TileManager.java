@@ -36,7 +36,7 @@ public class TileManager implements Renderable {
 
 	private void loadMap() {
 		try {
-			InputStream is = getClass().getResourceAsStream("/maps/world01.txt");
+			InputStream is = getClass().getResourceAsStream("/maps/map4.txt");
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
 			int row = 0;

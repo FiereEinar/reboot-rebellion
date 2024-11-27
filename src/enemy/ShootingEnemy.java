@@ -1,6 +1,7 @@
 package enemy;
 
 import entity.Projectile;
+import entity.Vector2;
 import gun.GUN_EnemyWeapon;
 import gun.GunObject;
 import main.GamePanel;
@@ -13,23 +14,43 @@ public class ShootingEnemy extends Enemy {
 		super(gp);
 	}
 		
-	protected Boolean shootProjectile(GunObject gun) {
-		if (!gun.canShoot()) return false;
+	protected void shootProjectile(GunObject gun, Vector2 target) {
+		Vector2 start = new Vector2(
+			worldX + (GamePanel.tileSize / 2),
+			worldY + (GamePanel.tileSize / 2)
+		);
 		
+		Vector2 direction = new Vector2(
+			target.x - worldX,
+			target.y - worldY
+		);
+
+		shoot(gun, start, direction);
+	}
+	
+	protected void shootProjectile(GunObject gun, Vector2 target, Vector2 origin) {
+		Vector2 start = new Vector2(
+			origin.x + (GamePanel.tileSize / 2),
+			origin.y + (GamePanel.tileSize / 2)
+		);
+		
+		Vector2 direction = new Vector2(
+			target.x - origin.x,
+			target.y - origin.y
+		);
+
+		shoot(gun, start, direction);
+	}
+	
+	private void shoot(GunObject gun, Vector2 start, Vector2 direction) {
 		int BULLET_SPREAD = gun.bulletSpread;
 		int BULLET_SPEED = gun.bulletSpeed;
 		int BULLET_MULTIPLIER = gun.bulletMultiplier;
 		int BULLET_DAMAGE = gun.damage;
 
-		float directionX = gp.player.worldX - worldX;
-		float directionY = gp.player.worldY - worldY;
-
-		float magnitude = (float) Math.sqrt(directionX * directionX + directionY * directionY);
-		float normalizedX = directionX / magnitude;
-		float normalizedY = directionY / magnitude;
-		
-		int centerWorldX = worldX + (GamePanel.tileSize / 2);
-		int centerWorldY = worldY + (GamePanel.tileSize / 2);
+		float magnitude = (float) Math.sqrt(direction.x * direction.x + direction.y * direction.y);
+		float normalizedX = direction.x / magnitude;
+		float normalizedY = direction.y / magnitude;
 
 		for (int i = 0; i < BULLET_MULTIPLIER; i++) {
 			// Add random spread to the direction
@@ -46,11 +67,9 @@ public class ShootingEnemy extends Enemy {
 			float speedX = spreadX * BULLET_SPEED;
 			float speedY = spreadY * BULLET_SPEED;
 
-			gp.em.addBullets(new Projectile(gp, centerWorldX, centerWorldY, speedX, speedY, BULLET_DAMAGE));
+			gp.em.addBullets(new Projectile(gp, start.x, start.y, speedX, speedY, BULLET_DAMAGE));
 		}
 
-		gun.recordShot();
-		return true;
 	}
 
 }

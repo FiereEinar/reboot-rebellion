@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import entity.Entity;
+import entity.Vector2;
 import main.GamePanel;
 import main.Utils;
 
@@ -70,9 +71,11 @@ public class ENM_Ranger_1 extends ShootingEnemy {
 	@Override
 	protected void attack() {
 		moveToPlayer();
-		if (shootProjectile(this.gun)) {
+		if (this.gun.canShoot()) {
+			shootProjectile(this.gun, new Vector2(gp.player.worldX, gp.player.worldY));
 			state.attacking.setState(true);
 			movementDisabled = true;
+			this.gun.recordShot();
 		}
 	}
 

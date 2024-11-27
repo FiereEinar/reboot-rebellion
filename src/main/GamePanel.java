@@ -30,8 +30,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public final int FPS = 60;
 
-	public final int worldCol = 100;
-	public final int worldRow = 100;
+	public final int worldCol = 50;
+	public final int worldRow = 50;
 	public final int worldWidth = worldCol * tileSize;
 	public final int worldHeight = worldRow * tileSize;
 

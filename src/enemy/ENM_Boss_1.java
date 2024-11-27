@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import entity.Projectile;
+import entity.Vector2;
 import gun.GUN_EnemyWeapon;
 import main.GamePanel;
 import main.Utils;
@@ -65,11 +66,17 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	    }
 	    
 	    // Load attacking sprites
+//	    for (int i = 0; i < 33; i++) {
+//	    	this.sprite.attackingRight.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
+//	    	this.sprite.attackingLeft.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
+//	    	this.sprite.attackingDown.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
+//	    	this.sprite.attackingUp.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
+//	    }
 	    for (int i = 0; i < 19; i++) {
-	    	this.sprite.attackingRight.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
-	    	this.sprite.attackingLeft.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
-	    	this.sprite.attackingDown.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
-	    	this.sprite.attackingUp.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
+	    	this.sprite.attackingRight.addSprite(utils.cropSprite(spritesheet, i * width, 6 * height, width, height));
+	    	this.sprite.attackingLeft.addSprite(utils.cropSprite(spritesheet, i * width, 6 * height, width, height));
+	    	this.sprite.attackingDown.addSprite(utils.cropSprite(spritesheet, i * width, 6 * height, width, height));
+	    	this.sprite.attackingUp.addSprite(utils.cropSprite(spritesheet, i * width, 6 * height, width, height));
 	    }
 	    
 	    // Load attacked sprites
@@ -117,9 +124,18 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	}
 	
 	private Boolean secondAttack() {
-		if (attackCooldown.getState()) return false;
+		if (attackCooldown.getState() || !this.secondGun.canShoot()) return false;
 		
-		if (!shootProjectile(secondGun)) return false;
+		int tileSize = GamePanel.tileSize;
+		
+		Vector2 target = new Vector2(gp.player.worldX, gp.player.worldY);
+		
+		Vector2 secondTurretOrigin = new Vector2(worldX + tileSize * 3, worldY);
+		
+		shootProjectile(secondGun, target);
+		shootProjectile(secondGun, target, secondTurretOrigin);
+		
+		this.secondGun.recordShot();
 		
 		return true;
 	}
@@ -127,17 +143,22 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	@Override
 	protected void attack() {
 		moveToPlayer();
-		if (secondAttack()) {
-			projectileShotCount++;
-			
-			if (projectileShotCount == maxProjectileShotCount) {
-				attackCooldown.setState(true);
-				projectileShotCount = 0;
-			} else {
-				state.attacking.setState(true);
-				movementDisabled = true;
-			}
+		if (firstAttack()) {
+			state.attacking.setState(true);
+			movementDisabled = true;
 		}
+		
+//		if (secondAttack()) {
+//			projectileShotCount++;
+//			
+//			if (projectileShotCount == maxProjectileShotCount) {
+//				attackCooldown.setState(true);
+//				projectileShotCount = 0;
+//			} else {
+//				state.attacking.setState(true);
+//				movementDisabled = true;
+//			}
+//		}
 	}
 	
 	@Override

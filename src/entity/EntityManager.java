@@ -37,13 +37,13 @@ public class EntityManager implements Renderable {
 				entities.add(new ENM_Boss_1(gp, randX, randY));
 			}
 			
-			if (rand == 0) {
-				entities.add(new ENM_Ranger_1(gp, randX, randY));
-			} else if (rand == 1) {
-				entities.add(new ENM_Melee_1(gp, randX, randY));
-			} else {
-				entities.add(new ENM_Bomber_1(gp, randX, randY));
-			}
+//			if (rand == 0) {
+//				entities.add(new ENM_Ranger_1(gp, randX, randY));
+//			} else if (rand == 1) {
+//				entities.add(new ENM_Melee_1(gp, randX, randY));
+//			} else {
+//				entities.add(new ENM_Bomber_1(gp, randX, randY));
+//			}
 		}
 	}
 	
@@ -82,7 +82,7 @@ public class EntityManager implements Renderable {
 
 	@Override
 	public void draw(Graphics2D g2) {
-		for (Entity e: entities)  e.draw(g2);
+		for (Entity e: new ArrayList<>(entities))  e.draw(g2);
 		for (Projectile b: new ArrayList<>(bullets)) b.draw(g2);
 	}
 
