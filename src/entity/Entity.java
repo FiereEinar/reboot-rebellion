@@ -55,6 +55,16 @@ public class Entity extends BaseEntity implements Renderable {
 			this.sprite.attackingLeft.setInterval(interval);
 			this.sprite.attackingRight.setInterval(interval);
 		}
+		
+		int attacking2SpriteLen = this.sprite.attackingDown2.getSpritesSize();
+		int attacking2StateDuration = this.state.attacking.getStateDuration();
+		if (attacking2SpriteLen != 0) {
+			int interval = attacking2StateDuration / attacking2SpriteLen;
+			this.sprite.attackingDown2.setInterval(interval);
+			this.sprite.attackingUp2.setInterval(interval);
+			this.sprite.attackingLeft2.setInterval(interval);
+			this.sprite.attackingRight2.setInterval(interval);
+		}
 	}
 
 	public int getSpeed() {

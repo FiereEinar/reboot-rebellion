@@ -63,7 +63,7 @@ public class Enemy extends Entity {
 		}
 	}
 	
-	private void drawHealthBar(Graphics2D g2) {
+	protected void drawHealthBar(Graphics2D g2) {
 		Vector2 screen = getScreenLocation();
 
 		double oneScale = (double) GamePanel.tileSize / maxHealth;

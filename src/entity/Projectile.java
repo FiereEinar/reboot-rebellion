@@ -2,9 +2,12 @@ package entity;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 import main.GamePanel;
 import main.Renderable;
+import main.Utils;
+import sprite.Sprite;
 
 public class Projectile extends BaseEntity implements Renderable {
 
@@ -15,6 +18,8 @@ public class Projectile extends BaseEntity implements Renderable {
 	
 	Boolean isDead = false;
 	Boolean fromPlayer = false;
+	
+	Sprite sprite = new Sprite();
 	
 	public static final int DESPAWN_RANGE = 600;
 	public static final int SIZE = 16;
@@ -44,6 +49,17 @@ public class Projectile extends BaseEntity implements Renderable {
 	}
 
 	private void loadSprites() {
+		Utils utils = new Utils();
+		
+		BufferedImage spritesheet = utils.getSpriteSheet("/projectiles/boss_projectile.png");
+		
+		int width = 32;
+		int height = 32;
+
+		for (int i = 0; i < 2; i++) { 
+			this.sprite.addSprite(utils.scaleImage(utils.cropSprite(spritesheet, i * width, 9 * height, width, height), getSolidArea().width, getSolidArea().height));
+	    }
+		
 	}
 
 	public Vector2 getScreenLocation() {
@@ -99,7 +115,8 @@ public class Projectile extends BaseEntity implements Renderable {
 	public void draw(Graphics2D g2) {
 		int screenX = worldX - gp.player.worldX + gp.player.screenX;
 		int screenY = worldY - gp.player.worldY + gp.player.screenY;
-		g2.fillOval(screenX, screenY, getSolidArea().width, getSolidArea().height);
+//		g2.fillOval(screenX, screenY, getSolidArea().width, getSolidArea().height);
+		g2.drawImage(this.sprite.getSprite(), screenX, screenY, null);
 	}
 
 }

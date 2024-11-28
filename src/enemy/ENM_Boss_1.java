@@ -1,5 +1,6 @@
 package enemy;
 
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
@@ -16,7 +17,9 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	State attackCooldown = new State(240);
 	int maxProjectileShotCount = 9;
 	int projectileShotCount = 0;
+	int secondAttackCount = 0;
 	
+	private final int MAX_SECOND_ATTACK_COUNT = 3;
 	
 	public ENM_Boss_1(GamePanel gp, int x, int y) {
 		super(gp);
@@ -35,6 +38,7 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	    int height = 294;
 	    
 		this.setSolidArea(new Rectangle(tileSize * 2, tileSize * 2, tileSize * 2, tileSize * 2));
+		
 		int halfTile = tileSize / 2;
 		int attackRangeWidth = width + tileSize;
 		int attackRangeHeight= height + tileSize;
@@ -66,12 +70,13 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	    }
 	    
 	    // Load attacking sprites
-//	    for (int i = 0; i < 33; i++) {
-//	    	this.sprite.attackingRight.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
-//	    	this.sprite.attackingLeft.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
-//	    	this.sprite.attackingDown.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
-//	    	this.sprite.attackingUp.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
-//	    }
+	    for (int i = 0; i < 33; i++) {
+	    	this.sprite.attackingRight2.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
+	    	this.sprite.attackingLeft2.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
+	    	this.sprite.attackingDown2.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
+	    	this.sprite.attackingUp2.addSprite(utils.cropSprite(spritesheet, i * width, 5 * height, width, height));
+	    }
+	    
 	    for (int i = 0; i < 19; i++) {
 	    	this.sprite.attackingRight.addSprite(utils.cropSprite(spritesheet, i * width, 6 * height, width, height));
 	    	this.sprite.attackingLeft.addSprite(utils.cropSprite(spritesheet, i * width, 6 * height, width, height));
@@ -127,12 +132,16 @@ public class ENM_Boss_1 extends ShootingEnemy {
 		if (attackCooldown.getState() || !this.secondGun.canShoot()) return false;
 		
 		int tileSize = GamePanel.tileSize;
+		int offset = 5;
+		int turretY = worldY + tileSize - offset;
 		
 		Vector2 target = new Vector2(gp.player.worldX, gp.player.worldY);
 		
-		Vector2 secondTurretOrigin = new Vector2(worldX + tileSize * 3, worldY);
+		Vector2 firstTurretOrigin = new Vector2(worldX + tileSize + offset, turretY);
 		
-		shootProjectile(secondGun, target);
+		Vector2 secondTurretOrigin = new Vector2(worldX + tileSize * 3 + tileSize / 2 + offset, turretY);
+		
+		shootProjectile(secondGun, target, firstTurretOrigin);
 		shootProjectile(secondGun, target, secondTurretOrigin);
 		
 		this.secondGun.recordShot();
@@ -143,28 +152,63 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	@Override
 	protected void attack() {
 		moveToPlayer();
-		if (firstAttack()) {
-			state.attacking.setState(true);
-			movementDisabled = true;
-		}
 		
-//		if (secondAttack()) {
-//			projectileShotCount++;
-//			
-//			if (projectileShotCount == maxProjectileShotCount) {
-//				attackCooldown.setState(true);
-//				projectileShotCount = 0;
-//			} else {
-//				state.attacking.setState(true);
-//				movementDisabled = true;
-//			}
-//		}
+		if (secondAttackCount < MAX_SECOND_ATTACK_COUNT) {
+			if (secondGun.canShoot() && !attackCooldown.getState()) {
+				state.attacking.setState(true);
+				movementDisabled = true;
+				
+				Boolean isMidState = state.attacking.getCounter() > state.attacking.getStateDuration() / 4;
+				
+				if (isMidState) {
+					secondAttack();
+					projectileShotCount++;
+					
+					if (projectileShotCount == maxProjectileShotCount) {
+						attackCooldown.setState(true);
+						projectileShotCount = 0;
+						secondAttackCount++;
+					}
+				}
+			}
+		} else {
+			if (gun.canShoot() && !attackCooldown.getState()) {
+				state.attacking.setState(true);
+				movementDisabled = true;
+				
+				Boolean isMidState = state.attacking.getCounter() == state.attacking.getStateDuration() / 2;
+				
+				if (isMidState) {
+					firstAttack();
+					attackCooldown.setState(true);
+					secondAttackCount = 0;
+				}
+			}
+		}
 	}
 	
 	@Override
 	public void update() {
 		super.update();
 		attackCooldown.update();
+	}
+	
+	@Override
+	public void draw(Graphics2D g2) {
+		if (isDead) return;
+
+		Vector2 screen = getScreenLocation();
+		
+		BufferedImage image = sprite.getSprite();
+		
+		if (state.attacking.getState() && !state.dying.getState()) {
+			if (secondAttackCount < MAX_SECOND_ATTACK_COUNT) {
+				image = sprite.getAttack2Sprite();
+			}
+		}
+		
+		g2.drawImage(image, screen.x, screen.y, null);
+		drawHealthBar(g2);
 	}
 
 }

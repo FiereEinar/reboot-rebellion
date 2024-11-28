@@ -31,6 +31,10 @@ public class State {
 		return this.time;
 	}
 	
+	public int getCounter() {
+		return this.counter;
+	}
+	
 	public void update() {
 		if (isOn) {
 			counter++;

@@ -20,6 +20,11 @@ public class SpriteManager {
 	public Sprite attackingUp = new Sprite();
 	public Sprite attackingDown = new Sprite();
 	
+	public Sprite attackingLeft2 = new Sprite();
+	public Sprite attackingRight2 = new Sprite();
+	public Sprite attackingUp2 = new Sprite();
+	public Sprite attackingDown2 = new Sprite();
+	
 	public Sprite attackedLeft = new Sprite();
 	public Sprite attackedRight = new Sprite();
 	public Sprite attackedUp = new Sprite();
@@ -57,6 +62,21 @@ public class SpriteManager {
 		} else {
 			return getEntitySprite();
 		}
+	}
+	
+	public BufferedImage getAttack2Sprite() {
+		if (entity.getDirection().equals("up")) {
+			return attackingUp2.getSprite();
+		}
+		if (entity.getDirection().equals("left")) {
+			return attackingLeft2.getSprite();
+		}
+		if (entity.getDirection().equals("right")) {
+			return attackingRight2.getSprite();
+		}
+
+		// default return sprite
+		return attackingDown2.getSprite();
 	}
 	
 	private BufferedImage getPlayerSprite() {
