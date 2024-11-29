@@ -56,7 +56,7 @@ public class ENM_Boss_1 extends ShootingEnemy {
 		Utils utils = new Utils();
 		
 		// Load the sprite sheet
-	    BufferedImage spritesheet = utils.getSpriteSheet("/enemies/BOSS.png");
+	    BufferedImage spritesheet = utils.getSpriteSheet("/enemies/BOSS-Sheet.png");
 
 	    int width = 325;
 	    int height = 294;
@@ -85,15 +85,15 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	    }
 	    
 	    // Load attacked sprites
-	    for (int i = 0; i < 4; i++) {
-	    	this.sprite.attackedRight.addSprite(utils.cropSprite(spritesheet, i * width, height, width, height));
-	        this.sprite.attackedLeft.addSprite(utils.cropSprite(spritesheet, i * width, 2 * height, width, height));
-	        this.sprite.attackedDown.addSprite(utils.cropSprite(spritesheet, i * width, 3 * height, width, height));
-	        this.sprite.attackedUp.addSprite(utils.cropSprite(spritesheet, i * width, 4 * height, width, height));
+	    for (int i = 0; i < 2; i++) {
+	    	this.sprite.attackedRight.addSprite(utils.cropSprite(spritesheet, i * width, 8 * height, width, height));
+	        this.sprite.attackedLeft.addSprite(utils.cropSprite(spritesheet, i * width, 8 * height, width, height));
+	        this.sprite.attackedDown.addSprite(utils.cropSprite(spritesheet, i * width, 8 * height, width, height));
+	        this.sprite.attackedUp.addSprite(utils.cropSprite(spritesheet, i * width, 8 * height, width, height));
 	    }
 
 	    // Load dying sprites
-	    for (int i = 0; i < 15; i++) {
+	    for (int i = 0; i < 17; i++) {
 	        this.sprite.dying.addSprite(utils.cropSprite(spritesheet, i * width, 7 * height, width, height));
 	    }
 	}
@@ -128,6 +128,23 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	    return true;
 	}
 	
+	private void startFirstAttack() {
+		if (gun.canShoot() && !attackCooldown.getState()) {
+			state.attacking.setState(true);
+			movementDisabled = true;
+			
+			Boolean shouldAttack = state.attacking.getCounter() == state.attacking.getStateDuration() / 2;
+			
+			if (shouldAttack) {
+				firstAttack();
+				attackCooldown.setState(true);
+				secondAttackCount = 0;
+			}
+		} else {
+			state.attacking.setState(false);
+		}
+	}
+	
 	private Boolean secondAttack() {
 		if (attackCooldown.getState() || !this.secondGun.canShoot()) return false;
 		
@@ -149,41 +166,36 @@ public class ENM_Boss_1 extends ShootingEnemy {
 		return true;
 	}
 	
+	private void startSecondAttack() {
+		if (secondGun.canShoot() && !attackCooldown.getState()) {
+			state.attacking.setState(true);
+			movementDisabled = true;
+			
+			Boolean shouldAttack = state.attacking.getCounter() > state.attacking.getStateDuration() / 4;
+			
+			if (shouldAttack) {
+				secondAttack();
+				projectileShotCount++;
+				
+				if (projectileShotCount == maxProjectileShotCount) {
+					attackCooldown.setState(true);
+					projectileShotCount = 0;
+					secondAttackCount++;
+				}
+			}
+		} else {
+			state.attacking.setState(false);
+		}
+	}
+	
 	@Override
 	protected void attack() {
 		moveToPlayer();
 		
 		if (secondAttackCount < MAX_SECOND_ATTACK_COUNT) {
-			if (secondGun.canShoot() && !attackCooldown.getState()) {
-				state.attacking.setState(true);
-				movementDisabled = true;
-				
-				Boolean isMidState = state.attacking.getCounter() > state.attacking.getStateDuration() / 4;
-				
-				if (isMidState) {
-					secondAttack();
-					projectileShotCount++;
-					
-					if (projectileShotCount == maxProjectileShotCount) {
-						attackCooldown.setState(true);
-						projectileShotCount = 0;
-						secondAttackCount++;
-					}
-				}
-			}
+			startSecondAttack();
 		} else {
-			if (gun.canShoot() && !attackCooldown.getState()) {
-				state.attacking.setState(true);
-				movementDisabled = true;
-				
-				Boolean isMidState = state.attacking.getCounter() == state.attacking.getStateDuration() / 2;
-				
-				if (isMidState) {
-					firstAttack();
-					attackCooldown.setState(true);
-					secondAttackCount = 0;
-				}
-			}
+			startFirstAttack();
 		}
 	}
 	
@@ -201,7 +213,7 @@ public class ENM_Boss_1 extends ShootingEnemy {
 		
 		BufferedImage image = sprite.getSprite();
 		
-		if (state.attacking.getState() && !state.dying.getState()) {
+		if (state.attacking.getState() && !state.dying.getState() && !attackCooldown.getState()) {
 			if (secondAttackCount < MAX_SECOND_ATTACK_COUNT) {
 				image = sprite.getAttack2Sprite();
 			}

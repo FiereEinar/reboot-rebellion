@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 
 import main.GamePanel;
 import main.Renderable;
@@ -18,7 +19,7 @@ public class TileManager implements Renderable {
 
 	public TileManager(GamePanel gp) {
 		this.gp = gp;
-		this.tiles = new Tile[10];
+		this.tiles = new Tile[20];
 		this.map = new int[gp.worldCol][gp.worldRow];
 
 		loadTiles();
@@ -28,15 +29,52 @@ public class TileManager implements Renderable {
 	private void loadTiles() {
 		Utils utils = new Utils();
 		
-		tiles[0] = new Tile(utils.getAndScaleImage("/tiles/grass.png", GamePanel.tileSize, GamePanel.tileSize));
-		tiles[1] = new Tile(utils.getAndScaleImage("/tiles/water.png", GamePanel.tileSize, GamePanel.tileSize));
-		tiles[1].isSolid = true;
-		tiles[2] = new Tile(utils.getAndScaleImage("/tiles/floor.png", GamePanel.tileSize, GamePanel.tileSize));
+		HashMap<String, String> tileData = new HashMap<>();
+		
+		loadTileData(tileData);
+		
+		for (int i = 1; i < 19; i++) {
+			
+			String index = "" + i;
+			
+			if (i < 10) {
+				index = String.format("0%d", i);
+			}
+			
+			String filename = index +  "_16tiles-Sheet.png";
+			
+			tiles[i - 1] = new Tile(utils.getAndScaleImage("/tiles/" + filename, GamePanel.tileSize, GamePanel.tileSize));
+			System.out.println("File: " + filename);
+			if (Boolean.parseBoolean(tileData.get(filename))) {
+				tiles[i - 1].isSolid = true;
+			}
+		}
+	}
+	
+	private void loadTileData(HashMap<String, String> tileData) {
+		try {
+			InputStream is = getClass().getResourceAsStream("/tiles/tiledata.txt");
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+			String line = "";
+			
+			while ((line = br.readLine()) != null) {
+				String data = br.readLine();
+				
+				System.out.println("Saved: " + line);
+				
+				tileData.put(line, data);
+			}
+
+			br.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void loadMap() {
 		try {
-			InputStream is = getClass().getResourceAsStream("/maps/map4.txt");
+			InputStream is = getClass().getResourceAsStream("/maps/map5.txt");
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
 			int row = 0;

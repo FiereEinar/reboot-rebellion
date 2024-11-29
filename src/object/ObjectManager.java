@@ -29,9 +29,9 @@ public class ObjectManager implements Renderable {
 	
 	private void loadGuns() {
 		guns.add(new GUN_Pistol_1(GamePanel.tileSize * 3, GamePanel.tileSize * 3));
-		guns.add(new GUN_Shotgun(GamePanel.tileSize * 3, GamePanel.tileSize * 9));
-		guns.add(new GUN_MachineGun(GamePanel.tileSize * 3, GamePanel.tileSize * 12));
-		guns.add(new GUN_Sniper(GamePanel.tileSize * 3, GamePanel.tileSize * 15));
+		guns.add(new GUN_Shotgun(GamePanel.tileSize * 3, GamePanel.tileSize * 6));
+		guns.add(new GUN_MachineGun(GamePanel.tileSize * 6, GamePanel.tileSize * 3));
+		guns.add(new GUN_Sniper(GamePanel.tileSize * 6, GamePanel.tileSize * 6));
 	}
 	
 	public LinkedList<GameObject> getObjects() {

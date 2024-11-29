@@ -25,7 +25,7 @@ public class Player extends Entity {
 		this.isPlayer = true;
 
 		this.worldX = 100;
-		this.worldY = 400;
+		this.worldY = 300;
 
 		this.screenX = gp.screenWidth / 2 - (GamePanel.tileSize / 2);
 		this.screenY = gp.screenHeight / 2 - (GamePanel.tileSize / 2);
