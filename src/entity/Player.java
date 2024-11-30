@@ -174,8 +174,12 @@ public class Player extends Entity {
 		GunObject hitGun = gp.cd.checkEntityGunsCollision(this);
 		
 		if (hitGun != null) {
-			this.inventory.arsenal.add(hitGun);
-			gp.om.removeGun(hitGun.name);
+			if (inventory.arsenal.size() == 2) {
+				gp.ui.setTooltipText("Press 'E' to pick up");
+			} else {
+				this.inventory.arsenal.add(hitGun);
+				gp.om.removeGun(hitGun.name);
+			}
 		}
 	}
 

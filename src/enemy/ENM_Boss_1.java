@@ -15,9 +15,13 @@ public class ENM_Boss_1 extends ShootingEnemy {
 
 	GUN_EnemyWeapon secondGun = new GUN_EnemyWeapon(); 
 	State attackCooldown = new State(240);
-	int maxProjectileShotCount = 9;
-	int projectileShotCount = 0;
-	int secondAttackCount = 0;
+	private int maxProjectileShotCount = 9;
+	private int projectileShotCount = 0;
+	private int secondAttackCount = 0;
+	
+	private final int FIRST_ATTACK = 1;
+	private final int SECOND_ATTACK = 2;
+	private int currentAttack = FIRST_ATTACK;
 	
 	private final int MAX_SECOND_ATTACK_COUNT = 3;
 	
@@ -130,6 +134,7 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	
 	private void startFirstAttack() {
 		if (gun.canShoot() && !attackCooldown.getState()) {
+			currentAttack = FIRST_ATTACK;
 			state.attacking.setState(true);
 			movementDisabled = true;
 			
@@ -166,8 +171,8 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	
 	private void startSecondAttack() {
 		if (secondGun.canShoot() && !attackCooldown.getState()) {
+			currentAttack = SECOND_ATTACK;
 			state.attacking.setState(true);
-			movementDisabled = true;
 			
 			Boolean shouldAttack = state.attacking.getCounter() > state.attacking.getStateDuration() / 4;
 			
@@ -199,7 +204,6 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	public void update() {
 		super.update();
 		attackCooldown.update();
-//		if (state.attacking.getState()) movementDisabled = true;
 	}
 	
 	@Override
@@ -210,8 +214,8 @@ public class ENM_Boss_1 extends ShootingEnemy {
 		
 		BufferedImage image = sprite.getSprite();
 		
-		if (state.attacking.getState() && !state.dying.getState() && !attackCooldown.getState()) {
-			if (secondAttackCount < MAX_SECOND_ATTACK_COUNT) {
+		if (state.attacking.getState() && !state.dying.getState()) {
+			if (currentAttack == SECOND_ATTACK) {
 				image = sprite.getAttack2Sprite();
 			}
 		}

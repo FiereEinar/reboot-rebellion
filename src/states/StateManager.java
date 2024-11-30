@@ -19,7 +19,8 @@ public class StateManager {
 			invincibility.shouldResetSprites() ||
 			dying.shouldResetSprites() ||
 			attacking.shouldResetSprites() || 
-			attacked.shouldResetSprites()
+			attacked.shouldResetSprites() && 
+			!attacking.getState()
 		) return true;
 		
 		return false;

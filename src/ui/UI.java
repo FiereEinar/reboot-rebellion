@@ -18,6 +18,7 @@ public class UI implements Renderable {
 
 	public int selectedMenuNum = 0;
 	public int menuItems = 2;
+	private String tooltipText = "";
 	
 	Asset healthbar = new Asset(64 * 3, 32 * 3);
 	Asset buttons = new Asset(64 * 3, 32 * 3);
@@ -60,10 +61,6 @@ public class UI implements Renderable {
 		
 		int x, y = 0;
 		
-//		ScreenText screenTitle = new ScreenText("REBOOT REBELLION");
-//		screenTitle.setPos(getXForCenteredText(screenTitle.text), GamePanel.tileSize * 3);
-//		drawTextWithShadow(screenTitle.text, screenTitle.pos.x, screenTitle.pos.y);
-		
 		g2.setFont(normalText);
 		
 		BufferedImage startButton = buttons.image.getSpriteByIndex(UI.START_BUTTON);
@@ -84,6 +81,7 @@ public class UI implements Renderable {
 	}
 	
 	private void playScreenHandler() {
+		showPlayerTooltip();
 		drawPlayerHealth();
 	}
 
@@ -93,6 +91,17 @@ public class UI implements Renderable {
 		int y = gp.screenHeight / 2;
 		
 		g2.drawString(text, x, y);
+	}
+	
+	public void setTooltipText(String text) {
+		tooltipText = text;
+	}
+	
+	private void showPlayerTooltip() {
+		int x = gp.player.screenX;
+		int y = gp.player.screenY;
+		
+		g2.drawString(tooltipText, x, y);
 	}
 	
 	private void drawPlayerHealth() {
@@ -139,7 +148,7 @@ public class UI implements Renderable {
 	
 	@Override
 	public void update() {
-		
+		setTooltipText("");
 	}
 	
 	@Override
