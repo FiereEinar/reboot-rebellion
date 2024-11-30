@@ -23,8 +23,8 @@ public class Entity extends BaseEntity implements Renderable {
 	public Boolean isPlayer = false;
 	public Boolean isDead = false;
 	
-	public SpriteManager sprite = new SpriteManager(this);
 	public StateManager state = new StateManager();
+	public SpriteManager sprite = new SpriteManager(this);
 	public Rectangle attackDetectionRange = new Rectangle(0, 0, DETECTION_RANGE_WIDTH, DETECTION_RANGE_HEIGHT);
 
 	protected int maxHealth;

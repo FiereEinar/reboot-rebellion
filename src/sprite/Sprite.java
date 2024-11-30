@@ -6,13 +6,12 @@ import java.util.ArrayList;
 public class Sprite {
 
 	private ArrayList<BufferedImage> sprites;
-	private int spriteCounter;
+	private int spriteCounter = 0;
 	private int fpsCounter = 0;
 	private int fps = 12;
 	
 	public Sprite() {
 		this.sprites = new ArrayList<>();
-		this.spriteCounter = 0;
 	}
 	
 	public void addSprite(BufferedImage sprite) {
@@ -29,6 +28,11 @@ public class Sprite {
 	
 	public BufferedImage getSpriteByIndex(int index) {
 		return sprites.get(index);
+	}
+	
+	public void resetCounters() {
+		fpsCounter = 0;
+		spriteCounter = 0;
 	}
 	
 	public BufferedImage getSprite() {

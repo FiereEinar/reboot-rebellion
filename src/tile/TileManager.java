@@ -44,7 +44,7 @@ public class TileManager implements Renderable {
 			String filename = index +  "_16tiles-Sheet.png";
 			
 			tiles[i - 1] = new Tile(utils.getAndScaleImage("/tiles/" + filename, GamePanel.tileSize, GamePanel.tileSize));
-			System.out.println("File: " + filename);
+			
 			if (Boolean.parseBoolean(tileData.get(filename))) {
 				tiles[i - 1].isSolid = true;
 			}
@@ -60,8 +60,6 @@ public class TileManager implements Renderable {
 			
 			while ((line = br.readLine()) != null) {
 				String data = br.readLine();
-				
-				System.out.println("Saved: " + line);
 				
 				tileData.put(line, data);
 			}

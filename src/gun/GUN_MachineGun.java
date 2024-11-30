@@ -4,7 +4,7 @@ public class GUN_MachineGun extends GunObject {
 
 	public GUN_MachineGun(int x, int y) {
 		this.damage = 3;
-		this.bulletSpeed = 55;
+		this.bulletSpeed = 40;
 		this.bulletSpread = 10;
 		this.bulletMultiplier = 1;
 		this.fireRate = 15;

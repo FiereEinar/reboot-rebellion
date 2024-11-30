@@ -35,8 +35,45 @@ public class SpriteManager {
 	public SpriteManager(Entity entity) {
 		this.entity = entity;
 	}
+	
+	// REMINDERS: add a sprite reseter if you add another sprite, 
+	// this is skill issue, poor code structure fr
+	private void resetSpritesInterval() {
+		up.resetCounters();
+		down.resetCounters();
+		left.resetCounters();
+		right.resetCounters();
+		
+		dying.resetCounters();
+		idleRight.resetCounters();
+		idleLeft.resetCounters();
+		
+		attackingLeft.resetCounters();
+		attackingRight.resetCounters();
+		attackingUp.resetCounters();
+		attackingDown.resetCounters();
+		
+		attackingLeft2.resetCounters();
+		attackingRight2.resetCounters();
+		attackingUp2.resetCounters();
+		attackingDown2.resetCounters();
+		
+		attackedLeft.resetCounters();
+		attackedRight.resetCounters();
+		attackedUp.resetCounters();
+		attackedDown.resetCounters();
+	}
+	
+	private void assertIfShouldResetSprites() {
+		if (entity.state.shouldResetSprites()) {
+			resetSpritesInterval();
+			entity.state.offShouldResetSprites();
+		}
+	}
 
 	public BufferedImage getSprite() {
+		assertIfShouldResetSprites();
+		
 		if (entity.state.dying.getState()) {
 			if (dying.getSpritesSize() != 0) {
 				return dying.getSprite();				
@@ -65,6 +102,8 @@ public class SpriteManager {
 	}
 	
 	public BufferedImage getAttack2Sprite() {
+		assertIfShouldResetSprites();
+		
 		if (entity.getDirection().equals("up")) {
 			return attackingUp2.getSprite();
 		}

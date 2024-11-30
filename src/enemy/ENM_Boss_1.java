@@ -140,8 +140,6 @@ public class ENM_Boss_1 extends ShootingEnemy {
 				attackCooldown.setState(true);
 				secondAttackCount = 0;
 			}
-		} else {
-			state.attacking.setState(false);
 		}
 	}
 	
@@ -183,8 +181,6 @@ public class ENM_Boss_1 extends ShootingEnemy {
 					secondAttackCount++;
 				}
 			}
-		} else {
-			state.attacking.setState(false);
 		}
 	}
 	
@@ -203,6 +199,7 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	public void update() {
 		super.update();
 		attackCooldown.update();
+//		if (state.attacking.getState()) movementDisabled = true;
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package states;
 public class State {
 
 	private Boolean isOn = false;
+	private Boolean shouldResetSprites = false;
 	private Boolean isTriggered = false;
 	private int time;
 	private int counter = 0;
@@ -16,7 +17,18 @@ public class State {
 	}
 	
 	public void setState(Boolean val) {
+		if (val == isOn) return;
+		
+		if (val) shouldResetSprites = true;
 		this.isOn = val;
+	}
+	
+	public void offShouldResetSprites() {
+		shouldResetSprites = false;
+	}
+	
+	public Boolean shouldResetSprites() {
+		return shouldResetSprites;
 	}
 	
 	public Boolean getState() {
@@ -36,7 +48,7 @@ public class State {
 	}
 	
 	public void update() {
-		if (isOn) {
+		if (getState()) {
 			counter++;
 			
 			if (counter == time) {
