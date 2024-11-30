@@ -16,8 +16,8 @@ public class ShootingEnemy extends Enemy {
 		
 	protected void shootProjectile(GunObject gun, Vector2 target) {
 		Vector2 start = new Vector2(
-			worldX + (GamePanel.tileSize / 2),
-			worldY + (GamePanel.tileSize / 2)
+			worldX + (GamePanel.TILE_SIZE / 2),
+			worldY + (GamePanel.TILE_SIZE / 2)
 		);
 		
 		Vector2 direction = new Vector2(
@@ -30,8 +30,8 @@ public class ShootingEnemy extends Enemy {
 	
 	protected void shootProjectile(GunObject gun, Vector2 target, Vector2 origin) {
 		Vector2 start = new Vector2(
-			origin.x + (GamePanel.tileSize / 2),
-			origin.y + (GamePanel.tileSize / 2)
+			origin.x + (GamePanel.TILE_SIZE / 2),
+			origin.y + (GamePanel.TILE_SIZE / 2)
 		);
 		
 		Vector2 direction = new Vector2(

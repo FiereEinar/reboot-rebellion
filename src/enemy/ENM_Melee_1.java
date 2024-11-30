@@ -21,9 +21,9 @@ public class ENM_Melee_1 extends Enemy {
 		this.setDirection("down");
 
 		this.setSolidArea(new Rectangle(12, 10, 56, 48));
-		int halfTile = GamePanel.tileSize / 2;
-		int attackRangeWidth = GamePanel.tileSize * 2;
-		int attackRangeHeight= GamePanel.tileSize * 2;
+		int halfTile = GamePanel.TILE_SIZE / 2;
+		int attackRangeWidth = GamePanel.TILE_SIZE * 2;
+		int attackRangeHeight= GamePanel.TILE_SIZE * 2;
 		this.setAttackRange(new Rectangle(-halfTile, -halfTile, attackRangeWidth, attackRangeHeight));
 		
 		loadSprites();

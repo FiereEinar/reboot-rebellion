@@ -21,7 +21,7 @@ public class EventHandler {
 //		
 //		if (gun == null) return;
 //		
-//		gunTrigger.setCoordinate(gun.worldX, gun.worldY, GamePanel.tileSize);
+//		gunTrigger.setCoordinate(gun.worldX, gun.worldY, GamePanel.TILE_SIZE);
 	}
 	
 	public void checkEvent() {

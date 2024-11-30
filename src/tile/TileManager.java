@@ -43,7 +43,7 @@ public class TileManager implements Renderable {
 			
 			String filename = index +  "_16tiles-Sheet.png";
 			
-			tiles[i - 1] = new Tile(utils.getAndScaleImage("/tiles/" + filename, GamePanel.tileSize, GamePanel.tileSize));
+			tiles[i - 1] = new Tile(utils.getAndScaleImage("/tiles/" + filename, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE));
 			
 			if (Boolean.parseBoolean(tileData.get(filename))) {
 				tiles[i - 1].isSolid = true;
@@ -107,15 +107,15 @@ public class TileManager implements Renderable {
 			for (int j = 0; j < map[i].length; j++) {
 				BufferedImage image = tiles[map[i][j]].getSprite();
 
-				int worldX = i * GamePanel.tileSize;
-				int worldY = j * GamePanel.tileSize;
+				int worldX = i * GamePanel.TILE_SIZE;
+				int worldY = j * GamePanel.TILE_SIZE;
 				int screenX = worldX - gp.player.worldX + gp.player.screenX;
 				int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-				Boolean isInView = worldX + GamePanel.tileSize > gp.player.worldX - gp.player.screenX
-						&& worldX - GamePanel.tileSize < gp.player.worldX + gp.player.screenX
-						&& worldY + GamePanel.tileSize > gp.player.worldY - gp.player.screenY
-						&& worldY - GamePanel.tileSize < gp.player.worldY + gp.player.screenY;
+				Boolean isInView = worldX + GamePanel.TILE_SIZE > gp.player.worldX - gp.player.screenX
+						&& worldX - GamePanel.TILE_SIZE < gp.player.worldX + gp.player.screenX
+						&& worldY + GamePanel.TILE_SIZE > gp.player.worldY - gp.player.screenY
+						&& worldY - GamePanel.TILE_SIZE < gp.player.worldY + gp.player.screenY;
 
 				if (isInView) {
 					g2.drawImage(image, screenX, screenY, null);

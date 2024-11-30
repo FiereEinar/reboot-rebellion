@@ -37,7 +37,7 @@ public class ENM_Boss_1 extends ShootingEnemy {
 		this.setSpeed(1);
 		this.setDirection("down");
 		
-		int tileSize = GamePanel.tileSize;
+		int tileSize = GamePanel.TILE_SIZE;
 		int width = 325;
 	    int height = 294;
 	    
@@ -151,7 +151,7 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	private Boolean secondAttack() {
 		if (attackCooldown.getState() || !this.secondGun.canShoot()) return false;
 		
-		int tileSize = GamePanel.tileSize;
+		int tileSize = GamePanel.TILE_SIZE;
 		int offset = 5;
 		int turretY = worldY + tileSize - offset;
 		

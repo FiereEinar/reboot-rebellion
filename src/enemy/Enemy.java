@@ -13,7 +13,7 @@ import main.GamePanel;
 public class Enemy extends Entity {
 	
 	private Boolean lockToPlayer = true;
-	private Rectangle attackRange = new Rectangle(0, 0, GamePanel.tileSize, GamePanel.tileSize);
+	private Rectangle attackRange = new Rectangle(0, 0, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
 
 	public Enemy(GamePanel gp) {
 		super(gp);
@@ -66,11 +66,11 @@ public class Enemy extends Entity {
 	protected void drawHealthBar(Graphics2D g2) {
 		Vector2 screen = getScreenLocation();
 
-		double oneScale = (double) GamePanel.tileSize / maxHealth;
+		double oneScale = (double) GamePanel.TILE_SIZE / maxHealth;
 		double healthBarWidth = oneScale * health;
 
 		g2.setColor(Color.GRAY);
-		g2.fillRect(screen.x - 1, screen.y - 16, GamePanel.tileSize + 2, 12);
+		g2.fillRect(screen.x - 1, screen.y - 16, GamePanel.TILE_SIZE + 2, 12);
 
 		g2.setColor(Color.RED);
 		g2.fillRect(screen.x, screen.y - 15, (int) healthBarWidth, 10);

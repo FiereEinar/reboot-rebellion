@@ -21,19 +21,19 @@ public class GamePanel extends JPanel implements Runnable {
 	private static final int originalTileSize = 16;
 	private static final int scale = 3;
 
-	public static final int tileSize = originalTileSize * scale;
+	public static final int TILE_SIZE = originalTileSize * scale;
 	public final int col = 20;
 	public final int row = 12;
 
-	public final int screenWidth = col * tileSize;
-	public final int screenHeight = row * tileSize;
+	public final int screenWidth = col * TILE_SIZE;
+	public final int screenHeight = row * TILE_SIZE;
 
 	public final int FPS = 60;
 
 	public final int worldCol = 50;
 	public final int worldRow = 50;
-	public final int worldWidth = worldCol * tileSize;
-	public final int worldHeight = worldRow * tileSize;
+	public final int worldWidth = worldCol * TILE_SIZE;
+	public final int worldHeight = worldRow * TILE_SIZE;
 
 	private Thread thread = null;
 
@@ -92,6 +92,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void update() {
 		debug.update();
+		ui.update();
 		
 		if (gameState == STATE_PLAY) {
 			om.update();
@@ -115,18 +116,17 @@ public class GamePanel extends JPanel implements Runnable {
 
 		switch (gameState) {
 		case STATE_MENU_SCREEN:
-			ui.draw(g2);
 			break;
 		default:
 			tm.draw(g2);
 			om.draw(g2);
 			em.draw(g2);
 			player.draw(g2);
-			ui.draw(g2);
 			break;
 		}
 
 		debug.draw(g2);
+		ui.draw(g2);
 
 		g2.dispose();
 	}

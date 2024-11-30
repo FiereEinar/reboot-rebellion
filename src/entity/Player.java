@@ -18,6 +18,10 @@ public class Player extends Entity {
 
 	public int screenX;
 	public int screenY;
+	
+	private Boolean canPickupWeapon = true;
+	private int weaponPickupCooldown = 60;
+	private int weaponPickupCooldownCounter = 0;
 
 	public Player(GamePanel gp, KeyHandler keys) {
 		super(gp);
@@ -27,8 +31,8 @@ public class Player extends Entity {
 		this.worldX = 100;
 		this.worldY = 300;
 
-		this.screenX = gp.screenWidth / 2 - (GamePanel.tileSize / 2);
-		this.screenY = gp.screenHeight / 2 - (GamePanel.tileSize / 2);
+		this.screenX = gp.screenWidth / 2 - (GamePanel.TILE_SIZE / 2);
+		this.screenY = gp.screenHeight / 2 - (GamePanel.TILE_SIZE / 2);
 
 		this.setMaxHealth(4);
 		this.setHealth(getMaxHealth());
@@ -125,8 +129,8 @@ public class Player extends Entity {
 			float speedX = spreadX * BULLET_SPEED;
 			float speedY = spreadY * BULLET_SPEED;
 	
-			int centerWorldX = worldX + (GamePanel.tileSize / 2);
-			int centerWorldY = worldY + (GamePanel.tileSize / 2);
+			int centerWorldX = worldX + (GamePanel.TILE_SIZE / 2);
+			int centerWorldY = worldY + (GamePanel.TILE_SIZE / 2);
 
 			gp.em.addBullets(new Projectile(gp, centerWorldX, centerWorldY, speedX, speedY, BULLET_DAMAGE, true));
 		}
@@ -176,10 +180,33 @@ public class Player extends Entity {
 		if (hitGun != null) {
 			if (inventory.arsenal.size() == 2) {
 				gp.ui.setTooltipText("Press 'E' to pick up");
+				
+				if (keys.KEY_E && canPickupWeapon) {
+					GunObject dropGun = inventory.getSelectedGun();
+					dropGun.worldX = worldX;
+					dropGun.worldY = worldY;
+
+					inventory.arsenal.set(inventory.selectedGun, hitGun);
+					gp.om.addGun(dropGun);
+					gp.om.removeGun(hitGun.name);
+					
+					canPickupWeapon = false;
+				}
 			} else {
 				this.inventory.arsenal.add(hitGun);
 				gp.om.removeGun(hitGun.name);
 			}
+		}
+	}
+	
+	private void updateWeaponPickupCooldown() {
+		if (canPickupWeapon) return;
+		
+		weaponPickupCooldownCounter++;
+		
+		if (weaponPickupCooldownCounter >= weaponPickupCooldown) {
+			weaponPickupCooldownCounter = 0;
+			canPickupWeapon = true;
 		}
 	}
 
@@ -201,7 +228,7 @@ public class Player extends Entity {
 		Graphics2D gCopy = (Graphics2D) g2.create();
 
 		// Translate to the player's position, rotate, then draw
-		gCopy.translate(screenX + GamePanel.tileSize / 2, screenY + GamePanel.tileSize / 2 + 5);
+		gCopy.translate(screenX + GamePanel.TILE_SIZE / 2, screenY + GamePanel.TILE_SIZE / 2 + 5);
 		Boolean flip = Math.cos(angle) > 0;
 		if (flip) {
 	        // Flip the image horizontally
@@ -221,7 +248,6 @@ public class Player extends Entity {
 		Entity entity = gp.cd.checkEntityCollision(this);
 
 		if (entity != null && !entity.isDead) {
-//			this.movementDisabled = true;
 			if (!entity.state.dying.getState()) recieveDamage(entity.damage);
 		}
 	}
@@ -233,7 +259,8 @@ public class Player extends Entity {
 		updateDirection();
 		checkWorldCollision();
 		checkEntitiesCollision();
-
+		updateWeaponPickupCooldown();
+		
 		checkObjectCollisions();
 		checkGunCollisions();
 		gp.eh.checkEvent();
@@ -245,13 +272,8 @@ public class Player extends Entity {
 
 	@Override
 	public void draw(Graphics2D g2) {
-//		if (state.invincibility.getState()) {
-//			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
-//		}
-
 		g2.drawImage(this.sprite.getSprite(), this.screenX, this.screenY, null);
 		drawPlayerGun(g2);
-//		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 	}
 
 }

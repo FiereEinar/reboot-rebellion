@@ -14,6 +14,7 @@ public class UI implements Renderable {
 	Graphics2D g2;
 
 	Font normalText;
+	Font smallText;
 	Font normalBoldText;
 
 	public int selectedMenuNum = 0;
@@ -32,6 +33,7 @@ public class UI implements Renderable {
 	public UI(GamePanel gp) {
 		this.gp = gp;
 		this.normalText = new Font("Arial", Font.PLAIN, 40);
+		this.smallText = new Font("Arial", Font.PLAIN, 20);
 		this.normalBoldText = new Font("Arial", Font.BOLD, 80);
 		loadAssets();
 	}
@@ -65,15 +67,15 @@ public class UI implements Renderable {
 		
 		BufferedImage startButton = buttons.image.getSpriteByIndex(UI.START_BUTTON);
 		x = gp.screenWidth / 2 - startButton.getWidth() / 2;
-		y = GamePanel.tileSize * 4;
+		y = GamePanel.TILE_SIZE * 4;
 		g2.drawImage(startButton, x, y, null);
-		if (selectedMenuNum == MENU_OPTION_START) drawTextWithShadow(">", x - GamePanel.tileSize / 2, y + 64);
+		if (selectedMenuNum == MENU_OPTION_START) drawTextWithShadow(">", x - GamePanel.TILE_SIZE / 2, y + 64);
 		
 		BufferedImage exitButton = buttons.image.getSpriteByIndex(UI.EXIT_BUTTON);
 		x = gp.screenWidth / 2 - exitButton.getWidth() / 2;
-		y = GamePanel.tileSize * 5 + 16;
+		y = GamePanel.TILE_SIZE * 5 + 16;
 		g2.drawImage(exitButton, x, y, null);
-		if (selectedMenuNum == MENU_OPTION_EXIT) drawTextWithShadow(">", x - GamePanel.tileSize / 2, y + 64);
+		if (selectedMenuNum == MENU_OPTION_EXIT) drawTextWithShadow(">", x - GamePanel.TILE_SIZE / 2, y + 64);
 	}
 	
 	private void dialogueScreenHandler() {
@@ -81,7 +83,7 @@ public class UI implements Renderable {
 	}
 	
 	private void playScreenHandler() {
-		showPlayerTooltip();
+		drawPlayerTooltip();
 		drawPlayerHealth();
 	}
 
@@ -97,8 +99,10 @@ public class UI implements Renderable {
 		tooltipText = text;
 	}
 	
-	private void showPlayerTooltip() {
-		int x = gp.player.screenX;
+	private void drawPlayerTooltip() {
+		g2.setFont(smallText);
+		
+		int x = gp.player.screenX + GamePanel.TILE_SIZE;
 		int y = gp.player.screenY;
 		
 		g2.drawString(tooltipText, x, y);
