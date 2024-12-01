@@ -40,5 +40,14 @@ public class Inventory {
 	public LinkedList<GunObject> getArsenal() {
 		return this.arsenal;
 	}
+	
+	public void update() {
+		for (GunObject g: arsenal) {
+			g.update();
+			if (g.reloading.isTriggered()) {
+				g.handleReload();
+			}
+		}
+	}
 
 }

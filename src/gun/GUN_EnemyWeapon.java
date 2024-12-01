@@ -12,6 +12,10 @@ public class GUN_EnemyWeapon extends GunObject {
 		this.worldX = 0;
 		this.worldY = 0;
 		
+		this.setReservedAmmo(9999);
+		this.setMagSize(9999);
+		this.setCurrentMag(this.getMagSize());
+		
 		this.name = "enemy_weapon";
 		
 		loadSprites();

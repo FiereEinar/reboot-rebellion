@@ -8,9 +8,15 @@ public class GUN_Pistol_1 extends GunObject {
 		this.bulletSpread = 5;
 		this.bulletMultiplier = 1;
 		this.fireRate = 5;
+		this.reloadTime = 60;
 		
 		this.worldX = x;
 		this.worldY = y;
+		
+		this.reloading.setDuration(reloadTime);
+		this.setReservedAmmo(200);
+		this.setMagSize(20);
+		this.setCurrentMag(this.getMagSize());
 		
 		this.name = "gun_pistol_1";
 		

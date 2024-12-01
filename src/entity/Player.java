@@ -97,6 +97,11 @@ public class Player extends Entity {
 		
 		GunObject gun = inventory.getSelectedGun();
 		
+		if (!gun.hasAmmo()) {
+			gun.reloading.setState(true);
+			return;
+		}
+		
 		if (!gun.canShoot()) return;
 		
 		int BULLET_SPREAD = gun.bulletSpread;
@@ -260,7 +265,7 @@ public class Player extends Entity {
 		checkWorldCollision();
 		checkEntitiesCollision();
 		updateWeaponPickupCooldown();
-		
+		inventory.update();
 		checkObjectCollisions();
 		checkGunCollisions();
 		gp.eh.checkEvent();

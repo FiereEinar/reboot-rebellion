@@ -4,7 +4,6 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import gun.GunObject;
@@ -114,12 +113,20 @@ public class UI implements Renderable {
 		
 		int rec1Width = GamePanel.TILE_SIZE * 2 + 20;
 		int rec1Height = GamePanel.TILE_SIZE;
-		int rec1X = gp.screenWidth - rec1Width - 20;
+		int rec2X = gp.screenWidth - rec1Width - 20;
+		int rec1X = rec2X - rec1Width;
 		int rec1Y = 20;
 		
 		g2.setColor(Color.BLUE);
-		g2.drawRect(rec1X - rec1Width, rec1Y, rec1Width, rec1Height);
-		g2.drawRect(rec1X, rec1Y, rec1Width, rec1Height);
+		
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+		g2.setColor(Color.BLACK);
+		g2.fillRoundRect(rec1X, rec1Y, rec1Width * 2, rec1Height, 10, 10);
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+		
+		g2.setColor(Color.BLUE);
+//		g2.drawRect(rec1X, rec1Y, rec1Width, rec1Height);
+//		g2.drawRect(rec2X, rec1Y, rec1Width, rec1Height);
 		
 		GunObject slot1Gun = gp.player.inventory.getGunByIndex(Inventory.GUN_SLOT_1);
 		if (slot1Gun != null) {
@@ -132,11 +139,28 @@ public class UI implements Renderable {
 			int gunW = image.getWidth();
 			int gunH = image.getHeight();
 			
-			int gunX = rec1X - rec1Width + rec1Width - gunW - 5;
+			int gunX = rec1X + rec1Width - gunW - 5;
 			int gunY = rec1Y + rec1Height / 2 - gunH / 2;
 			
 			g2.drawImage(image, gunX, gunY, null);
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+			g2.setColor(Color.WHITE);
+			g2.setFont(extraSmallText);
+			g2.drawString(slot1Gun.getCurrentMag() + "/" + slot1Gun.getReservedAmmo(), rec1X + 5, rec1Y + rec1Height - 5);
+			
+			if (slot1Gun.reloading.getState()) {
+				setTooltipText("Reloading...");
+				drawPlayerTooltip();
+//				String reloading = "Reloading...";
+//				
+//				int lenW = (int)g2.getFontMetrics().getStringBounds(reloading, g2).getWidth();
+//				int lenH = (int)g2.getFontMetrics().getStringBounds(reloading, g2).getHeight();
+//				int textX = rec1X + rec1Width / 2 - lenW / 2;
+//				int textY = rec1Y + rec1Height / 2 + lenH / 3;
+//				
+//				g2.setFont(smallText);
+//				g2.drawString(reloading, textX, textY);
+			}
 		}
 		
 		GunObject slot2Gun = gp.player.inventory.getGunByIndex(Inventory.GUN_SLOT_2);
@@ -150,11 +174,28 @@ public class UI implements Renderable {
 			int gunW = image.getWidth();
 			int gunH = image.getHeight();
 			
-			int gunX = rec1X + rec1Width - gunW - 5;
+			int gunX = rec2X + rec1Width - gunW - 5;
 			int gunY = rec1Y + rec1Height / 2 - gunH / 2;
 			
 			g2.drawImage(image, gunX, gunY, null);
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+			g2.setColor(Color.WHITE);
+			g2.setFont(extraSmallText);
+			g2.drawString(slot2Gun.getCurrentMag() + "/" + slot2Gun.getReservedAmmo(), rec2X + 5, rec1Y + rec1Height - 5);
+			
+			if (slot2Gun.reloading.getState()) {
+				setTooltipText("Reloading...");
+				drawPlayerTooltip();
+//				String reloading = "Reloading...";
+//				
+//				int lenW = (int)g2.getFontMetrics().getStringBounds(reloading, g2).getWidth();
+//				int lenH = (int)g2.getFontMetrics().getStringBounds(reloading, g2).getHeight();
+//				int textX = rec2X + rec1Width / 2 - lenW / 2;
+//				int textY = rec1Y + rec1Height / 2 + lenH / 3;
+//				
+//				g2.setFont(smallText);
+//				g2.drawString(reloading, textX, textY);
+			}
 		}
 	}
 	

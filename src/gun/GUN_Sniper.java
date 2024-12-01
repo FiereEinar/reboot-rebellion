@@ -8,9 +8,15 @@ public class GUN_Sniper extends GunObject {
 		this.bulletSpread = 1;
 		this.bulletMultiplier = 1;
 		this.fireRate = (float) 0.5;
+		this.reloadTime = 180;
 		
 		this.worldX = x;
 		this.worldY = y;
+		
+		this.reloading.setDuration(reloadTime);
+		this.setReservedAmmo(50);
+		this.setMagSize(5);
+		this.setCurrentMag(this.getMagSize());
 		
 		this.name = "gun_sniper";
 		

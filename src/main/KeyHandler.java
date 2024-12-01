@@ -3,6 +3,8 @@ package main;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import gun.GunObject;
+
 public class KeyHandler implements KeyListener {
 	
 	private GamePanel gp;
@@ -52,6 +54,15 @@ public class KeyHandler implements KeyListener {
 		
 		if (code == KeyEvent.VK_E) {
 			KEY_E = true;
+		}
+		
+		if (code == KeyEvent.VK_R) {
+			GunObject selectedGun = gp.player.inventory.getSelectedGun();
+			
+			if (selectedGun.getCurrentMag() == selectedGun.getMagSize()) return;
+			if (selectedGun.reloading.getState()) return;
+			
+			selectedGun.reloading.setState(true);
 		}
 		
 		if (code == KeyEvent.VK_UP || code == KeyEvent.VK_W) {

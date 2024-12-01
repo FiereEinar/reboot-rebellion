@@ -12,6 +12,11 @@ public class GUN_Shotgun extends GunObject {
 		this.worldX = x;
 		this.worldY = y;
 		
+		this.reloading.setDuration(reloadTime);
+		this.setReservedAmmo(100);
+		this.setMagSize(10);
+		this.setCurrentMag(this.getMagSize());
+		
 		this.name = "gun_shotgun";
 		
 		loadSprites();

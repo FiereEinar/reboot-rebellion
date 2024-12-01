@@ -47,6 +47,10 @@ public class State {
 		return this.counter;
 	}
 	
+	public void resetIsTriggered() {
+		this.isTriggered = false;
+	}
+	
 	public void update() {
 		if (getState()) {
 			counter++;
