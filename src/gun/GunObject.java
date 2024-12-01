@@ -1,5 +1,6 @@
 package gun;
 
+import entity.Player;
 import main.Utils;
 import object.GameObject;
 import sprite.Sprite;
@@ -28,7 +29,12 @@ public class GunObject extends GameObject {
 		long currentTime = System.currentTimeMillis();
 		return currentTime - lastShotTime >= (1000 / fireRate) && hasAmmo() && !reloading.getState();
 	}
-	
+
+	@Override
+	public Boolean useEffect(Player entity) {
+		return true;
+	}
+
 	public Boolean hasAmmo() {
 		return currentMag > 0;
 	}
@@ -50,6 +56,10 @@ public class GunObject extends GameObject {
 		if (reservedAmmo <= 0) return;
 		
 		this.reservedAmmo -= amount;
+	}
+	
+	public void increaseReservedAmmo(int amount) {
+		this.reservedAmmo += amount;
 	}
 
 	public int getCurrentMag() {

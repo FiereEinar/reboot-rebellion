@@ -91,6 +91,14 @@ public class Entity extends BaseEntity implements Renderable {
 		this.health = health;
 	}
 	
+	public void reduceHealth(int amount) {
+		this.health -= amount;
+	}
+	
+	public void increaseHealth(int amount) {
+		this.health += amount;
+	}
+	
 	public void setMaxHealth(int health) {
 		this.maxHealth = health;
 	}

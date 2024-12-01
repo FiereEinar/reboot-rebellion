@@ -2,11 +2,13 @@ package main;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
 import enemy.Enemy;
 import entity.Entity;
 import entity.Projectile;
 import entity.Vector2;
+import object.GameObject;
 
 public class Debug implements Renderable {
 
@@ -50,6 +52,15 @@ public class Debug implements Renderable {
 				g2.setColor(Color.RED);
 				g2.drawRect(screen.x + p.getSolidArea().x, screen.y + p.getSolidArea().y,
 						p.getSolidArea().width, p.getSolidArea().height);
+			}
+			
+			// objects hitbox
+			for (GameObject o: gp.om.getObjects()) {
+				Rectangle rec = o.getSolidAreaRelativeToWorld();
+				rec.x = rec.x - gp.player.worldX + gp.player.screenX;
+				rec.y = rec.y - gp.player.worldY + gp.player.screenY;
+				
+				g2.draw(rec);
 			}
 		}
 	}

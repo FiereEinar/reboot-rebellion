@@ -25,6 +25,8 @@ public class ObjectManager implements Renderable {
 	}
 	
 	private void loadObjects() {
+		objects.add(new OBJ_Heart(GamePanel.TILE_SIZE * 9, GamePanel.TILE_SIZE * 3));
+		objects.add(new OBJ_Ammo(GamePanel.TILE_SIZE * 9, GamePanel.TILE_SIZE * 6));
 	}
 	
 	private void loadGuns() {

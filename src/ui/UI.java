@@ -119,7 +119,7 @@ public class UI implements Renderable {
 		
 		g2.setColor(Color.BLUE);
 		
-		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
 		g2.setColor(Color.BLACK);
 		g2.fillRoundRect(rec1X, rec1Y, rec1Width * 2, rec1Height, 10, 10);
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
@@ -151,15 +151,6 @@ public class UI implements Renderable {
 			if (slot1Gun.reloading.getState()) {
 				setTooltipText("Reloading...");
 				drawPlayerTooltip();
-//				String reloading = "Reloading...";
-//				
-//				int lenW = (int)g2.getFontMetrics().getStringBounds(reloading, g2).getWidth();
-//				int lenH = (int)g2.getFontMetrics().getStringBounds(reloading, g2).getHeight();
-//				int textX = rec1X + rec1Width / 2 - lenW / 2;
-//				int textY = rec1Y + rec1Height / 2 + lenH / 3;
-//				
-//				g2.setFont(smallText);
-//				g2.drawString(reloading, textX, textY);
 			}
 		}
 		
@@ -186,15 +177,6 @@ public class UI implements Renderable {
 			if (slot2Gun.reloading.getState()) {
 				setTooltipText("Reloading...");
 				drawPlayerTooltip();
-//				String reloading = "Reloading...";
-//				
-//				int lenW = (int)g2.getFontMetrics().getStringBounds(reloading, g2).getWidth();
-//				int lenH = (int)g2.getFontMetrics().getStringBounds(reloading, g2).getHeight();
-//				int textX = rec2X + rec1Width / 2 - lenW / 2;
-//				int textY = rec1Y + rec1Height / 2 + lenH / 3;
-//				
-//				g2.setFont(smallText);
-//				g2.drawString(reloading, textX, textY);
 			}
 		}
 	}

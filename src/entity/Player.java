@@ -34,7 +34,7 @@ public class Player extends Entity {
 		this.screenX = gp.screenWidth / 2 - (GamePanel.TILE_SIZE / 2);
 		this.screenY = gp.screenHeight / 2 - (GamePanel.TILE_SIZE / 2);
 
-		this.setMaxHealth(4);
+		this.setMaxHealth(6);
 		this.setHealth(getMaxHealth());
 
 		this.setSpeed(5);
@@ -175,7 +175,8 @@ public class Player extends Entity {
 				this.movementDisabled = true;
 			}
 			
-			// pick up object logic
+			Boolean success = hitObject.useEffect(this);
+			if (success) gp.om.removeObject(hitObject.name);
 		}
 	}
 	
