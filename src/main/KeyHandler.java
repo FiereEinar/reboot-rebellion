@@ -80,11 +80,11 @@ public class KeyHandler implements KeyListener {
 		}
 		
 		if (code == KeyEvent.VK_1) {
-			gp.player.inventory.selectedGun = 0;
+			gp.player.inventory.setSelectedGun(Inventory.GUN_SLOT_1);
 		}
 		
 		if (code == KeyEvent.VK_2) {
-			gp.player.inventory.selectedGun = 1;
+			gp.player.inventory.setSelectedGun(Inventory.GUN_SLOT_2);
 		}
 	}
 

@@ -92,8 +92,8 @@ public class Player extends Entity {
 	}
 
 	public void shootProjectile() {
-		if (inventory.arsenal.size() == 0) return;
-		if (inventory.selectedGun >= inventory.arsenal.size()) return;
+		if (inventory.arsenalSize() == 0) return;
+		if (inventory.getSelectedGunIndex() >= inventory.arsenalSize()) return;
 		
 		GunObject gun = inventory.getSelectedGun();
 		
@@ -178,7 +178,7 @@ public class Player extends Entity {
 		GunObject hitGun = gp.cd.checkEntityGunsCollision(this);
 		
 		if (hitGun != null) {
-			if (inventory.arsenal.size() == 2) {
+			if (inventory.arsenalSize() == 2) {
 				gp.ui.setTooltipText("Press 'E' to pick up");
 				
 				if (keys.KEY_E && canPickupWeapon) {
@@ -186,14 +186,14 @@ public class Player extends Entity {
 					dropGun.worldX = worldX;
 					dropGun.worldY = worldY;
 
-					inventory.arsenal.set(inventory.selectedGun, hitGun);
+					inventory.getArsenal().set(inventory.getSelectedGunIndex(), hitGun);
 					gp.om.addGun(dropGun);
 					gp.om.removeGun(hitGun.name);
 					
 					canPickupWeapon = false;
 				}
 			} else {
-				this.inventory.arsenal.add(hitGun);
+				this.inventory.getArsenal().add(hitGun);
 				gp.om.removeGun(hitGun.name);
 			}
 		}
@@ -211,9 +211,9 @@ public class Player extends Entity {
 	}
 
 	private void drawPlayerGun(Graphics2D g2) {
-		if (inventory.arsenal.size() == 0) return;
+		if (inventory.arsenalSize() == 0) return;
 		
-		if (inventory.selectedGun >= inventory.arsenal.size()) return;
+		if (inventory.getSelectedGunIndex() >= inventory.arsenalSize()) return;
 		
 		GunObject gun = inventory.getSelectedGun();
 

@@ -1,11 +1,15 @@
 package ui;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import gun.GunObject;
 import main.GamePanel;
+import main.Inventory;
 import main.Renderable;
 
 public class UI implements Renderable {
@@ -15,6 +19,7 @@ public class UI implements Renderable {
 
 	Font normalText;
 	Font smallText;
+	Font extraSmallText;
 	Font normalBoldText;
 
 	public int selectedMenuNum = 0;
@@ -32,9 +37,13 @@ public class UI implements Renderable {
 	
 	public UI(GamePanel gp) {
 		this.gp = gp;
-		this.normalText = new Font("Arial", Font.PLAIN, 40);
-		this.smallText = new Font("Arial", Font.PLAIN, 20);
-		this.normalBoldText = new Font("Arial", Font.BOLD, 80);
+		
+		String font = "Arial";
+		
+		this.normalText = new Font(font, Font.PLAIN, 40);
+		this.smallText = new Font(font, Font.PLAIN, 20);
+		this.extraSmallText = new Font(font, Font.PLAIN, 10);
+		this.normalBoldText = new Font(font, Font.BOLD, 80);
 		loadAssets();
 	}
 	
@@ -85,6 +94,7 @@ public class UI implements Renderable {
 	private void playScreenHandler() {
 		drawPlayerTooltip();
 		drawPlayerHealth();
+		drawPlayerWeapons();
 	}
 
 	private void pausedScreenHandler() {
@@ -97,6 +107,55 @@ public class UI implements Renderable {
 	
 	public void setTooltipText(String text) {
 		tooltipText = text;
+	}
+	
+	private void drawPlayerWeapons() {
+		g2.setFont(smallText);
+		
+		int rec1Width = GamePanel.TILE_SIZE * 2 + 20;
+		int rec1Height = GamePanel.TILE_SIZE;
+		int rec1X = gp.screenWidth - rec1Width - 20;
+		int rec1Y = 20;
+		
+		g2.setColor(Color.BLUE);
+		g2.drawRect(rec1X - rec1Width, rec1Y, rec1Width, rec1Height);
+		g2.drawRect(rec1X, rec1Y, rec1Width, rec1Height);
+		
+		GunObject slot1Gun = gp.player.inventory.getGunByIndex(Inventory.GUN_SLOT_1);
+		if (slot1Gun != null) {
+			if (gp.player.inventory.getSelectedGunIndex() == Inventory.GUN_SLOT_2) {
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+			}
+			
+			BufferedImage image = slot1Gun.sprite.getSprite();
+			
+			int gunW = image.getWidth();
+			int gunH = image.getHeight();
+			
+			int gunX = rec1X - rec1Width + rec1Width - gunW - 5;
+			int gunY = rec1Y + rec1Height / 2 - gunH / 2;
+			
+			g2.drawImage(image, gunX, gunY, null);
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+		}
+		
+		GunObject slot2Gun = gp.player.inventory.getGunByIndex(Inventory.GUN_SLOT_2);
+		if (slot2Gun != null) {
+			if (gp.player.inventory.getSelectedGunIndex() == Inventory.GUN_SLOT_1) {
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+			}
+
+			BufferedImage image = slot2Gun.sprite.getSprite();
+			
+			int gunW = image.getWidth();
+			int gunH = image.getHeight();
+			
+			int gunX = rec1X + rec1Width - gunW - 5;
+			int gunY = rec1Y + rec1Height / 2 - gunH / 2;
+			
+			g2.drawImage(image, gunX, gunY, null);
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+		}
 	}
 	
 	private void drawPlayerTooltip() {
