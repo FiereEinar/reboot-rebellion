@@ -163,7 +163,6 @@ public class Entity extends BaseEntity implements Renderable {
 		}
 		
 		if (state.attacking.getState() && !isPlayer) {
-			movementDisabled = true;
 		}
 	}
 

@@ -63,6 +63,10 @@ public class ObjectManager implements Renderable {
 	public void addGun(GunObject gun) {
 		guns.add(gun);
 	}
+	
+	public void addObject(GameObject obj) {
+		objects.add(obj);
+	}
 
 	@Override
 	public void update() {

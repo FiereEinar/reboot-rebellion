@@ -24,7 +24,7 @@ public class EntityManager implements Renderable {
 	}
 	
 	private void initEnemies() {
-		int enemyCount = 100;
+		int enemyCount = 50;
 		
 		for (int i = 0; i < enemyCount; i++) {
 			int rand = (int) Math.floor(Math.random() * 3);
@@ -37,13 +37,13 @@ public class EntityManager implements Renderable {
 				entities.add(new ENM_Boss_1(gp, randX, randY));
 			}
 			
-//			if (rand == 0) {
-//				entities.add(new ENM_Ranger_1(gp, randX, randY));
-//			} else if (rand == 1) {
-//				entities.add(new ENM_Melee_1(gp, randX, randY));
-//			} else {
-//				entities.add(new ENM_Bomber_1(gp, randX, randY));
-//			}
+			if (rand == 0) {
+				entities.add(new ENM_Ranger_1(gp, randX, randY));
+			} else if (rand == 1) {
+				entities.add(new ENM_Melee_1(gp, randX, randY));
+			} else {
+				entities.add(new ENM_Bomber_1(gp, randX, randY));
+			}
 		}
 	}
 	

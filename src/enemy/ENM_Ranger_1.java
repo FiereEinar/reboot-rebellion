@@ -72,10 +72,15 @@ public class ENM_Ranger_1 extends ShootingEnemy {
 	protected void attack() {
 		moveToPlayer();
 		if (this.gun.canShoot()) {
-			shootProjectile(this.gun, new Vector2(gp.player.worldX, gp.player.worldY));
 			state.attacking.setState(true);
 			movementDisabled = true;
-			this.gun.recordShot();
+
+			Boolean shouldAttack = state.attacking.getCounter() == state.attacking.getStateDuration() / 2;
+			
+			if (shouldAttack) {
+				shootProjectile(this.gun, new Vector2(gp.player.worldX, gp.player.worldY));
+				this.gun.recordShot();
+			}
 		}
 	}
 

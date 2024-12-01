@@ -91,7 +91,7 @@ public class Projectile extends BaseEntity implements Renderable {
 		if (fromPlayer) {
 			Entity hitEntity = gp.cd.checkEntityCollision(this);
 			
-			if (hitEntity != null) {
+			if (hitEntity != null && !isDead) {
 				hitEntity.recieveDamage(damage);
 				isDead = true;
 			}

@@ -9,6 +9,8 @@ import entity.Entity;
 import entity.Player;
 import entity.Vector2;
 import main.GamePanel;
+import object.OBJ_Ammo;
+import object.OBJ_Heart;
 
 public class Enemy extends Entity {
 	
@@ -139,12 +141,31 @@ public class Enemy extends Entity {
 		}
 	}
 	
+	private void dropItem() {
+		int i = new Random().nextInt(100) + 1;
+		
+		Rectangle rec = this.getSolidAreaRelativeToWorld();
+		
+		int x = rec.x + rec.width / 2;
+		int y = rec.y + rec.height / 2;
+		
+		if (i <= 25) {
+			gp.om.addObject(new OBJ_Heart(x, y));
+		}
+		if (i > 25 && i <= 50) {
+			gp.om.addObject(new OBJ_Ammo(x, y));
+		}
+	}
+	
 	@Override
 	public void update() {
 		this.movementDisabled = false;
 		state.update();
 		checkState();
-		if (isDead) return;
+		if (isDead) {
+			dropItem();
+			return;
+		}
 		checkIfCloseToPlayer();
 		checkIfCollidingWithPlayer();
 		updateDirection();

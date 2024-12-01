@@ -71,5 +71,17 @@ public class ShootingEnemy extends Enemy {
 		}
 
 	}
+	
+	@Override
+	protected void checkState() {
+		if (state.dying.isTriggered()) {
+			isDead = true;
+			return;
+		}
+		
+		if (state.attacking.getState() && !isPlayer) {
+			movementDisabled = true;
+		}
+	}
 
 }
