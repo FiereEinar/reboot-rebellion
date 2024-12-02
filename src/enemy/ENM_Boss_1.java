@@ -220,7 +220,7 @@ public class ENM_Boss_1 extends ShootingEnemy {
 			}
 		}
 		
-		g2.drawImage(image, screen.x, screen.y, null);
+		if (gp.isInPlayerView(new Vector2(worldX, worldY))) g2.drawImage(image, screen.x, screen.y, null);
 		drawHealthBar(g2);
 	}
 

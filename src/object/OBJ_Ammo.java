@@ -1,5 +1,7 @@
 package object;
 
+import java.awt.Rectangle;
+
 import entity.Player;
 import gun.GunObject;
 import main.Utils;
@@ -15,6 +17,8 @@ public class OBJ_Ammo extends GameObject {
 		
 		this.name = "obj_ammo";
 		
+		this.setSolidArea(new Rectangle(0, 0, 32, 32));
+
 		loadSprites();
 	}
 	

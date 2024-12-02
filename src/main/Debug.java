@@ -2,6 +2,8 @@ package main;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 import enemy.Enemy;
@@ -21,10 +23,10 @@ public class Debug implements Renderable {
 	@Override
 	public void update() {
 		if (gp.keys.LOG_SWITCH) {
-//			Point p = MouseInfo.getPointerInfo().getLocation();
-//			System.out.println("Mouse Position: X = " + p.getX() + " | Y = " + p.getY());
-//
-//			System.out.println("Player World Position: X = " + gp.player.worldX + " | Y = " + gp.player.worldY);
+			Point p = MouseInfo.getPointerInfo().getLocation();
+			System.out.println("Mouse Position: X = " + p.getX() + " | Y = " + p.getY());
+
+			System.out.println("Player World Position: X = " + gp.player.worldX + " | Y = " + gp.player.worldY);
 		}
 	}
 

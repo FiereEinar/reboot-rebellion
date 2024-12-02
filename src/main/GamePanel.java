@@ -4,11 +4,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
 import entity.EntityManager;
 import entity.Player;
+import entity.Vector2;
 import event.EventHandler;
 import object.ObjectManager;
 import tile.TileManager;
@@ -20,13 +23,13 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private static final int originalTileSize = 16;
 	private static final int scale = 3;
-
 	public static final int TILE_SIZE = originalTileSize * scale;
+	
 	public final int col = 20;
 	public final int row = 12;
 
-	public final int screenWidth = col * TILE_SIZE;
-	public final int screenHeight = row * TILE_SIZE;
+	public int screenWidth = col * TILE_SIZE;
+	public int screenHeight = row * TILE_SIZE;
 
 	public final int FPS = 60;
 
@@ -34,12 +37,17 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int worldRow = 50;
 	public final int worldWidth = worldCol * TILE_SIZE;
 	public final int worldHeight = worldRow * TILE_SIZE;
+	
+	public int fullScreenWidth = screenWidth;
+	public int fullScreenHeight = screenHeight;
 
 	private Thread thread = null;
+	private BufferedImage imageScreen;
+	private Graphics2D g2;
 
 	public KeyHandler keys = new KeyHandler(this);
 	public MouseHandler mouse = new MouseHandler(this);
-	public Player player = new Player(this, keys);
+	public Player player;
 	public TileManager tm = new TileManager(this);
 	public CollisionDetector cd = new CollisionDetector(this);
 	public ObjectManager om = new ObjectManager(this);
@@ -55,14 +63,26 @@ public class GamePanel extends JPanel implements Runnable {
 	public static final int STATE_DIALOGUE = 3;
 
 	public GamePanel() {
-		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
 		this.setBackground(Color.BLACK);
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
 		this.addKeyListener(keys);
 		this.addMouseListener(mouse);
 		this.addMouseMotionListener(mouse);
-		this.gameState = STATE_MENU_SCREEN;
+		this.setupGame();
+		this.setPreferredSize(new Dimension(fullScreenWidth, fullScreenHeight));
+		
+		player = new Player(this, keys);
+	}
+	
+	private void setupGame() {
+		gameState = STATE_MENU_SCREEN;
+		imageScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
+		g2 = (Graphics2D) imageScreen.getGraphics();
+		
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        fullScreenWidth = screenSize.width;
+        fullScreenHeight = screenSize.height;
 	}
 
 	public void startGameThread() {
@@ -84,13 +104,14 @@ public class GamePanel extends JPanel implements Runnable {
 
 			if (delta >= 0) {
 				update();
-				repaint();
+				drawToImageScreen();
+				drawToScreen();
 				delta--;
 			}
 		}
 	}
 
-	public void update() {
+	private void update() {
 		debug.update();
 		ui.update();
 		
@@ -108,12 +129,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 		}
 	}
-
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-
-		Graphics2D g2 = (Graphics2D) g;
-
+	
+	private void drawToImageScreen() {
 		switch (gameState) {
 		case STATE_MENU_SCREEN:
 			break;
@@ -127,8 +144,22 @@ public class GamePanel extends JPanel implements Runnable {
 
 		debug.draw(g2);
 		ui.draw(g2);
-
-		g2.dispose();
 	}
-
+	
+	private void drawToScreen() {
+		Graphics g = getGraphics();
+		g.drawImage(imageScreen, 0, 0, fullScreenWidth, fullScreenHeight, null);
+	}
+	
+	public Boolean isInPlayerView(Vector2 position) {
+		int offset = TILE_SIZE;
+		
+		Boolean isInView = position.x + offset > player.worldX - player.screenX
+			&& position.x - offset < player.worldX + player.screenX
+			&& position.y + offset > player.worldY - player.screenY
+			&& position.y - offset < player.worldY + player.screenY;
+				
+		return isInView;
+	}
+	
 }

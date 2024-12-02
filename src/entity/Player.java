@@ -18,6 +18,8 @@ public class Player extends Entity {
 
 	public int screenX;
 	public int screenY;
+	int fullScreenX;
+	int fullScreenY;
 	
 	private Boolean canPickupWeapon = true;
 	private int weaponPickupCooldown = 60;
@@ -33,6 +35,9 @@ public class Player extends Entity {
 
 		this.screenX = gp.screenWidth / 2 - (GamePanel.TILE_SIZE / 2);
 		this.screenY = gp.screenHeight / 2 - (GamePanel.TILE_SIZE / 2);
+		
+		this.fullScreenX = gp.fullScreenWidth / 2 - GamePanel.TILE_SIZE / 2;
+		this.fullScreenY = gp.fullScreenHeight / 2 - GamePanel.TILE_SIZE / 2;
 
 		this.setMaxHealth(6);
 		this.setHealth(getMaxHealth());
@@ -112,13 +117,16 @@ public class Player extends Entity {
 		float mouseX = gp.mouse.mouseX;
 		float mouseY = gp.mouse.mouseY;
 
-		float directionX = mouseX - screenX;
-		float directionY = mouseY - screenY;
+		float directionX = mouseX - fullScreenX - (GamePanel.TILE_SIZE / 2);
+		float directionY = mouseY - fullScreenY - (GamePanel.TILE_SIZE / 2);
 
 		float magnitude = (float) Math.sqrt(directionX * directionX + directionY * directionY);
 		float normalizedX = directionX / magnitude;
 		float normalizedY = directionY / magnitude;
 		
+		int centerWorldX = worldX + (GamePanel.TILE_SIZE / 2);
+		int centerWorldY = worldY + (GamePanel.TILE_SIZE / 2);
+
 		for (int i = 0; i < BULLET_MULTIPLIER; i++) {
 			// Add random spread to the direction
 		    float spreadAngle = (float) Math.toRadians(BULLET_SPREAD); // Adjust for more or less spread
@@ -134,9 +142,6 @@ public class Player extends Entity {
 			float speedX = spreadX * BULLET_SPEED;
 			float speedY = spreadY * BULLET_SPEED;
 	
-			int centerWorldX = worldX + (GamePanel.TILE_SIZE / 2);
-			int centerWorldY = worldY + (GamePanel.TILE_SIZE / 2);
-
 			gp.em.addBullets(new Projectile(gp, centerWorldX, centerWorldY, speedX, speedY, BULLET_DAMAGE, true));
 		}
 
@@ -145,7 +150,7 @@ public class Player extends Entity {
 
 	private void updateDirection() {
 		float mouseX = gp.mouse.mouseX;
-		float halfScreen = gp.screenWidth / 2;
+		float halfScreen = gp.fullScreenWidth / 2;
 
 		if (mouseX < halfScreen) {
 			setSpriteDirection("left");
@@ -222,8 +227,8 @@ public class Player extends Entity {
 		if (inventory.getSelectedGunIndex() >= inventory.arsenalSize()) return;
 		
 		GunObject gun = inventory.getSelectedGun();
-
-		double angle = Math.atan2(gp.mouse.mouseY - screenY, gp.mouse.mouseX - screenX);
+		
+		double angle = Math.atan2(gp.mouse.mouseY - fullScreenY, gp.mouse.mouseX - fullScreenX);
 
 		BufferedImage image = gun.sprite.getSprite();
 
@@ -278,7 +283,7 @@ public class Player extends Entity {
 
 	@Override
 	public void draw(Graphics2D g2) {
-		g2.drawImage(this.sprite.getSprite(), this.screenX, this.screenY, null);
+		g2.drawImage(this.sprite.getSprite(), screenX, screenY, null);
 		drawPlayerGun(g2);
 	}
 

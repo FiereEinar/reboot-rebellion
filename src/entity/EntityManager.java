@@ -82,8 +82,13 @@ public class EntityManager implements Renderable {
 
 	@Override
 	public void draw(Graphics2D g2) {
-		for (Entity e: new ArrayList<>(entities))  e.draw(g2);
-		for (Projectile b: new ArrayList<>(bullets)) b.draw(g2);
+		for (Entity e: new ArrayList<>(entities)) {
+			if (gp.isInPlayerView(new Vector2(e.worldX, e.worldY))) e.draw(g2);
+		}
+		
+		for (Projectile b: new ArrayList<>(bullets)) {
+			if (gp.isInPlayerView(new Vector2(b.worldX, b.worldY))) b.draw(g2);
+		}
 	}
 
 }

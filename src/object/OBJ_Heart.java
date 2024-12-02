@@ -1,5 +1,7 @@
 package object;
 
+import java.awt.Rectangle;
+
 import entity.Player;
 import main.Utils;
 
@@ -13,6 +15,8 @@ public class OBJ_Heart extends GameObject {
 		this.value = 1;
 		
 		this.name = "obj_heart";
+		
+		this.setSolidArea(new Rectangle(0, 0, 32, 32));
 		
 		loadSprites();
 	}

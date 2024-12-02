@@ -182,8 +182,7 @@ public class Enemy extends Entity {
 //		}
 
 		Vector2 screen = getScreenLocation();
-
-		g2.drawImage(this.sprite.getSprite(), screen.x, screen.y, null);
+		if (gp.isInPlayerView(new Vector2(worldX, worldY))) g2.drawImage(this.sprite.getSprite(), screen.x, screen.y, null);
 //		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 		
 		drawHealthBar(g2);

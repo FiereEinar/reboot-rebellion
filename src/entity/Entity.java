@@ -110,7 +110,7 @@ public class Entity extends BaseEntity implements Renderable {
 	public void recieveDamage(int damage) {
 		if (!state.invincibility.getState()) {
 			this.state.attacked.setState(true);
-			this.health -= damage;
+			if (this.health > 0) this.health -= damage;
 			if (this.health <= 0) state.dying.setState(true);
 			if (isPlayer) state.invincibility.setState(true);
 		}

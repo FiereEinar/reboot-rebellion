@@ -3,6 +3,7 @@ package object;
 import java.awt.Graphics2D;
 import java.util.LinkedList;
 
+import entity.Vector2;
 import gun.GUN_MachineGun;
 import gun.GUN_Pistol_1;
 import gun.GUN_Shotgun;
@@ -75,15 +76,19 @@ public class ObjectManager implements Renderable {
 	@Override
 	public void draw(Graphics2D g2) {
 		for (GameObject o: objects) {
-			int screenX = o.worldX - gp.player.worldX + gp.player.screenX;
-			int screenY = o.worldY - gp.player.worldY + gp.player.screenY;
-			g2.drawImage(o.sprite.getSprite(), screenX, screenY, null);
+			Vector2 screen = new Vector2(
+					o.worldX - gp.player.worldX + gp.player.screenX,
+					o.worldY - gp.player.worldY + gp.player.screenY
+			);
+			if (gp.isInPlayerView(new Vector2(o.worldX, o.worldY))) g2.drawImage(o.sprite.getSprite(), screen.x, screen.y, null);
 		}
 		
 		for (GunObject g: guns) {
-			int screenX = g.worldX - gp.player.worldX + gp.player.screenX;
-			int screenY = g.worldY - gp.player.worldY + gp.player.screenY;
-			g2.drawImage(g.sprite.getSprite(), screenX, screenY, null);
+			Vector2 screen = new Vector2(
+					g.worldX - gp.player.worldX + gp.player.screenX,
+					g.worldY - gp.player.worldY + gp.player.screenY
+			);
+			if (gp.isInPlayerView(new Vector2(g.worldX, g.worldY))) g2.drawImage(g.sprite.getSprite(), screen.x, screen.y, null);
 		}
 	}
 

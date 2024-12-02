@@ -1,5 +1,6 @@
 package tile;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -7,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
+import entity.Vector2;
 import main.GamePanel;
 import main.Renderable;
 import main.Utils;
@@ -103,6 +105,9 @@ public class TileManager implements Renderable {
 
 	@Override
 	public void draw(Graphics2D g2) {
+		g2.setColor(Color.BLACK);
+		g2.fillRect(0, 0, gp.fullScreenWidth, gp.fullScreenHeight);
+		
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
 				BufferedImage image = tiles[map[i][j]].getSprite();
@@ -111,13 +116,8 @@ public class TileManager implements Renderable {
 				int worldY = j * GamePanel.TILE_SIZE;
 				int screenX = worldX - gp.player.worldX + gp.player.screenX;
 				int screenY = worldY - gp.player.worldY + gp.player.screenY;
-
-				Boolean isInView = worldX + GamePanel.TILE_SIZE > gp.player.worldX - gp.player.screenX
-						&& worldX - GamePanel.TILE_SIZE < gp.player.worldX + gp.player.screenX
-						&& worldY + GamePanel.TILE_SIZE > gp.player.worldY - gp.player.screenY
-						&& worldY - GamePanel.TILE_SIZE < gp.player.worldY + gp.player.screenY;
-
-				if (isInView) {
+				
+				if (gp.isInPlayerView(new Vector2(worldX, worldY))) {
 					g2.drawImage(image, screenX, screenY, null);
 				}
 			}
