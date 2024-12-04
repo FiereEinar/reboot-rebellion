@@ -49,6 +49,10 @@ public class ObjectManager implements Renderable {
 		objects.removeIf(t -> t.name == name);
 	}
 	
+	public void removeObject(GameObject object) {
+		objects.removeIf(t -> t == object);
+	}
+	
 	public void removeGun(String name) {
 		guns.removeIf(t -> t.name == name);
 	}

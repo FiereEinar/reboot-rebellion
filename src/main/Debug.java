@@ -8,9 +8,9 @@ import java.awt.Rectangle;
 
 import enemy.Enemy;
 import entity.Entity;
-import entity.Projectile;
 import entity.Vector2;
 import object.GameObject;
+import projectiles.Projectile;
 
 public class Debug implements Renderable {
 

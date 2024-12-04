@@ -10,6 +10,7 @@ import main.Inventory;
 import main.KeyHandler;
 import main.Utils;
 import object.GameObject;
+import projectiles.GunProjectile;
 
 public class Player extends Entity {
 
@@ -142,7 +143,7 @@ public class Player extends Entity {
 			float speedX = spreadX * BULLET_SPEED;
 			float speedY = spreadY * BULLET_SPEED;
 	
-			gp.em.addBullets(new Projectile(gp, centerWorldX, centerWorldY, speedX, speedY, BULLET_DAMAGE, true));
+			gp.em.addBullets(new GunProjectile(gp, centerWorldX, centerWorldY, speedX, speedY, BULLET_DAMAGE, true));
 		}
 
 		gun.recordShot();
@@ -181,7 +182,7 @@ public class Player extends Entity {
 			}
 			
 			Boolean success = hitObject.useEffect(this);
-			if (success) gp.om.removeObject(hitObject.name);
+			if (success) gp.om.removeObject(hitObject);
 		}
 	}
 	

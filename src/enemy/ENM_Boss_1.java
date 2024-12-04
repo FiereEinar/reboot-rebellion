@@ -4,11 +4,11 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import entity.Projectile;
 import entity.Vector2;
 import gun.GUN_EnemyWeapon;
 import main.GamePanel;
 import main.Utils;
+import projectiles.BossProjectile;
 import states.State;
 
 public class ENM_Boss_1 extends ShootingEnemy {
@@ -125,7 +125,7 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	        float speedY = directionY * BULLET_SPEED;
 
 	        // Spawn the bullet
-	        gp.em.addBullets(new Projectile(gp, centerWorldX, centerWorldY, speedX, speedY, BULLET_DAMAGE));
+	        gp.em.addBullets(new BossProjectile(gp, centerWorldX, centerWorldY, speedX, speedY, BULLET_DAMAGE));
 	    }
 
 	    gun.recordShot();

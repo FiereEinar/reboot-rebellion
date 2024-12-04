@@ -1,23 +1,26 @@
-package entity;
+package projectiles;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import entity.BaseEntity;
+import entity.Entity;
+import entity.Vector2;
 import main.GamePanel;
 import main.Renderable;
 import main.Utils;
 import sprite.Sprite;
 
-public class Projectile extends BaseEntity implements Renderable {
+public abstract class Projectile extends BaseEntity implements Renderable {
 
 	GamePanel gp;
 	
 	float speedX, speedY;
 	int damage;
 	
-	Boolean isDead = false;
-	Boolean fromPlayer = false;
+	public Boolean isDead = false;
+	public Boolean fromPlayer = false;
 	
 	Sprite sprite = new Sprite();
 	
@@ -48,19 +51,8 @@ public class Projectile extends BaseEntity implements Renderable {
 		loadSprites();
 	}
 
-	private void loadSprites() {
-		Utils utils = new Utils();
-		
-		BufferedImage spritesheet = utils.getSpriteSheet("/projectiles/boss_projectile.png");
-		
-		int width = 32;
-		int height = 32;
-
-		for (int i = 0; i < 2; i++) { 
-			this.sprite.addSprite(utils.scaleImage(utils.cropSprite(spritesheet, i * width, 9 * height, width, height), getSolidArea().width, getSolidArea().height));
-	    }
-		
-	}
+	
+	protected abstract void loadSprites();
 
 	public Vector2 getScreenLocation() {
 		Vector2 res = new Vector2();

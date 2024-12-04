@@ -11,6 +11,7 @@ import enemy.ENM_Melee_1;
 import enemy.ENM_Ranger_1;
 import main.GamePanel;
 import main.Renderable;
+import projectiles.Projectile;
 
 public class EntityManager implements Renderable {
 

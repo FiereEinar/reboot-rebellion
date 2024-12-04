@@ -1,10 +1,10 @@
 package enemy;
 
-import entity.Projectile;
 import entity.Vector2;
 import gun.GUN_EnemyWeapon;
 import gun.GunObject;
 import main.GamePanel;
+import projectiles.BossProjectile;
 
 public class ShootingEnemy extends Enemy {
 	
@@ -67,7 +67,7 @@ public class ShootingEnemy extends Enemy {
 			float speedX = spreadX * BULLET_SPEED;
 			float speedY = spreadY * BULLET_SPEED;
 
-			gp.em.addBullets(new Projectile(gp, start.x, start.y, speedX, speedY, BULLET_DAMAGE));
+			gp.em.addBullets(new BossProjectile(gp, start.x, start.y, speedX, speedY, BULLET_DAMAGE));
 		}
 
 	}
