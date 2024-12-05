@@ -12,5 +12,9 @@ public class Vector2 {
 	
 	public Vector2() {
 	}
+	
+	public Vector2 mul(int amount) {
+		return new Vector2(x * amount, y * amount);
+	}
 
 }

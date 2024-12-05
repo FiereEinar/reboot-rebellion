@@ -134,5 +134,9 @@ public class TileManager implements Renderable {
 	public Boolean isTileSolid(int tileIndex) {
 		return tiles[tileIndex].isSolid;
 	}
+	
+	public int [][] getMap() {
+		return this.map;
+	}
 
 }

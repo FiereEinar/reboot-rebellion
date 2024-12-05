@@ -14,6 +14,7 @@ import entity.Player;
 import entity.Vector2;
 import event.EventHandler;
 import object.ObjectManager;
+import pathfinder.PathFinder;
 import tile.TileManager;
 import ui.UI;
 
@@ -55,6 +56,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public EntityManager em = new EntityManager(this);
 	public EventHandler eh = new EventHandler(this);
 	private Debug debug = new Debug(this);
+	public PathFinder pathFinder;
 	
 	public int gameState;
 	public static final int STATE_MENU_SCREEN = 0;
@@ -71,8 +73,6 @@ public class GamePanel extends JPanel implements Runnable {
 		this.addMouseMotionListener(mouse);
 		this.setupGame();
 		this.setPreferredSize(new Dimension(fullScreenWidth, fullScreenHeight));
-		
-		player = new Player(this, keys);
 	}
 	
 	private void setupGame() {
@@ -81,8 +81,13 @@ public class GamePanel extends JPanel implements Runnable {
 		g2 = (Graphics2D) imageScreen.getGraphics();
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        fullScreenWidth = screenSize.width;
-        fullScreenHeight = screenSize.height;
+        fullScreenWidth = screenWidth;
+        fullScreenHeight = screenHeight;
+//        fullScreenWidth = screenSize.width;
+//        fullScreenHeight = screenSize.height;
+        
+        pathFinder = new PathFinder(this);
+        player = new Player(this, keys);
 	}
 
 	public void startGameThread() {
