@@ -24,6 +24,7 @@ public class UI implements Renderable {
 	public int selectedMenuNum = 0;
 	public int menuItems = 2;
 	private String tooltipText = "";
+	private String progressText = "";
 	
 	Asset healthbar = new Asset(64 * 3, 32 * 3);
 	Asset buttons = new Asset(64 * 3, 32 * 3);
@@ -94,6 +95,7 @@ public class UI implements Renderable {
 		drawPlayerTooltip();
 		drawPlayerHealth();
 		drawPlayerWeapons();
+		drawWeaponState();
 	}
 
 	private void pausedScreenHandler() {
@@ -107,6 +109,11 @@ public class UI implements Renderable {
 	public void setTooltipText(String text) {
 		tooltipText = text;
 	}
+
+	public void setProgressText(String progressText) {
+		this.progressText = progressText;
+	}
+
 	
 	private void drawPlayerWeapons() {
 		g2.setFont(smallText);
@@ -147,11 +154,6 @@ public class UI implements Renderable {
 			g2.setColor(Color.WHITE);
 			g2.setFont(extraSmallText);
 			g2.drawString(slot1Gun.getCurrentMag() + "/" + slot1Gun.getReservedAmmo(), rec1X + 5, rec1Y + rec1Height - 5);
-			
-			if (slot1Gun.reloading.getState()) {
-				setTooltipText("Reloading...");
-				drawPlayerTooltip();
-			}
 		}
 		
 		GunObject slot2Gun = gp.player.inventory.getGunByIndex(Inventory.GUN_SLOT_2);
@@ -173,10 +175,23 @@ public class UI implements Renderable {
 			g2.setColor(Color.WHITE);
 			g2.setFont(extraSmallText);
 			g2.drawString(slot2Gun.getCurrentMag() + "/" + slot2Gun.getReservedAmmo(), rec2X + 5, rec1Y + rec1Height - 5);
-			
+		}
+	}
+	
+	private void drawWeaponState() {
+		GunObject slot1Gun = gp.player.inventory.getGunByIndex(Inventory.GUN_SLOT_1);
+		if (slot1Gun != null) {
+			if (slot1Gun.reloading.getState()) {
+				setProgressText("Reloading...");
+				drawProgressTextBar(slot1Gun.reloading.getStateDuration(), slot1Gun.reloading.getCounter());
+			}
+		}
+		
+		GunObject slot2Gun = gp.player.inventory.getGunByIndex(Inventory.GUN_SLOT_2);
+		if (slot2Gun != null) {
 			if (slot2Gun.reloading.getState()) {
-				setTooltipText("Reloading...");
-				drawPlayerTooltip();
+				setProgressText("Reloading...");
+				drawProgressTextBar(slot2Gun.reloading.getStateDuration(), slot2Gun.reloading.getCounter());
 			}
 		}
 	}
@@ -188,6 +203,26 @@ public class UI implements Renderable {
 		int y = gp.player.screenY;
 		
 		g2.drawString(tooltipText, x, y);
+	}
+	
+	private void drawProgressTextBar(int duration, int progress) {
+		g2.setFont(extraSmallText);
+		
+		int tileSize = GamePanel.TILE_SIZE;
+		
+		int x = gp.player.screenX;
+		int y = gp.player.screenY + tileSize + 10;
+		
+		g2.drawString(progressText, x, y);
+		
+		double oneScale = (double) tileSize / duration;
+		double progressWidth = oneScale * progress;
+		
+		g2.setColor(Color.LIGHT_GRAY);
+		g2.fillRect(x - 1, y + 4, tileSize + 2, 12);
+
+		g2.setColor(Color.GRAY);
+		g2.fillRect(x, y + 5, (int) progressWidth, 10);
 	}
 	
 	private void drawPlayerHealth() {
@@ -235,6 +270,7 @@ public class UI implements Renderable {
 	@Override
 	public void update() {
 		setTooltipText("");
+		setProgressText("");
 	}
 	
 	@Override

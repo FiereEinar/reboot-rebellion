@@ -31,7 +31,6 @@ public class EventHandler {
 	}
 	
 	private void handleMap2TransitionTrigger() {
-		System.out.println("Map transition triggered");
 		map2Transition.isTriggered = true;
 		gp.currentMap = 1;
 		gp.player.worldX = 100;
