@@ -45,10 +45,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private Thread thread = null;
 	private BufferedImage imageScreen;
-	private Graphics2D g2;
 	public KeyHandler keys = new KeyHandler(this);
 	public MouseHandler mouse = new MouseHandler(this);
-	public Player player;
 	public TileManager tm = new TileManager(this);
 	public CollisionDetector cd = new CollisionDetector(this);
 	public ObjectManager om = new ObjectManager(this);
@@ -57,6 +55,8 @@ public class GamePanel extends JPanel implements Runnable {
 	public EventHandler eh = new EventHandler(this);
 	private Debug debug = new Debug(this);
 	public PathFinder pathFinder = new PathFinder(this);
+	private Graphics2D g2;
+	public Player player;
 	
 	public int gameState;
 	public static final int STATE_MENU_SCREEN = 0;

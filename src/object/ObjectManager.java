@@ -1,6 +1,7 @@
 package object;
 
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import entity.Vector2;
@@ -15,62 +16,71 @@ import main.Renderable;
 public class ObjectManager implements Renderable {
 	
 	GamePanel gp;
-	private LinkedList<GameObject> objects = new LinkedList<>();
-	private LinkedList<GunObject> guns = new LinkedList<>();
-	public final int GUN_INDEX = 0;
+	private ArrayList<LinkedList<GameObject>> objects = new ArrayList<>();
+	private ArrayList<LinkedList<GunObject>> guns = new ArrayList<>();
 	
 	public ObjectManager(GamePanel gp) {
 		this.gp = gp;
+		initLists();
 		loadObjects();
 		loadGuns();
 	}
 	
+	private void initLists() {
+		for (int i = 0; i < gp.MAX_MAPS; i++) {
+			objects.add(new LinkedList<GameObject>());
+			guns.add(new LinkedList<GunObject>());
+		}
+	}
+	
 	private void loadObjects() {
-		objects.add(new OBJ_Heart(GamePanel.TILE_SIZE * 9, GamePanel.TILE_SIZE * 3));
-		objects.add(new OBJ_Ammo(GamePanel.TILE_SIZE * 9, GamePanel.TILE_SIZE * 6));
+		int map = 1;
+		objects.get(map).add(new OBJ_Heart(GamePanel.TILE_SIZE * 9, GamePanel.TILE_SIZE * 3));
+		objects.get(map).add(new OBJ_Ammo(GamePanel.TILE_SIZE * 9, GamePanel.TILE_SIZE * 6));
 	}
 	
 	private void loadGuns() {
-		guns.add(new GUN_Pistol_1(GamePanel.TILE_SIZE * 3, GamePanel.TILE_SIZE * 3));
-		guns.add(new GUN_Shotgun(GamePanel.TILE_SIZE * 3, GamePanel.TILE_SIZE * 6));
-		guns.add(new GUN_MachineGun(GamePanel.TILE_SIZE * 6, GamePanel.TILE_SIZE * 3));
-		guns.add(new GUN_Sniper(GamePanel.TILE_SIZE * 6, GamePanel.TILE_SIZE * 6));
+		int map = 1;
+		guns.get(map).add(new GUN_Pistol_1(GamePanel.TILE_SIZE * 3, GamePanel.TILE_SIZE * 3));
+		guns.get(map).add(new GUN_Shotgun(GamePanel.TILE_SIZE * 3, GamePanel.TILE_SIZE * 6));
+		guns.get(map).add(new GUN_MachineGun(GamePanel.TILE_SIZE * 6, GamePanel.TILE_SIZE * 3));
+		guns.get(map).add(new GUN_Sniper(GamePanel.TILE_SIZE * 6, GamePanel.TILE_SIZE * 6));
 	}
 	
 	public LinkedList<GameObject> getObjects() {
-		return this.objects;
+		return this.objects.get(gp.currentMap + 1);
 	}
 	
 	public LinkedList<GunObject> getGuns() {
-		return this.guns;
+		return this.guns.get(gp.currentMap + 1);
 	}
 	
 	public void removeObject(String name) {
-		objects.removeIf(t -> t.name == name);
+		getObjects().removeIf(t -> t.name == name);
 	}
 	
 	public void removeObject(GameObject object) {
-		objects.removeIf(t -> t == object);
+		getObjects().removeIf(t -> t == object);
 	}
 	
 	public void removeGun(String name) {
-		guns.removeIf(t -> t.name == name);
+		getGuns().removeIf(t -> t.name == name);
 	}
 	
 	public GameObject getObject(int index) {
-		return objects.get(index);
+		return getObjects().get(index);
 	}
 	
 	public GunObject getGun(int index) {
-		return guns.get(index);
+		return getGuns().get(index);
 	}
 	
 	public void addGun(GunObject gun) {
-		guns.add(gun);
+		getGuns().add(gun);
 	}
 	
 	public void addObject(GameObject obj) {
-		objects.add(obj);
+		getObjects().add(obj);
 	}
 
 	@Override
@@ -79,7 +89,7 @@ public class ObjectManager implements Renderable {
 
 	@Override
 	public void draw(Graphics2D g2) {
-		for (GameObject o: objects) {
+		for (GameObject o: getObjects()) {
 			Vector2 screen = new Vector2(
 					o.worldX - gp.player.worldX + gp.player.screenX,
 					o.worldY - gp.player.worldY + gp.player.screenY
@@ -87,7 +97,7 @@ public class ObjectManager implements Renderable {
 			if (gp.isInPlayerView(new Vector2(o.worldX, o.worldY))) g2.drawImage(o.sprite.getSprite(), screen.x, screen.y, null);
 		}
 		
-		for (GunObject g: guns) {
+		for (GunObject g: getGuns()) {
 			Vector2 screen = new Vector2(
 					g.worldX - gp.player.worldX + gp.player.screenX,
 					g.worldY - gp.player.worldY + gp.player.screenY

@@ -7,21 +7,24 @@ import main.GamePanel;
 public class EventHandler {
 	
 	GamePanel gp;
-	
+	EventState[] events;
 	// Events
 	EventState map2Transition = new EventState();
 	
 	public EventHandler(GamePanel gp) {
 		this.gp = gp;
+		this.events = new EventState[gp.MAX_MAPS];
 		setupEvents();
 	}
 	
 	private void setupEvents() {
-		map2Transition.setCoordinate(1500, 50, GamePanel.TILE_SIZE);
+		int map1 = 0;
+		
+		map2Transition.setCoordinate(map1, 1500, 50, GamePanel.TILE_SIZE);
 	}
 	
 	public void checkEvent() {
-		if (!map2Transition.isTriggered && eventShouldFire(map2Transition)) {
+		if (eventCanTrigger(map2Transition)) {
 			handleMap2TransitionTrigger();
 		}
 	}
@@ -32,6 +35,10 @@ public class EventHandler {
 		gp.currentMap = 1;
 		gp.player.worldX = 100;
 		gp.player.worldY = 300;
+	}
+	
+	private Boolean eventCanTrigger(EventState event) {
+		return !event.isTriggered && eventShouldFire(event) && event.inCorrectMap(gp.currentMap);
 	}
 
 	private Boolean eventShouldFire(Rectangle rec2) {
