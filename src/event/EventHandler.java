@@ -9,7 +9,7 @@ public class EventHandler {
 	GamePanel gp;
 	
 	// Events
-	EventState gunTrigger = new EventState();
+	EventState map2Transition = new EventState();
 	
 	public EventHandler(GamePanel gp) {
 		this.gp = gp;
@@ -17,32 +17,29 @@ public class EventHandler {
 	}
 	
 	private void setupEvents() {
-//		OBJ_Gun gun = (OBJ_Gun)gp.om.getObjects().get(gp.om.GUN_INDEX);
-//		
-//		if (gun == null) return;
-//		
-//		gunTrigger.setCoordinate(gun.worldX, gun.worldY, GamePanel.TILE_SIZE);
+		map2Transition.setCoordinate(1500, 50, GamePanel.TILE_SIZE);
 	}
 	
 	public void checkEvent() {
-		if (!gunTrigger.isTriggered && eventShouldFire(gunTrigger)) {
-			handleGunInteraction();
+		if (!map2Transition.isTriggered && eventShouldFire(map2Transition)) {
+			handleMap2TransitionTrigger();
 		}
 	}
 	
+	private void handleMap2TransitionTrigger() {
+		System.out.println("Map transition triggered");
+		map2Transition.isTriggered = true;
+		gp.currentMap = 1;
+		gp.player.worldX = 100;
+		gp.player.worldY = 300;
+	}
+
 	private Boolean eventShouldFire(Rectangle rec2) {
-		Boolean shouldTrigger = false;
-		
 		Rectangle rec1 = gp.player.getSolidAreaRelativeToWorld();
 		
 		if (rec1.intersects(rec2)) return true;
 			
-		return shouldTrigger;
-	}
-	
-	private void handleGunInteraction() {
-		gunTrigger.isTriggered = true;
-		System.out.println("interacted with a gun");
+		return false;
 	}
 
 }

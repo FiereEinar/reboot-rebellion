@@ -17,15 +17,16 @@ public class TileManager implements Renderable {
 
 	GamePanel gp;
 	private Tile[] tiles;
-	private int[][] map;
+	private int[][][] map;
 
 	public TileManager(GamePanel gp) {
 		this.gp = gp;
 		this.tiles = new Tile[20];
-		this.map = new int[gp.worldCol][gp.worldRow];
+		this.map = new int[gp.MAX_MAPS][gp.worldCol][gp.worldRow];
 
 		loadTiles();
-		loadMap();
+		loadMap("/maps/map5.txt", 0);
+		loadMap("/maps/map4.txt", 1);
 	}
 
 	private void loadTiles() {
@@ -72,9 +73,9 @@ public class TileManager implements Renderable {
 		}
 	}
 
-	private void loadMap() {
+	private void loadMap(String filepath, int mapIndex) {
 		try {
-			InputStream is = getClass().getResourceAsStream("/maps/map5.txt");
+			InputStream is = getClass().getResourceAsStream(filepath);
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
 			int row = 0;
@@ -85,7 +86,7 @@ public class TileManager implements Renderable {
 				String[] numbers = line.split(" ");
 
 				while (col < gp.worldCol) {
-					map[col][row] = Integer.parseInt(numbers[col]);
+					map[mapIndex][col][row] = Integer.parseInt(numbers[col]);
 					col++;
 				}
 
@@ -108,9 +109,11 @@ public class TileManager implements Renderable {
 		g2.setColor(Color.BLACK);
 		g2.fillRect(0, 0, gp.fullScreenWidth, gp.fullScreenHeight);
 		
-		for (int i = 0; i < map.length; i++) {
-			for (int j = 0; j < map[i].length; j++) {
-				BufferedImage image = tiles[map[i][j]].getSprite();
+		int[][] currentMap = map[gp.currentMap];
+		
+		for (int i = 0; i < currentMap.length; i++) {
+			for (int j = 0; j < currentMap[i].length; j++) {
+				BufferedImage image = tiles[currentMap[i][j]].getSprite();
 
 				int worldX = i * GamePanel.TILE_SIZE;
 				int worldY = j * GamePanel.TILE_SIZE;
@@ -128,7 +131,7 @@ public class TileManager implements Renderable {
 		if (col < 0 || row < 0 || col >= gp.worldCol || row >= gp.worldRow)
 			return 0;
 		
-		return map[col][row];
+		return map[gp.currentMap][col][row];
 	}
 
 	public Boolean isTileSolid(int tileIndex) {
@@ -136,7 +139,7 @@ public class TileManager implements Renderable {
 	}
 	
 	public int [][] getMap() {
-		return this.map;
+		return this.map[gp.currentMap];
 	}
 
 }

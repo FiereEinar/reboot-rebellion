@@ -31,21 +31,21 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public int screenWidth = col * TILE_SIZE;
 	public int screenHeight = row * TILE_SIZE;
+	public int currentMap = 0;
 
 	public final int FPS = 60;
-
 	public final int worldCol = 50;
 	public final int worldRow = 50;
 	public final int worldWidth = worldCol * TILE_SIZE;
 	public final int worldHeight = worldRow * TILE_SIZE;
-	
+	public final int MAX_MAPS = 10;
+
 	public int fullScreenWidth = screenWidth;
 	public int fullScreenHeight = screenHeight;
 
 	private Thread thread = null;
 	private BufferedImage imageScreen;
 	private Graphics2D g2;
-
 	public KeyHandler keys = new KeyHandler(this);
 	public MouseHandler mouse = new MouseHandler(this);
 	public Player player;
