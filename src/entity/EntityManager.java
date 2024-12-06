@@ -25,20 +25,20 @@ public class EntityManager implements Renderable {
 	}
 	
 	private void initEnemies() {
-		int enemyCount = 1;
+		int enemyCount = 10;
 		
 		for (int i = 0; i < enemyCount; i++) {
 			int rand = (int) Math.floor(Math.random() * 3);
 			
 			Random random = new Random();
-//			int randX = random.nextInt(gp.worldWidth);
-//			int randY = random.nextInt(gp.worldHeight);
-			int randX = 11 * 48;
-			int randY = 11 * 48;
+			int randX = random.nextInt(gp.worldWidth);
+			int randY = random.nextInt(gp.worldHeight);
+//			int randX = 1200 / 48;
+//			int randY = 345 / 48;
 			
-			if (i % 20 == 0) {
-				entities.add(new ENM_Boss_1(gp, randX, randY));
-			}
+//			if (i % 20 == 0) {
+//				entities.add(new ENM_Boss_1(gp, randX, randY));
+//			}
 			
 			if (rand == 0) {
 				entities.add(new ENM_Ranger_1(gp, randX, randY));

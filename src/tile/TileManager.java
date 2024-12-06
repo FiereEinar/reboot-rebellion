@@ -8,10 +8,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
+import entity.Player;
 import entity.Vector2;
 import main.GamePanel;
 import main.Renderable;
 import main.Utils;
+import pathfinder.Node;
 
 public class TileManager implements Renderable {
 
@@ -121,6 +123,21 @@ public class TileManager implements Renderable {
 					g2.drawImage(image, screenX, screenY, null);
 				}
 			}
+		}
+		
+		g2.setColor(new Color(255, 0, 0, 70));
+		
+		for (int i = 0; i < gp.pathFinder.pathList.size(); i++) {
+			Node curr = gp.pathFinder.pathList.get(i);
+			Player player = gp.player;
+			int tileSize = GamePanel.TILE_SIZE;
+			
+			int worldX = curr.position.x * tileSize;
+			int worldY = curr.position.y * tileSize;
+			int screenX = worldX - player.worldX + player.screenX;
+			int screenY = worldY - player.worldY + player.screenY;
+			
+			g2.fillRect(screenX, screenY, tileSize, tileSize);
 		}
 	}
 

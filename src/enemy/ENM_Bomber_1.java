@@ -20,7 +20,8 @@ public class ENM_Bomber_1 extends Enemy {
 		this.setSpeed(4);
 		this.setDirection("down");
 
-		this.setSolidArea(new Rectangle(6, 0, 48, 48));
+//		this.setSolidArea(new Rectangle(6, 0, 48, 48));
+		this.setSolidArea(new Rectangle(16, 16, 32, 32));
 		int halfTile = GamePanel.TILE_SIZE / 2;
 		int attackRangeWidth = GamePanel.TILE_SIZE * 2;
 		int attackRangeHeight= GamePanel.TILE_SIZE * 2;

@@ -22,7 +22,8 @@ public class Entity extends BaseEntity implements Renderable {
 	public int actionLockCounter = 0;
 	public Boolean isPlayer = false;
 	public Boolean isDead = false;
-	
+	protected Boolean lockToPlayer = true;
+
 	public StateManager state = new StateManager();
 	public SpriteManager sprite = new SpriteManager(this);
 	public Rectangle attackDetectionRange = new Rectangle(0, 0, DETECTION_RANGE_WIDTH, DETECTION_RANGE_HEIGHT);
@@ -139,6 +140,95 @@ public class Entity extends BaseEntity implements Renderable {
 			if ((this.worldX + this.getSpeed()) > gp.worldWidth)
 				return;
 			this.worldX += this.getSpeed();
+		}
+	}
+	
+	protected void moveToPlayer() {
+	    if (movementDisabled) return;
+
+	    Vector2 playerVector = new Vector2();
+	    playerVector.x = (gp.player.worldX + gp.player.getSolidArea().x) / GamePanel.TILE_SIZE;
+	    playerVector.y = (gp.player.worldY + gp.player.getSolidArea().y) / GamePanel.TILE_SIZE;
+	    
+	    searchPath(playerVector);
+//	    moveTowards(playerVector);
+	}
+	
+	private void moveTowards(Vector2 targetWorldPos) {
+	    Boolean isFartherFromX = Math.abs(this.worldX - targetWorldPos.x) > Math.abs(this.worldY - targetWorldPos.y);
+
+	    if (isFartherFromX) {
+	        if (this.worldX - getSpeed() > targetWorldPos.x) {
+	            setDirection("left");
+	        } else if (this.worldX + getSpeed() < targetWorldPos.x) {
+	            setDirection("right");
+	        }
+	    } else {
+	        if (this.worldY - getSpeed() > targetWorldPos.y) {
+	            setDirection("up");
+	        } else if (this.worldY + getSpeed() < targetWorldPos.y) {
+	            setDirection("down");
+	        }
+	    }
+	}
+	
+	public void searchPath(Vector2 goal) {
+		int tileSize = GamePanel.TILE_SIZE;
+		
+		Vector2 start = new Vector2();
+		start.x = (worldX + getSolidArea().x) / tileSize;
+		start.y = (worldY + getSolidArea().y) / tileSize;
+		
+		gp.pathFinder.setNodes(start, goal);
+		
+		if (gp.pathFinder.search()) {
+			Vector2 nextPos = gp.pathFinder.pathList.get(0).position;
+			
+			int nextX = nextPos.x * tileSize;
+			int nextY = nextPos.y * tileSize;
+			
+			int enLeftX = worldX + getSolidArea().x;
+			int enRightX = worldX + getSolidArea().x + getSolidArea().width;
+			int enTopY = worldY + getSolidArea().y;
+			int enBottomY = worldY + getSolidArea().y + getSolidArea().height;
+			
+			if (enTopY > nextY && enLeftX >= nextX && enRightX < nextX + tileSize) {
+				setDirection("up");
+			}
+			else if (enTopY < nextY && enLeftX >= nextX && enRightX < nextX + tileSize) {
+				setDirection("down");
+			}
+			else if (enTopY >= nextY && enBottomY < nextY + tileSize) {
+				if (enLeftX > nextX) setDirection("left");
+				if (enLeftX < nextX) setDirection("right");
+			}
+			else if (enTopY > nextY && enLeftX > nextX) {
+				setDirection("up");
+				checkWorldCollision();
+				if (movementDisabled) setDirection("left");
+			}
+			else if (enTopY > nextY && enLeftX < nextX) {
+				setDirection("up");
+				checkWorldCollision();
+				if (movementDisabled) setDirection("right");
+			}
+			else if (enTopY < nextY && enLeftX > nextX) {
+				setDirection("down");
+				checkWorldCollision();
+				if (movementDisabled) setDirection("left");
+			}
+			else if (enTopY < nextY && enLeftX < nextX) {
+				setDirection("down");
+				checkWorldCollision();
+				if (movementDisabled) setDirection("right");
+			}
+			
+			Vector2 next = gp.pathFinder.pathList.get(0).position;
+			if (next.x == goal.x && next.y == goal.y) {
+				// do something when it reaches the goal
+			}
+		} else {
+			moveTowards(goal.mul(tileSize));
 		}
 	}
 

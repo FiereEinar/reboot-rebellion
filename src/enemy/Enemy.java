@@ -3,29 +3,20 @@ package enemy;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 import java.util.Random;
 
 import entity.Entity;
-import entity.Player;
 import entity.Vector2;
 import main.GamePanel;
 import object.OBJ_Ammo;
 import object.OBJ_Heart;
-import states.State;
 
 public class Enemy extends Entity {
 
-	private Boolean lockToPlayer = true;
 	private Rectangle attackRange = new Rectangle(0, 0, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
-	private ArrayList<Vector2> paths;
-	private Vector2 lastPlayerPosition;
-	private static final int PATH_RECALCULATION_INTERVAL = 120;
-	private State recalculatPathCooldown = new State(PATH_RECALCULATION_INTERVAL);
 	
 	public Enemy(GamePanel gp) {
 		super(gp);
-		this.paths = new ArrayList<Vector2>();
 	}
 
 	public Rectangle getAttackRange() {
@@ -114,50 +105,6 @@ public class Enemy extends Entity {
 		}
 	}
 
-	protected void moveToPlayer() {
-	    if (movementDisabled) return;
-
-	    Player player = gp.player;
-
-	    int tileSize = GamePanel.TILE_SIZE;
-	    Vector2 currentEnemyTile = new Vector2((int) Math.floor(worldX / tileSize), (int) Math.floor(worldY / tileSize));
-	    Vector2 currentPlayerTile = new Vector2((int) Math.floor(player.worldX / tileSize), (int) Math.floor(player.worldY / tileSize));
-
-	    // Recalculate only if cooldown is complete or player has moved significantly
-	    if (!recalculatPathCooldown.getState() || lastPlayerPosition == null) {
-	        paths = gp.pathFinder.pathFind(currentEnemyTile, currentPlayerTile); // Get new path
-	        lastPlayerPosition = currentPlayerTile; // Update cached player position
-	        recalculatPathCooldown.setState(true); // Start cooldown
-	    }
-
-	    if (paths.isEmpty()) return; // No valid path found
-
-	    // Determine the next step in the path
-	    Vector2 targetTile = paths.size() > 1 ? paths.get(1) : currentPlayerTile;
-	    Vector2 targetWorldPos = new Vector2(targetTile.x * tileSize, targetTile.y * tileSize);
-
-	    // Move towards target
-	    moveTowards(targetWorldPos);
-	}
-	
-	private void moveTowards(Vector2 targetWorldPos) {
-	    Boolean isFartherFromX = Math.abs(this.worldX - targetWorldPos.x) > Math.abs(this.worldY - targetWorldPos.y);
-
-	    if (isFartherFromX) {
-	        if (this.worldX - getSpeed() > targetWorldPos.x) {
-	            setDirection("left");
-	        } else if (this.worldX + getSpeed() < targetWorldPos.x) {
-	            setDirection("right");
-	        }
-	    } else {
-	        if (this.worldY - getSpeed() > targetWorldPos.y) {
-	            setDirection("up");
-	        } else if (this.worldY + getSpeed() < targetWorldPos.y) {
-	            setDirection("down");
-	        }
-	    }
-	}
-
 	// override this when extending to have specific attacks
 	protected void attack() {
 	}
@@ -203,7 +150,6 @@ public class Enemy extends Entity {
 		updateDirection();
 		checkWorldCollision();
 		updateCoordinates();
-		recalculatPathCooldown.update();
 	}
 
 	@Override
