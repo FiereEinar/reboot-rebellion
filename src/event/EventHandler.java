@@ -3,6 +3,7 @@ package event;
 import java.awt.Rectangle;
 
 import main.GamePanel;
+import main.GamePanel.LIGHTING;
 
 public class EventHandler {
 	
@@ -35,6 +36,7 @@ public class EventHandler {
 		gp.currentMap = 1;
 		gp.player.worldX = 100;
 		gp.player.worldY = 300;
+		gp.lightingState = LIGHTING.DARK;
 	}
 	
 	private Boolean eventCanTrigger(EventState event) {

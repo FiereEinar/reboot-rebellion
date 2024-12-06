@@ -13,6 +13,7 @@ import entity.EntityManager;
 import pathfinder.PathFinder;
 import entity.Player;
 import entity.Vector2;
+import environment.EnvironmentManager;
 import event.EventHandler;
 import object.ObjectManager;
 import tile.TileManager;
@@ -55,6 +56,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public EventHandler eh = new EventHandler(this);
 	private Debug debug = new Debug(this);
 	public PathFinder pathFinder = new PathFinder(this);
+	EnvironmentManager envManager = new EnvironmentManager(this);
 	private Graphics2D g2;
 	public Player player;
 	
@@ -63,6 +65,13 @@ public class GamePanel extends JPanel implements Runnable {
 	public static final int STATE_PAUSE = 1;
 	public static final int STATE_PLAY = 2;
 	public static final int STATE_DIALOGUE = 3;
+	
+	public enum LIGHTING {
+		DARK,
+		LIGHT
+	}
+	
+	public LIGHTING lightingState;
 
 	public GamePanel() {
 		this.setBackground(Color.BLACK);
@@ -77,6 +86,7 @@ public class GamePanel extends JPanel implements Runnable {
 	
 	private void setupGame() {
 		gameState = STATE_MENU_SCREEN;
+		lightingState = LIGHTING.LIGHT;
 		imageScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
 		g2 = (Graphics2D) imageScreen.getGraphics();
 		
@@ -85,6 +95,7 @@ public class GamePanel extends JPanel implements Runnable {
         fullScreenHeight = screenSize.height;
         
         player = new Player(this, keys);
+        envManager.setup();
 	}
 
 	public void startGameThread() {
@@ -145,6 +156,7 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 
 		debug.draw(g2);
+		envManager.draw(g2);
 		ui.draw(g2);
 	}
 	
