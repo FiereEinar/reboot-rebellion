@@ -70,9 +70,6 @@ public class PathFinder {
 		int row = 0;
 		int col = 0;
 		
-		System.out.println("START: " + start.x + " | " + start.y);
-		System.out.println("GOAL: " + goal.x + " | " + goal.y);
-		
 		if (start.x > gp.worldCol - 1) start.x = gp.worldCol - 1;
 		if (start.y > gp.worldRow - 1) start.y = gp.worldRow - 1;
 		if (goal.x > gp.worldCol - 1) goal.x = gp.worldCol - 1;

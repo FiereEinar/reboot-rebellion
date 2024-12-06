@@ -36,9 +36,9 @@ public class EntityManager implements Renderable {
 //			int randX = 1200 / 48;
 //			int randY = 345 / 48;
 			
-//			if (i % 20 == 0) {
-//				entities.add(new ENM_Boss_1(gp, randX, randY));
-//			}
+			if (i % 20 == 0) {
+				entities.add(new ENM_Boss_1(gp, randX, randY));
+			}
 			
 			if (rand == 0) {
 				entities.add(new ENM_Ranger_1(gp, randX, randY));

@@ -46,7 +46,7 @@ public class Player extends Entity {
 		this.setSpeed(5);
 		this.setDirection("right");
 
-		this.setSolidArea(new Rectangle(10, 16, 28, 28));
+		this.setSolidArea(new Rectangle(6, 10, 28, 28));
 
 		loadSprites();
 		updateSpritesInterval();

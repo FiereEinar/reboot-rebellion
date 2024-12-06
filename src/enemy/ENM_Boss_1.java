@@ -191,7 +191,8 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	
 	@Override
 	protected void attack() {
-		moveToPlayer();
+//		moveToPlayer();
+		moveTowards(new Vector2(gp.player.worldX, gp.player.worldY));
 		
 		if (secondAttackCount < MAX_SECOND_ATTACK_COUNT) {
 			startSecondAttack();

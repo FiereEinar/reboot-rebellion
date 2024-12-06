@@ -8,8 +8,10 @@ import java.awt.Rectangle;
 
 import enemy.Enemy;
 import entity.Entity;
+import entity.Player;
 import entity.Vector2;
 import object.GameObject;
+import pathfinder.Node;
 import projectiles.Projectile;
 
 public class Debug implements Renderable {
@@ -64,6 +66,23 @@ public class Debug implements Renderable {
 				
 				g2.draw(rec);
 			}
+
+			// pathfinding guide
+			g2.setColor(new Color(255, 0, 0, 70));
+			
+			for (int i = 0; i < gp.pathFinder.pathList.size(); i++) {
+				Node curr = gp.pathFinder.pathList.get(i);
+				Player player = gp.player;
+				int tileSize = GamePanel.TILE_SIZE;
+				
+				int worldX = curr.position.x * tileSize;
+				int worldY = curr.position.y * tileSize;
+				int screenX = worldX - player.worldX + player.screenX;
+				int screenY = worldY - player.worldY + player.screenY;
+				
+				g2.fillRect(screenX, screenY, tileSize, tileSize);
+			}
+
 		}
 	}
 

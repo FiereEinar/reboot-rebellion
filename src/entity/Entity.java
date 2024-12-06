@@ -154,7 +154,7 @@ public class Entity extends BaseEntity implements Renderable {
 //	    moveTowards(playerVector);
 	}
 	
-	private void moveTowards(Vector2 targetWorldPos) {
+	protected void moveTowards(Vector2 targetWorldPos) {
 	    Boolean isFartherFromX = Math.abs(this.worldX - targetWorldPos.x) > Math.abs(this.worldY - targetWorldPos.y);
 
 	    if (isFartherFromX) {

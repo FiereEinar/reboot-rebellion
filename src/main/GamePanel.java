@@ -81,10 +81,8 @@ public class GamePanel extends JPanel implements Runnable {
 		g2 = (Graphics2D) imageScreen.getGraphics();
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        fullScreenWidth = screenWidth;
-        fullScreenHeight = screenHeight;
-//        fullScreenWidth = screenSize.width;
-//        fullScreenHeight = screenSize.height;
+        fullScreenWidth = screenSize.width;
+        fullScreenHeight = screenSize.height;
         
         player = new Player(this, keys);
 	}

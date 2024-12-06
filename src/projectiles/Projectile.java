@@ -2,14 +2,12 @@ package projectiles;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 
 import entity.BaseEntity;
 import entity.Entity;
 import entity.Vector2;
 import main.GamePanel;
 import main.Renderable;
-import main.Utils;
 import sprite.Sprite;
 
 public abstract class Projectile extends BaseEntity implements Renderable {
