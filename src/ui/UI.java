@@ -132,8 +132,6 @@ public class UI implements Renderable {
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 		
 		g2.setColor(Color.BLUE);
-//		g2.drawRect(rec1X, rec1Y, rec1Width, rec1Height);
-//		g2.drawRect(rec2X, rec1Y, rec1Width, rec1Height);
 		
 		GunObject slot1Gun = gp.player.inventory.getGunByIndex(Inventory.GUN_SLOT_1);
 		if (slot1Gun != null) {
@@ -154,6 +152,7 @@ public class UI implements Renderable {
 			g2.setColor(Color.WHITE);
 			g2.setFont(extraSmallText);
 			g2.drawString(slot1Gun.getCurrentMag() + "/" + slot1Gun.getReservedAmmo(), rec1X + 5, rec1Y + rec1Height - 5);
+			g2.drawString("1", rec1X + 5, rec1Y + 10);
 		}
 		
 		GunObject slot2Gun = gp.player.inventory.getGunByIndex(Inventory.GUN_SLOT_2);
@@ -175,6 +174,7 @@ public class UI implements Renderable {
 			g2.setColor(Color.WHITE);
 			g2.setFont(extraSmallText);
 			g2.drawString(slot2Gun.getCurrentMag() + "/" + slot2Gun.getReservedAmmo(), rec2X + 5, rec1Y + rec1Height - 5);
+			g2.drawString("2", rec2X + 5, rec1Y + 10);
 		}
 	}
 	

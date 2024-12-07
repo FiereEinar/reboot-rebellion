@@ -40,10 +40,18 @@ public class EntityManager implements Renderable {
 			int rand = (int) Math.floor(Math.random() * 3);
 			
 			Random random = new Random();
-			int randX = random.nextInt(gp.worldWidth);
-			int randY = random.nextInt(gp.worldHeight);
-//			int randX = 1200 / 48;
-//			int randY = 345 / 48;
+			
+			int randX;
+			int randY;
+			
+			while(true) {
+				randX = random.nextInt(gp.worldWidth);
+				randY = random.nextInt(gp.worldHeight);
+				
+				if (!gp.tm.isTileSolid(gp.tm.getMapTileNumber(randX, randY))) {
+					break;
+				}
+			}
 			
 			if (i % 20 == 0) {
 				entities.get(map).add(new ENM_Boss_1(gp, randX, randY));
