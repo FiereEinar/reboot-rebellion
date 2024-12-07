@@ -41,6 +41,10 @@ public class Inventory {
 		return this.arsenal;
 	}
 	
+	public Boolean isGunSelected(int gunIndex) {
+		return selectedGun == gunIndex;
+	}
+	
 	public void update() {
 		for (GunObject g: arsenal) {
 			g.update();

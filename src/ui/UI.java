@@ -211,7 +211,7 @@ public class UI implements Renderable {
 	private void drawWeaponState() {
 		GunObject slot1Gun = gp.player.inventory.getGunByIndex(Inventory.GUN_SLOT_1);
 		if (slot1Gun != null) {
-			if (slot1Gun.reloading.getState()) {
+			if (slot1Gun.reloading.getState() && gp.player.inventory.isGunSelected(Inventory.GUN_SLOT_1)) {
 				setProgressText("Reloading...");
 				drawProgressTextBar(slot1Gun.reloading.getStateDuration(), slot1Gun.reloading.getCounter());
 			}
@@ -219,7 +219,7 @@ public class UI implements Renderable {
 		
 		GunObject slot2Gun = gp.player.inventory.getGunByIndex(Inventory.GUN_SLOT_2);
 		if (slot2Gun != null) {
-			if (slot2Gun.reloading.getState()) {
+			if (slot2Gun.reloading.getState() && gp.player.inventory.isGunSelected(Inventory.GUN_SLOT_2)) {
 				setProgressText("Reloading...");
 				drawProgressTextBar(slot2Gun.reloading.getStateDuration(), slot2Gun.reloading.getCounter());
 			}
