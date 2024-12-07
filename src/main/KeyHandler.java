@@ -81,13 +81,13 @@ public class KeyHandler implements KeyListener {
 		}
 		
 		if (code == KeyEvent.VK_ENTER) {
-			if (gp.ui.selectedMenuNum == gp.ui.MENU_OPTION_START) {
-				gp.gameState = GamePanel.STATE_PLAY;
-			}
-			
-			if (gp.ui.selectedMenuNum == gp.ui.MENU_OPTION_EXIT && gp.gameState == GamePanel.STATE_MENU_SCREEN) {
-				System.exit(0);
-			}
+//			if (gp.ui.selectedMenuNum == gp.ui.MENU_OPTION_START) {
+//				gp.gameState = GamePanel.STATE_PLAY;
+//			}
+//			
+//			if (gp.ui.selectedMenuNum == gp.ui.MENU_OPTION_EXIT && gp.gameState == GamePanel.STATE_MENU_SCREEN) {
+//				System.exit(0);
+//			}
 		}
 		
 		if (code == KeyEvent.VK_1) {

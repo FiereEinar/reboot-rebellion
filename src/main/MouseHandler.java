@@ -35,8 +35,18 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 	public void mousePressed(MouseEvent e) {
 		mouseX = e.getX();
         mouseY = e.getY();
+        
 		if (e.getButton() == MouseEvent.BUTTON1) {
-			SHOOTING = true;
+			if (gp.gameState == GamePanel.STATE_MENU_SCREEN) {
+				if (gp.ui.startButtonHovered) {
+					gp.gameState = GamePanel.STATE_PLAY;
+				}
+				if (gp.ui.exitButtonHovered) {
+					System.exit(0);
+				}
+			} else {
+				SHOOTING = true;
+			}
 		}
 	}
 

@@ -166,7 +166,7 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 	
 	public Boolean isInPlayerView(Vector2 position) {
-		int offset = TILE_SIZE;
+		int offset = TILE_SIZE * 4;
 		
 		Boolean isInView = position.x + offset > player.worldX - player.screenX
 			&& position.x - offset < player.worldX + player.screenX

@@ -35,6 +35,9 @@ public class UI implements Renderable {
 	public static int START_BUTTON = 0;
 	public static int EXIT_BUTTON = 1;
 	
+	public Boolean startButtonHovered = false;
+	public Boolean exitButtonHovered = false;
+	
 	public UI(GamePanel gp) {
 		this.gp = gp;
 		
@@ -63,30 +66,57 @@ public class UI implements Renderable {
 	}
 	
 	private void menuScreenHandler() {
-		g2.setFont(normalBoldText);
-		
-		g2.setColor(new Color(51, 153, 255));
-		g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
-		
-		g2.drawImage(background.image.getSprite(), 0, 0, gp.screenWidth, gp.screenHeight, null);
-		
-		int x, y = 0;
-		
-		g2.setFont(normalText);
-		
-		BufferedImage startButton = buttons.image.getSpriteByIndex(UI.START_BUTTON);
-		x = gp.screenWidth / 2 - startButton.getWidth() / 2;
-		y = GamePanel.TILE_SIZE * 4;
-		g2.drawImage(startButton, x, y, null);
-		if (selectedMenuNum == MENU_OPTION_START) drawTextWithShadow(">", x - GamePanel.TILE_SIZE / 2, y + 64);
-		
-		BufferedImage exitButton = buttons.image.getSpriteByIndex(UI.EXIT_BUTTON);
-		x = gp.screenWidth / 2 - exitButton.getWidth() / 2;
-		y = GamePanel.TILE_SIZE * 5 + 16;
-		g2.drawImage(exitButton, x, y, null);
-		if (selectedMenuNum == MENU_OPTION_EXIT) drawTextWithShadow(">", x - GamePanel.TILE_SIZE / 2, y + 64);
+	    g2.setFont(normalBoldText);
+
+	    // Draw background
+	    g2.setColor(new Color(51, 153, 255));
+	    g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+	    g2.drawImage(background.image.getSprite(), 0, 0, gp.screenWidth, gp.screenHeight, null);
+
+	    // Mouse position
+	    double mouseX = gp.mouse.mouseX;
+	    double mouseY = gp.mouse.mouseY;
+
+	    // Button positions and sizes
+	    BufferedImage startButton = buttons.image.getSpriteByIndex(UI.START_BUTTON);
+	    int startX = gp.screenWidth / 2 - startButton.getWidth() / 2;
+	    int startFX = gp.fullScreenWidth / 2 - startButton.getWidth() / 2;
+	    int startY = (gp.screenHeight / 2 - startButton.getHeight() / 2) - GamePanel.TILE_SIZE;
+	    int startFY = (gp.fullScreenHeight / 2 - startButton.getHeight() / 2) - GamePanel.TILE_SIZE;
+	    int startWidth = startButton.getWidth();
+	    int startHeight = startButton.getHeight();
+
+	    BufferedImage exitButton = buttons.image.getSpriteByIndex(UI.EXIT_BUTTON);
+	    int exitX = gp.screenWidth / 2 - exitButton.getWidth() / 2;
+	    int exitFX = gp.fullScreenWidth / 2 - exitButton.getWidth() / 2;
+	    int exitY = (gp.screenHeight / 2 - exitButton.getHeight() / 2) + GamePanel.TILE_SIZE / 2;
+	    int exitFY = (gp.fullScreenHeight / 2 - exitButton.getHeight() / 2) + GamePanel.TILE_SIZE / 2;
+	    int exitWidth = exitButton.getWidth();
+	    int exitHeight = exitButton.getHeight();
+
+	    // Check if mouse is hovering over the Start button
+	    startButtonHovered = mouseX >= startFX && mouseX <= startFX + startWidth
+	            && mouseY >= startFY && mouseY <= startFY + startHeight;
+
+	    // Check if mouse is hovering over the Exit button
+        exitButtonHovered = mouseX >= exitFX && mouseX <= exitFX + exitWidth
+	            && mouseY >= exitFY && mouseY <= exitFY + exitHeight;
+
+	    // Draw Start button with hover effect
+	    if (startButtonHovered) {
+	        g2.drawImage(startButton, startX + 2, startY + 2, startWidth - 4, startHeight - 4, null); // Shrink effect
+	    } else {
+	        g2.drawImage(startButton, startX, startY, null);
+	    }
+
+	    // Draw Exit button with hover effect
+	    if (exitButtonHovered) {
+	        g2.drawImage(exitButton, exitX + 2, exitY + 2, exitWidth - 4, exitHeight - 4, null); // Shrink effect
+	    } else {
+	        g2.drawImage(exitButton, exitX, exitY, null);
+	    }
 	}
-	
+
 	private void dialogueScreenHandler() {
 		
 	}

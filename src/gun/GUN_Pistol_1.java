@@ -3,7 +3,7 @@ package gun;
 public class GUN_Pistol_1 extends GunObject {
 
 	public GUN_Pistol_1(int x, int y) {
-		this.damage = 5;
+		this.damage = 10;
 		this.bulletSpeed = 35;
 		this.bulletSpread = 5;
 		this.bulletMultiplier = 1;
@@ -14,7 +14,7 @@ public class GUN_Pistol_1 extends GunObject {
 		this.worldY = y;
 		
 		this.reloading.setDuration(reloadTime);
-		this.setReservedAmmo(200);
+		this.setReservedAmmo(100);
 		this.setMagSize(20);
 		this.setCurrentMag(this.getMagSize());
 		
