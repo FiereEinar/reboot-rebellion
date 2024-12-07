@@ -259,7 +259,7 @@ public class Player extends Entity {
 	protected void checkEntitiesCollision() {
 		Entity entity = gp.cd.checkEntityCollision(this);
 
-		if (entity != null && !entity.isDead) {
+		if (entity != null && !entity.isDead && entity.type == ENTITY_TYPE.ENEMY) {
 			if (!entity.state.dying.getState()) recieveDamage(entity.damage);
 		}
 	}

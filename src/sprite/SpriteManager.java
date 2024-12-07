@@ -118,6 +118,20 @@ public class SpriteManager {
 		return attackingDown2.getSprite();
 	}
 	
+	public BufferedImage getIdleSprite() {
+		assertIfShouldResetSprites();
+		
+		if (entity.getSpriteDirection().equalsIgnoreCase("left")) {
+			if (entity.state.attacked.getState()) return attackedLeft.getSprite();
+			if (entity.state.attacking.getState()) return attackingLeft.getSprite();
+			return idleLeft.getSprite();
+		} else {
+			if (entity.state.attacked.getState()) return attackedRight.getSprite();
+			if (entity.state.attacking.getState()) return attackingRight.getSprite();
+			return idleRight.getSprite();
+		}
+	}
+	
 	private BufferedImage getPlayerSprite() {
 		if (entity.getSpriteDirection().equalsIgnoreCase("left")) {
 			if (entity.state.attacked.getState()) return attackedLeft.getSprite();

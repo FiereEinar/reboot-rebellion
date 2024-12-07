@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 
 import entity.BaseEntity;
 import entity.Entity;
+import entity.Entity.ENTITY_TYPE;
 import entity.Vector2;
 import main.GamePanel;
 import main.Renderable;
@@ -78,16 +79,20 @@ public abstract class Projectile extends BaseEntity implements Renderable {
 			isDead = true;
 		}
 		
-		if (fromPlayer) {
-			Entity hitEntity = gp.cd.checkEntityCollision(this);
-			
-			if (hitEntity != null && !isDead) {
+		Entity hitEntity = gp.cd.checkEntityCollision(this);
+		
+		if (!fromPlayer) {
+			if (gp.cd.isCollidingWithPlayer(this)) {
+				gp.player.recieveDamage(damage);
+				isDead = true;
+			}
+			if (hitEntity != null && hitEntity.type == ENTITY_TYPE.NPC) {
 				hitEntity.recieveDamage(damage);
 				isDead = true;
 			}
 		} else {
-			if (gp.cd.isCollidingWithPlayer(this)) {
-				gp.player.recieveDamage(damage);
+			if (hitEntity != null && hitEntity.type == ENTITY_TYPE.ENEMY) {
+				hitEntity.recieveDamage(damage);
 				isDead = true;
 			}
 		}

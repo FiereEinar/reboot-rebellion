@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
@@ -30,6 +31,13 @@ public class Entity extends BaseEntity implements Renderable {
 
 	protected int maxHealth;
 	protected int health;
+	
+	public enum ENTITY_TYPE {
+		NPC,
+		ENEMY
+	}
+	
+	public ENTITY_TYPE type;
 
 	public Entity(GamePanel gp) {
 		this.gp = gp;
@@ -113,7 +121,7 @@ public class Entity extends BaseEntity implements Renderable {
 			this.state.attacked.setState(true);
 			if (this.health > 0) this.health -= damage;
 			if (this.health <= 0) state.dying.setState(true);
-			if (isPlayer) state.invincibility.setState(true);
+			if (isPlayer || type == ENTITY_TYPE.NPC) state.invincibility.setState(true);
 		}
 	}
 
@@ -151,7 +159,6 @@ public class Entity extends BaseEntity implements Renderable {
 	    playerVector.y = (gp.player.worldY + gp.player.getSolidArea().y) / GamePanel.TILE_SIZE;
 	    
 	    searchPath(playerVector);
-//	    moveTowards(playerVector);
 	}
 	
 	protected void moveTowards(Vector2 targetWorldPos) {
@@ -225,12 +232,31 @@ public class Entity extends BaseEntity implements Renderable {
 			}
 			
 			Vector2 next = gp.pathFinder.pathList.get(0).position;
-			if (next.x == goal.x && next.y == goal.y) {
-				// do something when it reaches the goal
+			if (next.x == goal.x && next.y == goal.y && type == ENTITY_TYPE.NPC) {
+				movementDisabled = true;
+			} else {
+				movementDisabled = false;
 			}
 		} else {
 			moveTowards(goal.mul(tileSize));
 		}
+	}
+	
+	protected Color getHealthbarColor() {
+		return Color.RED;
+	}
+
+	protected void drawHealthBar(Graphics2D g2) {
+		Vector2 screen = getScreenLocation();
+
+		double oneScale = (double) GamePanel.TILE_SIZE / maxHealth;
+		double healthBarWidth = oneScale * health;
+
+		g2.setColor(Color.GRAY);
+		g2.fillRect(screen.x - 1, screen.y - 16, GamePanel.TILE_SIZE + 2, 12);
+
+		g2.setColor(getHealthbarColor());
+		g2.fillRect(screen.x, screen.y - 15, (int) healthBarWidth, 10);
 	}
 
 	protected void checkWorldCollision() {
@@ -243,7 +269,10 @@ public class Entity extends BaseEntity implements Renderable {
 		Entity entity = gp.cd.checkEntityCollision(this);
 
 		if (entity != null) {
-			this.movementDisabled = true;
+			if (entity.type == ENTITY_TYPE.NPC) {
+				this.movementDisabled = true;
+				entity.recieveDamage(damage);
+			}
 		}
 	}	
 	

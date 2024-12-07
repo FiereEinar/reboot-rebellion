@@ -9,8 +9,10 @@ import enemy.ENM_Bomber_1;
 import enemy.ENM_Boss_1;
 import enemy.ENM_Melee_1;
 import enemy.ENM_Ranger_1;
+import entity.Entity.ENTITY_TYPE;
 import main.GamePanel;
 import main.Renderable;
+import npc.NPC_Scientist;
 import projectiles.Projectile;
 
 public class EntityManager implements Renderable {
@@ -26,6 +28,7 @@ public class EntityManager implements Renderable {
 	public EntityManager(GamePanel gp) {
 		this.gp = gp;
 		initLists();
+		spawnNPCS();
 	}
 	
 	private void initLists() {
@@ -33,6 +36,17 @@ public class EntityManager implements Renderable {
 			entities.add(new ArrayList<Entity>());
 			bullets.add(new ArrayList<Projectile>());
 		}
+	}
+	
+	private void spawnNPCS() {
+		int map = 1;
+		
+		int tileSize = GamePanel.TILE_SIZE;
+		
+		int x = 28 * tileSize;
+		int y = 5 * tileSize;
+		
+		entities.get(map).add(new NPC_Scientist(gp, x, y));
 	}
 	
 	public void addBullets(Projectile bullet) {
@@ -50,8 +64,8 @@ public class EntityManager implements Renderable {
 	public ArrayList<Projectile> getProjectiles() {
 		return this.bullets.get(gp.currentMap + 1);
 	}
-	
-	private void removeFarFromPlayerEntities() {
+
+	private void removeFarFromPlayerEnemies() {
 		Vector2 player = new Vector2(
 			gp.player.worldX,
 			gp.player.worldY
@@ -59,7 +73,7 @@ public class EntityManager implements Renderable {
 		
 		for (Entity e: getEnities()) {
 			double distance = Math.sqrt(Math.pow(e.worldX - player.x, 2) + Math.pow(e.worldY - player.y, 2));
-			if (distance > DESPAWN_RANGE) {
+			if (distance > DESPAWN_RANGE && e.type != ENTITY_TYPE.NPC) {
 			    e.isDead = true;
 			}
 		}
@@ -100,8 +114,11 @@ public class EntityManager implements Renderable {
 
         // Randomly determine the type of entity to spawn
         int rand = random.nextInt(3);
+        int boss = random.nextInt(101);
 
-//        getEnities().add(new ENM_Boss_1(gp, randX, randY)); // Adjust map index as needed
+        if (boss < 25) {
+        	getEnities().add(new ENM_Boss_1(gp, randX, randY));
+        }
         
         if (rand == 0) {
         	getEnities().add(new ENM_Ranger_1(gp, randX, randY));
@@ -115,7 +132,7 @@ public class EntityManager implements Renderable {
 
 	@Override
 	public void update() {
-		removeFarFromPlayerEntities();
+		removeFarFromPlayerEnemies();
 		
 		Iterator<Entity> iterator = getEnities().iterator();
         while (iterator.hasNext()) {

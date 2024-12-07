@@ -33,7 +33,7 @@ public class OBJ_Ammo extends GameObject {
 		GunObject gun = entity.inventory.getSelectedGun();
 		if (gun == null) return false;
 		
-		gun.increaseReservedAmmo(value);
+		gun.increaseReservedAmmo(gun.getMagSize() * 2);
 		return true;
 	}
 

@@ -31,7 +31,7 @@ public class ENM_Boss_1 extends ShootingEnemy {
 		this.worldX = x;
 		this.worldY = y;
 		
-		this.setMaxHealth(2000);
+		this.setMaxHealth(5000);
 		this.setHealth(getMaxHealth());
 
 		this.setSpeed(1);
