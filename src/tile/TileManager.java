@@ -18,15 +18,15 @@ public class TileManager implements Renderable {
 	GamePanel gp;
 	private Tile[] tiles;
 	private int[][][] map;
+	private final int MAX_TILE_AMOUNT = 750; 
 
 	public TileManager(GamePanel gp) {
 		this.gp = gp;
-		this.tiles = new Tile[20];
+		this.tiles = new Tile[MAX_TILE_AMOUNT];
 		this.map = new int[gp.MAX_MAPS][gp.worldCol][gp.worldRow];
 
 		loadTiles();
-		loadMap("/maps/map5.txt", 0);
-		loadMap("/maps/map4.txt", 1);
+		loadMap("/maps/Map_01.txt", 0);
 	}
 
 	private void loadTiles() {
@@ -36,27 +36,29 @@ public class TileManager implements Renderable {
 		
 		loadTileData(tileData);
 		
-		for (int i = 1; i < 19; i++) {
+		for (int i = 0; i <= 723; i++) {
 			
 			String index = "" + i;
 			
 			if (i < 10) {
+				index = String.format("00%d", i);
+			} else if (i < 100) {
 				index = String.format("0%d", i);
 			}
 			
-			String filename = index +  "_16tiles-Sheet.png";
+			String filename = index +  "_Tile_Set_LVL_Map.png";
 			
-			tiles[i - 1] = new Tile(utils.getAndScaleImage("/tiles/" + filename, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE));
+			tiles[i] = new Tile(utils.getAndScaleImage("/map1_tiles/" + filename, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE));
 			
 			if (Boolean.parseBoolean(tileData.get(filename))) {
-				tiles[i - 1].isSolid = true;
+				tiles[i].isSolid = true;
 			}
 		}
 	}
 	
 	private void loadTileData(HashMap<String, String> tileData) {
 		try {
-			InputStream is = getClass().getResourceAsStream("/tiles/tiledata.txt");
+			InputStream is = getClass().getResourceAsStream("/map_data/Map_1_Data.txt");
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
 			String line = "";

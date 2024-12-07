@@ -19,9 +19,9 @@ public class EventHandler {
 	}
 	
 	private void setupEvents() {
-		int map1 = 0;
-		
-		map2Transition.setCoordinate(map1, 1500, 50, GamePanel.TILE_SIZE);
+//		int map1 = 0;
+//		
+//		map2Transition.setCoordinate(map1, 1500, 50, GamePanel.TILE_SIZE);
 	}
 	
 	public void checkEvent() {

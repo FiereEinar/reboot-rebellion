@@ -3,6 +3,7 @@ package entity;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.util.Random;
 
 import main.GamePanel;
 import main.Renderable;
@@ -238,9 +239,38 @@ public class Entity extends BaseEntity implements Renderable {
 				movementDisabled = false;
 			}
 		} else {
-			moveTowards(goal.mul(tileSize));
+//			moveTowards(goal.mul(tileSize));
+			roamEntity();
 		}
 	}
+	
+	protected void roamEntity() {
+		if (state.dying.getState())
+			return;
+
+		actionLockCounter++;
+
+		if (actionLockCounter == 120) {
+			Random random = new Random();
+			int i = random.nextInt(100) + 1;
+
+			if (i <= 25) {
+				setDirection("up");
+			}
+			if (i > 25 && i <= 50) {
+				setDirection("down");
+			}
+			if (i > 50 && i <= 75) {
+				setDirection("left");
+			}
+			if (i > 75 && i <= 100) {
+				setDirection("right");
+			}
+
+			actionLockCounter = 0;
+		}
+	}
+
 	
 	protected Color getHealthbarColor() {
 		return Color.RED;

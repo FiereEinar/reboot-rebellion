@@ -6,7 +6,6 @@ import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import enemy.Enemy;
 import entity.Entity;
 import entity.Player;
 import entity.Vector2;
@@ -42,10 +41,8 @@ public class Debug implements Renderable {
 					gp.player.getSolidArea().width, gp.player.getSolidArea().height);
 			
 			// entities hitbox
-			for (Entity en: gp.em.getEnities()) {
-				Enemy e = (Enemy) en;
-				
-				Vector2 screen = en.getScreenLocation();
+			for (Entity e: gp.em.getEnities()) {
+				Vector2 screen = e.getScreenLocation();
 				g2.setColor(Color.RED);
 				g2.drawRect(screen.x + e.getSolidArea().x, screen.y + e.getSolidArea().y,
 						e.getSolidArea().width, e.getSolidArea().height);

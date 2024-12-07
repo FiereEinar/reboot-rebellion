@@ -23,7 +23,7 @@ public class EntityManager implements Renderable {
 	
 	private final int DESPAWN_RANGE = 1200;
 	private final int HALF_DESPAWN_RANGE = DESPAWN_RANGE / 2;
-	private final int MAX_ENTITY_COUNT = 5;
+	private final int MAX_ENTITY_COUNT = 100;
 	
 	public EntityManager(GamePanel gp) {
 		this.gp = gp;
@@ -114,11 +114,11 @@ public class EntityManager implements Renderable {
 
         // Randomly determine the type of entity to spawn
         int rand = random.nextInt(3);
-        int boss = random.nextInt(101);
-
-        if (boss < 25) {
-        	getEnities().add(new ENM_Boss_1(gp, randX, randY));
-        }
+//        int boss = random.nextInt(101);
+//
+//        if (boss < 25) {
+//        	getEnities().add(new ENM_Boss_1(gp, randX, randY));
+//        }
         
         if (rand == 0) {
         	getEnities().add(new ENM_Ranger_1(gp, randX, randY));

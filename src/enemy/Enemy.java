@@ -38,33 +38,6 @@ public class Enemy extends Entity {
 		}
 	}
 
-	protected void roamEntity() {
-		if (state.dying.getState())
-			return;
-
-		actionLockCounter++;
-
-		if (actionLockCounter == 120) {
-			Random random = new Random();
-			int i = random.nextInt(100) + 1;
-
-			if (i <= 25) {
-				setDirection("up");
-			}
-			if (i > 25 && i <= 50) {
-				setDirection("down");
-			}
-			if (i > 50 && i <= 75) {
-				setDirection("left");
-			}
-			if (i > 75 && i <= 100) {
-				setDirection("right");
-			}
-
-			actionLockCounter = 0;
-		}
-	}
-
 	protected Boolean isCloseToPlayer() {
 		int width = Entity.DETECTION_RANGE_WIDTH;
 		int height = Entity.DETECTION_RANGE_HEIGHT;
