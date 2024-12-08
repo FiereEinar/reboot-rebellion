@@ -11,6 +11,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		JFrame window = new JFrame();
+		window.setTitle("REBOOT REBELLION");
 		
 		GamePanel gp = new GamePanel();
 		window.add(gp);
