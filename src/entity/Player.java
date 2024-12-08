@@ -5,7 +5,6 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import gun.GUN_Pistol_1;
-import gun.GUN_Rifle;
 import gun.GunObject;
 import main.GamePanel;
 import main.Inventory;
@@ -35,8 +34,10 @@ public class Player extends Entity {
 		this.keys = keys;
 		this.isPlayer = true;
 
-		this.worldX = 2385;
-		this.worldY = 4757;
+		this.worldX = 90 * tileSize;
+		this.worldY = 4 * tileSize;
+//		this.worldX = 2385;
+//		this.worldY = 4757;
 
 		this.screenX = gp.screenWidth / 2 - (tileSize / 2);
 		this.screenY = gp.screenHeight / 2 - (tileSize / 2);

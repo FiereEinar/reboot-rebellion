@@ -71,7 +71,7 @@ public class ENM_Ranger_1 extends ShootingEnemy {
 	@Override
 	protected void attack() {
 		moveToPlayer();
-		if (this.gun.canShoot()) {
+		if (this.gun.canShoot() && hasLineOfSight()) {
 			state.attacking.setState(true);
 			movementDisabled = true;
 

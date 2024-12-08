@@ -35,6 +35,7 @@ public class Entity extends BaseEntity implements Renderable {
 	
 	public enum ENTITY_TYPE {
 		NPC,
+		BOSS,
 		ENEMY
 	}
 	
@@ -192,8 +193,8 @@ public class Entity extends BaseEntity implements Renderable {
 		int tileSize = GamePanel.TILE_SIZE;
 		
 		Vector2 start = new Vector2();
-		start.x = (worldX + getSolidArea().x) / tileSize;
-		start.y = (worldY + getSolidArea().y) / tileSize;
+		start.x = (worldX + getSolidArea().x + getSolidArea().width) / tileSize;
+		start.y = (worldY + getSolidArea().y + getSolidArea().height) / tileSize;
 		
 		gp.pathFinder.setNodes(start, goal);
 		
@@ -285,15 +286,17 @@ public class Entity extends BaseEntity implements Renderable {
 
 	protected void drawHealthBar(Graphics2D g2) {
 		Vector2 screen = getScreenLocation();
+		
+		int healthBarWidth = sprite.down.safeGetSprite().getWidth();
 
-		double oneScale = (double) GamePanel.TILE_SIZE / maxHealth;
-		double healthBarWidth = oneScale * health;
+		double oneScale = (double) healthBarWidth / maxHealth;
+		double currentHealthBarWidth = oneScale * health;
 
 		g2.setColor(Color.GRAY);
-		g2.fillRect(screen.x - 1, screen.y - 16, GamePanel.TILE_SIZE + 2, 12);
+		g2.fillRect(screen.x - 1, screen.y - 16, healthBarWidth + 2, 12);
 
 		g2.setColor(getHealthbarColor());
-		g2.fillRect(screen.x, screen.y - 15, (int) healthBarWidth, 10);
+		g2.fillRect(screen.x, screen.y - 15, (int) currentHealthBarWidth, 10);
 	}
 
 	protected void checkWorldCollision() {

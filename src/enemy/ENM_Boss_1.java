@@ -4,11 +4,12 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import entity.Entity;
 import entity.Vector2;
 import gun.GUN_EnemyWeapon;
 import main.GamePanel;
 import main.Utils;
-import projectiles.BossProjectile;
+import projectiles.GunProjectile;
 import states.State;
 
 public class ENM_Boss_1 extends ShootingEnemy {
@@ -38,19 +39,21 @@ public class ENM_Boss_1 extends ShootingEnemy {
 		this.setDirection("down");
 		
 		int tileSize = GamePanel.TILE_SIZE;
+		int halfTileSize = tileSize / 2;
 		int width = 325;
 	    int height = 294;
 	    
-		this.setSolidArea(new Rectangle(tileSize * 2, tileSize * 2, tileSize * 2, tileSize * 2));
+//		this.setSolidArea(new Rectangle(tileSize * 2, tileSize * 2, tileSize * 2, tileSize * 2));
+		this.setSolidArea(new Rectangle(tileSize * 2 + halfTileSize, tileSize * 2 + halfTileSize, tileSize - 5, tileSize - 5));
 		
-		int halfTile = tileSize / 2;
-		int attackRangeWidth = width + tileSize;
-		int attackRangeHeight= height + tileSize;
-		this.setAttackRange(new Rectangle(-halfTile, -halfTile, attackRangeWidth, attackRangeHeight));
+		this.setAttackRange(new Rectangle(0, 0, Entity.DETECTION_RANGE_WIDTH, Entity.DETECTION_RANGE_HEIGHT));
+//		this.setAttackRange(new Rectangle(-halfTile, -halfTile, attackRangeWidth, attackRangeHeight));
 		this.state.attacking.setDuration(240);
 
 		this.gun.fireRate = (float) 0.3;
 		this.secondGun.fireRate = 5;
+		
+		this.type = ENTITY_TYPE.BOSS;
 		
 		loadSprites();
 		updateSpritesInterval();
@@ -125,7 +128,7 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	        float speedY = directionY * BULLET_SPEED;
 
 	        // Spawn the bullet
-	        gp.em.addBullets(new BossProjectile(gp, centerWorldX, centerWorldY, speedX, speedY, BULLET_DAMAGE));
+	        gp.em.addBullets(new GunProjectile(gp, centerWorldX, centerWorldY, speedX, speedY, BULLET_DAMAGE));
 	    }
 
 	    gun.recordShot();
@@ -133,7 +136,7 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	}
 	
 	private void startFirstAttack() {
-		if (gun.canShoot() && !attackCooldown.getState()) {
+		if (gun.canShoot() && !attackCooldown.getState() && (hasLineOfSight() || state.attacking.getState())) {
 			currentAttack = FIRST_ATTACK;
 			state.attacking.setState(true);
 			movementDisabled = true;
@@ -170,7 +173,7 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	}
 	
 	private void startSecondAttack() {
-		if (secondGun.canShoot() && !attackCooldown.getState()) {
+		if (secondGun.canShoot() && !attackCooldown.getState() && (hasLineOfSight() || state.attacking.getState())) {
 			currentAttack = SECOND_ATTACK;
 			state.attacking.setState(true);
 			
@@ -191,8 +194,8 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	
 	@Override
 	protected void attack() {
-//		moveToPlayer();
-		moveTowards(new Vector2(gp.player.worldX, gp.player.worldY));
+		moveToPlayer();
+//		moveTowards(new Vector2(gp.player.worldX, gp.player.worldY));
 		
 		if (secondAttackCount < MAX_SECOND_ATTACK_COUNT) {
 			startSecondAttack();

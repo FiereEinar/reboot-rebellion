@@ -96,6 +96,9 @@ public class Map {
 			// objectives in the map
 			for (int i = 0; i < gp.objectives.size(); i++) {
 				Objective o = gp.objectives.get(i);
+
+				if (o.getMapIndex() != gp.currentMap) continue;
+				
 				int objX = (int) (x + o.position.x / scale);
 				int objY = (int) (y + o.position.y / scale);
 				int objSize = (int) (GamePanel.TILE_SIZE / scale) * 2;

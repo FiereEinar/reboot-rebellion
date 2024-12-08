@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.Random;
 
 import enemy.ENM_Bomber_1;
-import enemy.ENM_Boss_1;
 import enemy.ENM_Melee_1;
 import enemy.ENM_Ranger_1;
 import entity.Entity.ENTITY_TYPE;
@@ -81,7 +80,7 @@ public class EntityManager implements Renderable {
 		
 		for (Entity e: getEnities()) {
 			double distance = Math.sqrt(Math.pow(e.worldX - player.x, 2) + Math.pow(e.worldY - player.y, 2));
-			if (distance > DESPAWN_RANGE && e.type != ENTITY_TYPE.NPC) {
+			if (distance > DESPAWN_RANGE && e.type == ENTITY_TYPE.ENEMY) {
 			    e.isDead = true;
 			}
 		}
@@ -126,11 +125,6 @@ public class EntityManager implements Renderable {
         
         // Randomly determine the type of entity to spawn
         int rand = random.nextInt(3);
-//        int boss = random.nextInt(101);
-//
-//        if (boss < 25) {
-//        	getEnities().add(new ENM_Boss_1(gp, randX, randY));
-//        }
         
         if (rand == 0) {
         	getEnities().add(new ENM_Ranger_1(gp, randX, randY));

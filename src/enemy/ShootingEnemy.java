@@ -4,7 +4,6 @@ import entity.Vector2;
 import gun.GUN_EnemyWeapon;
 import gun.GunObject;
 import main.GamePanel;
-import projectiles.BossProjectile;
 import projectiles.GunProjectile;
 
 public class ShootingEnemy extends Enemy {
@@ -71,6 +70,43 @@ public class ShootingEnemy extends Enemy {
 			gp.em.addBullets(new GunProjectile(gp, start.x, start.y, speedX, speedY, BULLET_DAMAGE));
 		}
 
+	}
+	
+	public boolean hasLineOfSight() {
+		int tileSize= GamePanel.TILE_SIZE;
+		
+	    // Convert positions to tile-based coordinates
+	    int entityTileX = (int) worldX / tileSize;
+	    int entityTileY = (int) worldY / tileSize;
+	    int playerTileX = (int) gp.player.worldX / tileSize;
+	    int playerTileY = (int) gp.player.worldY / tileSize;
+
+	    // Bresenham's Line Algorithm
+	    int dx = Math.abs(playerTileX - entityTileX);
+	    int dy = Math.abs(playerTileY - entityTileY);
+	    int sx = entityTileX < playerTileX ? 1 : -1;
+	    int sy = entityTileY < playerTileY ? 1 : -1;
+	    int err = dx - dy;
+
+	    while (entityTileX != playerTileX || entityTileY != playerTileY) {
+	        // Check if the current tile is solid
+	        int tileNum = gp.tm.getMapTileNumber(entityTileX, entityTileY);
+	        if (gp.tm.isTileSolid(tileNum)) {
+	            return false; // Blocked by a solid tile
+	        }
+
+	        int e2 = 2 * err;
+	        if (e2 > -dy) {
+	            err -= dy;
+	            entityTileX += sx;
+	        }
+	        if (e2 < dx) {
+	            err += dx;
+	            entityTileY += sy;
+	        }
+	    }
+
+	    return true; // No obstruction found
 	}
 	
 	@Override
