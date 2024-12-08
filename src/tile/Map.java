@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import gun.GunObject;
 import main.GamePanel;
 
 public class Map {
@@ -74,12 +75,22 @@ public class Map {
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
 			g2.drawImage(worldMap[gp.currentMap], x, y, width, height, null);
 			
+			// player
 			double scale = (double) (GamePanel.TILE_SIZE * gp.worldCol) / width;
 			int playerX = (int) (x + gp.player.worldX / scale);
 			int playerY = (int) (y + gp.player.worldY / scale);
 			int playerSize = (int) (GamePanel.TILE_SIZE / scale) * 2;
 			g2.setColor(Color.BLUE);
 			g2.fillRect(playerX, playerY, playerSize, playerSize);
+			
+			// guns in the map
+			for (GunObject gun: gp.om.getGuns()) {
+				int gunX = (int) (x + gun.worldX / scale);
+				int gunY = (int) (y + gun.worldY / scale);
+				int gunSize = (int) (GamePanel.TILE_SIZE / scale) * 2;
+				g2.setColor(Color.YELLOW);
+				g2.fillRect(gunX, gunY, gunSize, gunSize);
+			}
 			
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 		}

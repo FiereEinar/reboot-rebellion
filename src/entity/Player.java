@@ -51,7 +51,7 @@ public class Player extends Entity {
 		this.setDirection("right");
 
 		this.setSolidArea(new Rectangle(6, 10, 28, 28));
-		this.inventory.getArsenal().add(new GUN_Rifle(worldX, worldY));
+		this.inventory.getArsenal().add(new GUN_Pistol_1(worldX, worldY));
 		
 		loadSprites();
 		updateSpritesInterval();

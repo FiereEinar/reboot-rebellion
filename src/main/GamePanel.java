@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.util.LinkedList;
 
 import javax.swing.JPanel;
 
@@ -15,6 +16,7 @@ import entity.Player;
 import entity.Vector2;
 import environment.EnvironmentManager;
 import event.EventHandler;
+import main.Objective.OBJECTIVE_TYPE;
 import object.ObjectManager;
 import tile.Map;
 import tile.TileManager;
@@ -59,6 +61,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public PathFinder pathFinder = new PathFinder(this);
 	public EnvironmentManager envManager = new EnvironmentManager(this);
 	private Map map = new Map(this);
+	public LinkedList<Objective> objectives = new LinkedList<>();
 	private Graphics2D g2;
 	public Player player;
 	
@@ -98,6 +101,10 @@ public class GamePanel extends JPanel implements Runnable {
         
         player = new Player(this, keys);
         envManager.setup();
+        
+        objectives.add(new Objective("Get the shotgun", OBJECTIVE_TYPE.MAIN, 0, 895, 4407, "main_objective_1"));
+        objectives.add(new Objective("Get the rifle", OBJECTIVE_TYPE.MAIN, 0, 3365, 2112, "main_objective_2"));
+        objectives.add(new Objective("Go to the rooftop", OBJECTIVE_TYPE.MAIN, 0, 4464, 192, "main_objective_3"));
 	}
 
 	public void startGameThread() {
