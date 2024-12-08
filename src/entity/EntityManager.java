@@ -23,7 +23,7 @@ public class EntityManager implements Renderable {
 	
 	public static final int DESPAWN_RANGE = 1200;
 	private final int HALF_DESPAWN_RANGE = DESPAWN_RANGE / 2;
-	private final int MAX_ENTITY_COUNT = 5;
+	private int maxEntityCount = 5;
 	
 	public EntityManager(GamePanel gp) {
 		this.gp = gp;
@@ -36,6 +36,14 @@ public class EntityManager implements Renderable {
 			entities.add(new ArrayList<Entity>());
 			bullets.add(new ArrayList<Projectile>());
 		}
+	}
+	
+	public int getMaxEntityCount() {
+		return maxEntityCount;
+	}
+
+	public void setMaxEntityCount(int maxEntityCount) {
+		this.maxEntityCount = maxEntityCount;
 	}
 	
 	private void spawnNPCS() {
@@ -80,7 +88,7 @@ public class EntityManager implements Renderable {
 	}
 	
 	private void spawnNewEntities() {
-		if (getEnities().size() > MAX_ENTITY_COUNT) return;
+		if (getEnities().size() > maxEntityCount) return;
 		
 		int safeZoneRadius = HALF_DESPAWN_RANGE; // Distance close to the player where entities shouldn't spawn
 		int tileSize = GamePanel.TILE_SIZE;

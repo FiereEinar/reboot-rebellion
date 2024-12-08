@@ -126,6 +126,7 @@ public class UI implements Renderable {
 		drawPlayerHealth();
 		drawPlayerWeapons();
 		drawWeaponState();
+		drawControls();
 	}
 
 	private void pausedScreenHandler() {
@@ -144,6 +145,22 @@ public class UI implements Renderable {
 		this.progressText = progressText;
 	}
 
+	private void drawControls() {
+		g2.setFont(extraSmallText);
+		g2.setColor(Color.WHITE);
+		int x = 20;
+		int y = 290;
+		
+		String movement = "WASD: Movement";
+		int height = (int)g2.getFontMetrics().getStringBounds(movement, g2).getHeight();
+		
+		g2.drawString(movement, x, y);
+		g2.drawString("R: Reload", x, y + height);
+		g2.drawString("P: Pause", x, y + height * 2);
+		g2.drawString("L: Debug Mode", x, y + height * 3);
+		g2.drawString("Left Click: Shoot", x, y + height * 4);
+		g2.drawString("1/2: Switch Weapon", x, y + height * 5);
+	}
 	
 	private void drawPlayerWeapons() {
 		g2.setFont(smallText);
@@ -259,28 +276,31 @@ public class UI implements Renderable {
 		int playerCurrentHealth = gp.player.getHealth();
 		
 		g2.setColor(new Color(0, 0, 0, 0));
+		
+		int x = 15;
+		int y = 200;
 
 		switch (playerCurrentHealth) {
 		case 6: 
-			g2.drawImage(healthbar.image.getSpriteByIndex(0), 18, 0, null);
+			g2.drawImage(healthbar.image.getSpriteByIndex(0), x, y, null);
 			break;
 		case 5: 
-			g2.drawImage(healthbar.image.getSpriteByIndex(1), 18, 0, null);
+			g2.drawImage(healthbar.image.getSpriteByIndex(1), x, y, null);
 			break;
 		case 4: 
-			g2.drawImage(healthbar.image.getSpriteByIndex(2), 18, 0, null);
+			g2.drawImage(healthbar.image.getSpriteByIndex(2), x, y, null);
 			break;
 		case 3: 
-			g2.drawImage(healthbar.image.getSpriteByIndex(3), 18, 0, null);
+			g2.drawImage(healthbar.image.getSpriteByIndex(3), x, y, null);
 			break;
 		case 2: 
-			g2.drawImage(healthbar.image.getSpriteByIndex(4), 18, 0, null);
+			g2.drawImage(healthbar.image.getSpriteByIndex(4), x, y, null);
 			break;
 		case 1: 
-			g2.drawImage(healthbar.image.getSpriteByIndex(5), 18, 0, null);
+			g2.drawImage(healthbar.image.getSpriteByIndex(5), x, y, null);
 			break;
 		default: 
-			g2.drawImage(healthbar.image.getSpriteByIndex(6), 18, 0, null);
+			g2.drawImage(healthbar.image.getSpriteByIndex(6), x, y, null);
 			break;
 		}
 	}
@@ -320,6 +340,7 @@ public class UI implements Renderable {
 		
 		if (gp.gameState == GamePanel.STATE_PAUSE) {
 			pausedScreenHandler();
+			playScreenHandler();
 		}
 		
 		if (gp.gameState == GamePanel.STATE_DIALOGUE) {

@@ -17,6 +17,7 @@ public abstract class GameObject extends BaseEntity {
 	public int type;
 	public static final int OBJ_HEART = 1;
 	public static final int OBJ_AMMO = 2;
+	public static final int OBJ_KEY = 3;
 	
 	public GameObject() {
 		this.setSolidArea(new Rectangle(0, 0, 48, 48));

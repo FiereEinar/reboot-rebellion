@@ -8,26 +8,40 @@ import main.GamePanel.LIGHTING;
 public class EventHandler {
 	
 	GamePanel gp;
-	EventState[] events;
 	// Events
 	EventState map2Transition = new EventState();
+	EventState powerdown = new EventState();
 	
 	public EventHandler(GamePanel gp) {
 		this.gp = gp;
-		this.events = new EventState[gp.MAX_MAPS];
 		setupEvents();
 	}
 	
 	private void setupEvents() {
-//		int map1 = 0;
+		int map1 = 0;
 //		
 //		map2Transition.setCoordinate(map1, 1500, 50, GamePanel.TILE_SIZE);
+		powerdown.setCoordinate(map1, 93, 4, GamePanel.TILE_SIZE);
 	}
 	
 	public void checkEvent() {
 //		if (eventCanTrigger(map2Transition)) {
 //			handleMap2TransitionTrigger();
 //		}
+		
+		if (eventCanTrigger(powerdown)) {
+			if (!powerdown.isTriggered) {
+				handlePowerdownEvent();
+			} else {
+				
+			}
+		}
+	}
+	
+	private void handlePowerdownEvent() {
+//		gp.currentMap = 2;
+		gp.lightingState = LIGHTING.DARK;
+		gp.em.setMaxEntityCount(3);
 	}
 	
 	private void handleMap2TransitionTrigger() {

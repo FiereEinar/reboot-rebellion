@@ -16,6 +16,7 @@ import entity.Vector2;
 import environment.EnvironmentManager;
 import event.EventHandler;
 import object.ObjectManager;
+import tile.Map;
 import tile.TileManager;
 import ui.UI;
 
@@ -56,7 +57,8 @@ public class GamePanel extends JPanel implements Runnable {
 	public EventHandler eh = new EventHandler(this);
 	private Debug debug = new Debug(this);
 	public PathFinder pathFinder = new PathFinder(this);
-	EnvironmentManager envManager = new EnvironmentManager(this);
+	public EnvironmentManager envManager = new EnvironmentManager(this);
+	private Map map = new Map(this);
 	private Graphics2D g2;
 	public Player player;
 	
@@ -125,23 +127,13 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	private void update() {
-//		System.out.println("UPDATING DEBUG...");
 		debug.update();
-//		System.out.println("UPDATED");
-//		System.out.println("UPDATING UI...");
 		ui.update();
-//		System.out.println("UPDATED");
 		
 		if (gameState == STATE_PLAY) {
-//			System.out.println("UPDATING OBJECT MANAGER...");
 			om.update();
-//			System.out.println("UPDATED");
-//			System.out.println("UPDATING ENTITY MANAGER...");
 			em.update();
-//			System.out.println("UPDATED");
-//			System.out.println("UPDATING PLAYER...");
 			player.update();
-//			System.out.println("UPDATED");
 		}
 
 		if (gameState == STATE_PAUSE) {
@@ -167,6 +159,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		debug.draw(g2);
 		envManager.draw(g2);
+		map.drawMiniMap(g2);
 		ui.draw(g2);
 	}
 	

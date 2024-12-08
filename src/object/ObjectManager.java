@@ -5,12 +5,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import entity.Entity;
 import entity.Vector2;
-import entity.Entity.ENTITY_TYPE;
 import entity.EntityManager;
 import gun.GUN_MachineGun;
 import gun.GUN_Pistol_1;
+import gun.GUN_Rifle;
 import gun.GUN_Shotgun;
 import gun.GUN_Sniper;
 import gun.GunObject;
@@ -38,15 +37,15 @@ public class ObjectManager implements Renderable {
 	}
 	
 	private void loadObjects() {
-		int map = 1;
-		objects.get(map).add(new OBJ_Heart(GamePanel.TILE_SIZE * 9, GamePanel.TILE_SIZE * 3));
-		objects.get(map).add(new OBJ_Ammo(GamePanel.TILE_SIZE * 9, GamePanel.TILE_SIZE * 6));
+//		int map = 1;
+//		objects.get(map).add(new OBJ_Heart(GamePanel.TILE_SIZE * 9, GamePanel.TILE_SIZE * 3));
+//		objects.get(map).add(new OBJ_Ammo(GamePanel.TILE_SIZE * 9, GamePanel.TILE_SIZE * 6));
 	}
 	
 	private void loadGuns() {
 		int map = 1;
 		guns.get(map).add(new GUN_Pistol_1(GamePanel.TILE_SIZE * 3, GamePanel.TILE_SIZE * 3));
-		guns.get(map).add(new GUN_Shotgun(GamePanel.TILE_SIZE * 3, GamePanel.TILE_SIZE * 6));
+		guns.get(map).add(new GUN_Shotgun(895, 4407));
 		guns.get(map).add(new GUN_MachineGun(GamePanel.TILE_SIZE * 6, GamePanel.TILE_SIZE * 3));
 		guns.get(map).add(new GUN_Sniper(GamePanel.TILE_SIZE * 6, GamePanel.TILE_SIZE * 6));
 	}

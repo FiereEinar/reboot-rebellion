@@ -77,10 +77,7 @@ public class ENM_Bomber_1 extends Enemy {
 		Rectangle rec2 = new Rectangle(this.worldX + range.x, this.worldY + range.y, range.width, range.height);
 		
 		if (rec1.intersects(rec2)) {
-			if (!state.attacking.getState()) {
-				state.attacking.setState(true);
-				setSpeed(getSpeed() + 1);
-			}
+			state.attacking.setState(true);
 			
 			Boolean inRangeWhileExploding = state.attacking.getCounter() == state.attacking.getStateDuration() / 2;
 			

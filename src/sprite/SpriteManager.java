@@ -132,6 +132,30 @@ public class SpriteManager {
 		}
 	}
 	
+	public BufferedImage safeGetSprite() {
+		if (entity.isPlayer && !entity.gp.keys.isMoving() && idleLeft.getSpritesSize() != 0 && idleRight.getSpritesSize() != 0) {
+			if (entity.getSpriteDirection().equalsIgnoreCase("left")) {
+				if (entity.state.attacked.getState()) return attackedLeft.safeGetSprite();
+				if (entity.state.attacking.getState()) return attackingLeft.safeGetSprite();
+				return idleLeft.safeGetSprite();
+			} else {
+				if (entity.state.attacked.getState()) return attackedRight.safeGetSprite();
+				if (entity.state.attacking.getState()) return attackingRight.safeGetSprite();
+				return idleRight.safeGetSprite();
+			}
+		}
+		
+		if (entity.getSpriteDirection().equalsIgnoreCase("left")) {
+			if (entity.state.attacked.getState()) return attackedLeft.safeGetSprite();
+			if (entity.state.attacking.getState()) return attackingLeft.safeGetSprite();
+			return left.safeGetSprite();
+		} else {
+			if (entity.state.attacked.getState()) return attackedRight.safeGetSprite();
+			if (entity.state.attacking.getState()) return attackingRight.safeGetSprite();
+			return right.safeGetSprite();
+		}
+	}
+	
 	private BufferedImage getPlayerSprite() {
 		if (entity.getSpriteDirection().equalsIgnoreCase("left")) {
 			if (entity.state.attacked.getState()) return attackedLeft.getSprite();

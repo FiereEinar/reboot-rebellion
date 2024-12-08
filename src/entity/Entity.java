@@ -129,24 +129,31 @@ public class Entity extends BaseEntity implements Renderable {
 	protected void updateCoordinates() {
 		if (this.movementDisabled || state.dying.getState() && !isPlayer)
 			return;
+		
+		Rectangle solidArea = getSolidArea();
+		
+		Boolean cantGoUp = (this.worldY - this.getSpeed()) < 0;
+		Boolean cantGoDown = (this.worldY + solidArea.height + solidArea.y + this.getSpeed()) > gp.worldHeight;
+		Boolean cantGoLeft = (this.worldX - this.getSpeed()) < 0;
+		Boolean cantGoRight = (this.worldX + solidArea.width + solidArea.x + this.getSpeed()) > gp.worldWidth;
 
 		if (this.getDirection().equalsIgnoreCase("up")) {
-			if ((this.worldY - this.getSpeed()) < 0)
+			if (cantGoUp)
 				return;
 			this.worldY -= this.getSpeed();
 		}
 		if (this.getDirection().equalsIgnoreCase("down")) {
-			if ((this.worldY + this.getSpeed()) > gp.worldHeight)
+			if (cantGoDown)
 				return;
 			this.worldY += this.getSpeed();
 		}
 		if (this.getDirection().equalsIgnoreCase("left")) {
-			if ((this.worldX - this.getSpeed()) < 0)
+			if (cantGoLeft)
 				return;
 			this.worldX -= this.getSpeed();
 		}
 		if (this.getDirection().equalsIgnoreCase("right")) {
-			if ((this.worldX + this.getSpeed()) > gp.worldWidth)
+			if (cantGoRight)
 				return;
 			this.worldX += this.getSpeed();
 		}

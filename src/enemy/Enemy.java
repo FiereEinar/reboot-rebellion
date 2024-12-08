@@ -88,10 +88,10 @@ public class Enemy extends Entity {
 		int x = rec.x + rec.width / 2;
 		int y = rec.y + rec.height / 2;
 
-		if (i <= 25) {
+		if (i <= 50) {
 			gp.om.addObject(new OBJ_Heart(x, y));
 		}
-		if (i > 25 && i <= 50) {
+		if (i > 50 && i <= 90) {
 			gp.om.addObject(new OBJ_Ammo(x, y));
 		}
 	}

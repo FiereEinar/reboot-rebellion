@@ -16,19 +16,20 @@ import main.Utils;
 public class TileManager implements Renderable {
 
 	GamePanel gp;
+	private final int TILE_COUNT = 810; 
 	private Tile[] tiles;
 	private int[][][] map;
-	private final int MAX_TILE_AMOUNT = 750; 
 
 	public TileManager(GamePanel gp) {
 		this.gp = gp;
-		this.tiles = new Tile[MAX_TILE_AMOUNT];
+		this.tiles = new Tile[TILE_COUNT + 5];
 		this.map = new int[gp.MAX_MAPS][gp.worldCol][gp.worldRow];
 
 		System.out.println("LOADING TILES...");
 		loadTiles();
 		System.out.println("LOADING MAPS...");
 		loadMap("/maps/Map_01.txt", 0);
+		loadMap("/maps/Map_3.txt", 2);
 	}
 
 	private void loadTiles() {
@@ -38,7 +39,7 @@ public class TileManager implements Renderable {
 		
 		loadTileData(tileData);
 		
-		for (int i = 0; i <= 723; i++) {
+		for (int i = 0; i <= TILE_COUNT; i++) {
 			
 			String index = "" + i;
 			
@@ -50,7 +51,7 @@ public class TileManager implements Renderable {
 			
 			String filename = index +  "_Tile_Set_LVL_Map.png";
 			
-			tiles[i] = new Tile(utils.getAndScaleImage("/map1_tiles/" + filename, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE));
+			tiles[i] = new Tile(utils.getAndScaleImage("/map_tiles/" + filename, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE));
 			
 			if (Boolean.parseBoolean(tileData.get(filename))) {
 				tiles[i].isSolid = true;
@@ -117,7 +118,12 @@ public class TileManager implements Renderable {
 		
 		for (int i = 0; i < currentMap.length; i++) {
 			for (int j = 0; j < currentMap[i].length; j++) {
-				BufferedImage image = tiles[currentMap[i][j]].getSprite();
+				int tileNum = currentMap[i][j];
+				if (gp.currentMap == 2) {
+					tileNum += 724;
+				}
+				
+				BufferedImage image = tiles[tileNum].getSprite();
 
 				int worldX = i * GamePanel.TILE_SIZE;
 				int worldY = j * GamePanel.TILE_SIZE;
@@ -137,9 +143,24 @@ public class TileManager implements Renderable {
 		
 		return map[gp.currentMap][col][row];
 	}
+	
+	public int getMapTileNumber(int mapIndex, int col, int row) {
+		if (col < 0 || row < 0 || col >= gp.worldCol || row >= gp.worldRow)
+			return 0;
+		
+		return map[mapIndex][col][row];
+	}
 
 	public Boolean isTileSolid(int tileIndex) {
 		return tiles[tileIndex].isSolid;
+	}
+	
+	public Tile getTileByIndex(int index) {
+		if (index < 0 || index > tiles.length) {
+			System.out.println("WARNING: OUT OF BOUNDS TILE INDEX");
+			return tiles[0];
+		}
+		return tiles[index];
 	}
 	
 	public int [][] getMap() {

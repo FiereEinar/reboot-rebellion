@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import gun.GUN_Pistol_1;
+import gun.GUN_Rifle;
 import gun.GunObject;
 import main.GamePanel;
 import main.Inventory;
@@ -28,17 +30,19 @@ public class Player extends Entity {
 
 	public Player(GamePanel gp, KeyHandler keys) {
 		super(gp);
+		int tileSize = GamePanel.TILE_SIZE;
+		
 		this.keys = keys;
 		this.isPlayer = true;
 
-		this.worldX = 100;
-		this.worldY = 300;
+		this.worldX = 2385;
+		this.worldY = 4757;
 
-		this.screenX = gp.screenWidth / 2 - (GamePanel.TILE_SIZE / 2);
-		this.screenY = gp.screenHeight / 2 - (GamePanel.TILE_SIZE / 2);
+		this.screenX = gp.screenWidth / 2 - (tileSize / 2);
+		this.screenY = gp.screenHeight / 2 - (tileSize / 2);
 		
-		this.fullScreenX = gp.fullScreenWidth / 2 - GamePanel.TILE_SIZE / 2;
-		this.fullScreenY = gp.fullScreenHeight / 2 - GamePanel.TILE_SIZE / 2;
+		this.fullScreenX = gp.fullScreenWidth / 2 - tileSize / 2;
+		this.fullScreenY = gp.fullScreenHeight / 2 - tileSize / 2;
 
 		this.setMaxHealth(6);
 		this.setHealth(getMaxHealth());
@@ -47,7 +51,8 @@ public class Player extends Entity {
 		this.setDirection("right");
 
 		this.setSolidArea(new Rectangle(6, 10, 28, 28));
-
+		this.inventory.getArsenal().add(new GUN_Rifle(worldX, worldY));
+		
 		loadSprites();
 		updateSpritesInterval();
 	}

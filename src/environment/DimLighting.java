@@ -40,10 +40,10 @@ public class DimLighting {
 		float[] fraction = new float[5];
 		
 		color[0] = new Color(0, 0, 0, 0f);
-		color[1] = new Color(0, 0, 0, 0.10f);
-		color[2] = new Color(0, 0, 0, 0.20f);
-		color[3] = new Color(0, 0, 0, 0.30f);
-		color[4] = new Color(0, 0, 0, 0.40f);
+		color[1] = new Color(0, 0, 0, 0.14f);
+		color[2] = new Color(0, 0, 0, 0.26f);
+		color[3] = new Color(0, 0, 0, 0.38f);
+		color[4] = new Color(0, 0, 0, 0.50f);
 		
 		fraction[0] = 0f;
 		fraction[1] = 0.25f;

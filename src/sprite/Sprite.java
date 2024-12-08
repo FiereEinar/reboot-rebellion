@@ -35,6 +35,10 @@ public class Sprite {
 		spriteCounter = 0;
 	}
 	
+	public BufferedImage safeGetSprite() {
+		return sprites.get(spriteCounter);
+	}
+	
 	public BufferedImage getSprite() {
 		if (sprites.size() == 0) {
 			System.out.println("You forgot to add some sprites you dimwit");

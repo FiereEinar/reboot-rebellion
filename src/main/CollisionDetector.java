@@ -70,7 +70,7 @@ public class CollisionDetector {
 	    int nextWorldCol = Math.round(nextX / GamePanel.TILE_SIZE);
 	    int nextWorldRow = Math.round(nextY / GamePanel.TILE_SIZE);
 
-	    if (nextWorldCol < 0 || nextWorldRow < 0 || nextWorldCol >= gp.worldWidth || nextWorldRow >= gp.worldHeight) {
+	    if (nextWorldCol < 0 || nextWorldRow < 0 || nextWorldCol > gp.worldWidth || nextWorldRow > gp.worldHeight) {
 	        return true; 
 	    }
 
