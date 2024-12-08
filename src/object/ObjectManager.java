@@ -2,9 +2,13 @@ package object;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 
+import entity.Entity;
 import entity.Vector2;
+import entity.Entity.ENTITY_TYPE;
+import entity.EntityManager;
 import gun.GUN_MachineGun;
 import gun.GUN_Pistol_1;
 import gun.GUN_Shotgun;
@@ -82,9 +86,28 @@ public class ObjectManager implements Renderable {
 	public void addObject(GameObject obj) {
 		getObjects().add(obj);
 	}
-
+	
 	@Override
 	public void update() {
+		// Get player position
+	    Vector2 player = new Vector2(gp.player.worldX, gp.player.worldY);
+	    
+	    // Iterate and update objects
+	    Iterator<GameObject> objectIterator = getObjects().iterator();
+	    while (objectIterator.hasNext()) {
+	        GameObject obj = objectIterator.next();
+	        
+	        // Mark objects as dead if far from the player
+	        double distance = Math.sqrt(Math.pow(obj.worldX - player.x, 2) + Math.pow(obj.worldY - player.y, 2));
+	        if (distance > EntityManager.DESPAWN_RANGE) {
+	            obj.isDead = true;
+	        }
+	        
+	        // Remove dead objects
+	        if (obj.isDead) {
+	            objectIterator.remove();
+	        }
+	    }
 	}
 
 	@Override

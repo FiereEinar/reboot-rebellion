@@ -110,48 +110,110 @@ public class PathFinder {
 	}
 	
 	public Boolean search() {
-		while (!goalReached && step < 500) {
-			Vector2 current = currentNode.position;
-			
-			currentNode.checked = true;
-			openList.remove(currentNode);
-			
-			if (current.y - 1 >= 0) openNode(node[current.x][current.y - 1]);
-			if (current.x - 1 >= 0) openNode(node[current.x - 1][current.y]);
-			if (current.y + 1 < gp.worldRow) openNode(node[current.x][current.y + 1]);
-			if (current.x + 1 < gp.worldCol) openNode(node[current.x + 1][current.y]);
-			
-			int bestNodeIndex = 0;
-			int bestNodefCost = 999;
-			
-			for (int i = 0; i < openList.size(); i++) {
-				Node currNode = openList.get(i);
-				
-				if (currNode.fCost < bestNodefCost) {
-					bestNodeIndex = i;
-					bestNodefCost = currNode.fCost;
-				} else if (currNode.fCost == bestNodefCost) {
-					if (currNode.gCost < openList.get(bestNodeIndex).gCost) {
-						bestNodeIndex = i;
-					}
-				}
-				
-				if (openList.size() == 0) break;
-				
-				currentNode = openList.get(bestNodeIndex);
-				
-				if (currentNode == goalNode) {
-					goalReached = true;
-					trackThePath();
-				}
-				
-				step++;
-			}
+//	    System.out.println("SEARCHING PATH....");
+	    
+	    while (!goalReached && step < 500) {
+//	        if (openList.isEmpty()) {
+//	            System.out.println("OPEN LIST EMPTY, NO PATH FOUND.");
+//	            break;
+//	        }
 
-		}
-		
-		return goalReached;
+//	        System.out.println("SEARCHING...");
+	        Vector2 current = currentNode.position;
+
+	        currentNode.checked = true;
+	        openList.remove(currentNode);
+
+	        // Open neighboring nodes
+	        if (current.y - 1 >= 0) openNode(node[current.x][current.y - 1]); // Up
+	        if (current.x - 1 >= 0) openNode(node[current.x - 1][current.y]); // Left
+	        if (current.y + 1 < gp.worldRow) openNode(node[current.x][current.y + 1]); // Down
+	        if (current.x + 1 < gp.worldCol) openNode(node[current.x + 1][current.y]); // Right
+
+	        // Find the best node to continue
+	        int bestNodeIndex = 0;
+	        int bestNodefCost = Integer.MAX_VALUE;
+
+	        for (int i = 0; i < openList.size(); i++) {
+	            Node currNode = openList.get(i);
+
+	            // Choose node with lowest fCost; if tied, choose lower gCost
+	            if (currNode.fCost < bestNodefCost || 
+	               (currNode.fCost == bestNodefCost && currNode.gCost < openList.get(bestNodeIndex).gCost)) {
+	                bestNodeIndex = i;
+	                bestNodefCost = currNode.fCost;
+	            }
+	        }
+
+	        // Update current node only if openList is not empty
+	        if (!openList.isEmpty()) {
+	            currentNode = openList.get(bestNodeIndex);
+
+	            if (currentNode == goalNode) {
+	                goalReached = true;
+	                trackThePath();
+	            }
+	        } else {
+//	            System.out.println("NO MORE NODES TO EXPLORE, EXITING.");
+	            break;
+	        }
+
+	        step++;
+	    }
+
+//	    System.out.println("EXITED SEARCH LOOP WITH RESULT: " + goalReached + " STEPS: " + step);
+
+	    return goalReached;
 	}
+
+	
+//	public Boolean search() {
+//		System.out.println("SEARCHING PATH....");
+//		while (!goalReached && step < 500) {
+//			System.out.println("SEARCHING...");
+//			Vector2 current = currentNode.position;
+//			
+//			currentNode.checked = true;
+//			openList.remove(currentNode);
+//			
+//			if (current.y - 1 >= 0) openNode(node[current.x][current.y - 1]);
+//			if (current.x - 1 >= 0) openNode(node[current.x - 1][current.y]);
+//			if (current.y + 1 < gp.worldRow) openNode(node[current.x][current.y + 1]);
+//			if (current.x + 1 < gp.worldCol) openNode(node[current.x + 1][current.y]);
+//			
+//			int bestNodeIndex = 0;
+//			int bestNodefCost = 999;
+//			
+//			for (int i = 0; i < openList.size(); i++) {
+//				Node currNode = openList.get(i);
+//				
+//				if (currNode.fCost < bestNodefCost) {
+//					bestNodeIndex = i;
+//					bestNodefCost = currNode.fCost;
+//				} else if (currNode.fCost == bestNodefCost) {
+//					if (currNode.gCost < openList.get(bestNodeIndex).gCost) {
+//						bestNodeIndex = i;
+//					}
+//				}
+//				
+//				if (openList.size() == 0) break;
+//				
+//				currentNode = openList.get(bestNodeIndex);
+//				
+//				if (currentNode == goalNode) {
+//					goalReached = true;
+//					trackThePath();
+//				}
+//				
+//				step++;
+//			}
+//
+//		}
+//		
+//		System.out.println("EXITED SEARCH LOOP WITH RESULT: " + goalReached + " STEPS: " + step);
+//		
+//		return goalReached;
+//	}
 	
 	private void openNode(Node node) {
 		if (!node.open && !node.checked && !node.solid) {

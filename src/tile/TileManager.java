@@ -25,7 +25,9 @@ public class TileManager implements Renderable {
 		this.tiles = new Tile[MAX_TILE_AMOUNT];
 		this.map = new int[gp.MAX_MAPS][gp.worldCol][gp.worldRow];
 
+		System.out.println("LOADING TILES...");
 		loadTiles();
+		System.out.println("LOADING MAPS...");
 		loadMap("/maps/Map_01.txt", 0);
 	}
 

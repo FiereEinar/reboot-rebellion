@@ -21,14 +21,14 @@ public class EntityManager implements Renderable {
 	private ArrayList<ArrayList<Entity>> entities = new ArrayList<>();
 	private ArrayList<ArrayList<Projectile>> bullets = new ArrayList<>();
 	
-	private final int DESPAWN_RANGE = 1200;
+	public static final int DESPAWN_RANGE = 1200;
 	private final int HALF_DESPAWN_RANGE = DESPAWN_RANGE / 2;
-	private final int MAX_ENTITY_COUNT = 100;
+	private final int MAX_ENTITY_COUNT = 5;
 	
 	public EntityManager(GamePanel gp) {
 		this.gp = gp;
 		initLists();
-		spawnNPCS();
+//		spawnNPCS();
 	}
 	
 	private void initLists() {
@@ -81,37 +81,41 @@ public class EntityManager implements Renderable {
 	
 	private void spawnNewEntities() {
 		if (getEnities().size() > MAX_ENTITY_COUNT) return;
-	    
+		
 		int safeZoneRadius = HALF_DESPAWN_RANGE; // Distance close to the player where entities shouldn't spawn
-
+		int tileSize = GamePanel.TILE_SIZE;
+		
 	    Vector2 player = new Vector2(gp.player.worldX, gp.player.worldY);
 
 	    Random random = new Random();
 
-        int randX, randY;
+        int randX = 0, randY = 0;
 
         while (true) {
             // Generate random positions within the DESPAWN_RANGE
             randX = player.x - HALF_DESPAWN_RANGE + random.nextInt(HALF_DESPAWN_RANGE * 2);
             randY = player.y - HALF_DESPAWN_RANGE + random.nextInt(HALF_DESPAWN_RANGE * 2);
-
-            // Check if coordinates are within map bounds
-            if (randX < 0 || randX >= gp.worldWidth || randY < 0 || randY >= gp.worldHeight) {
-                continue; // Retry if out of bounds
-            }
             
             // Ensure the spawn point is within the despawn range but outside the safe zone
             double distanceToPlayer = Math.sqrt(Math.pow(randX - player.x, 2) + Math.pow(randY - player.y, 2));
             if (distanceToPlayer >= safeZoneRadius && distanceToPlayer <= HALF_DESPAWN_RANGE) {
                 // Ensure the tile is not solid
-                if (!gp.tm.isTileSolid(gp.tm.getMapTileNumber(randX, randY))) {
-                	randX = randX - (randX % GamePanel.TILE_SIZE);
-                	randY = randY - (randY % GamePanel.TILE_SIZE);
-                    break; // Valid spawn point found
+            	int x = randX / tileSize;
+            	int y = randY / tileSize;
+            	
+            	// Check if coordinates are within map bounds
+            	if (x < 1 || x > gp.worldCol - 1 || y < 1 || y > gp.worldRow - 1) {
+            		continue; // Retry if out of bounds
+            	}
+
+            	if (!gp.tm.isTileSolid(gp.tm.getMapTileNumber(x, y))) {
+                	randX = x * tileSize;
+                	randY = y * tileSize;
+                	break; // Valid spawn point found
                 }
             }
         }
-
+        
         // Randomly determine the type of entity to spawn
         int rand = random.nextInt(3);
 //        int boss = random.nextInt(101);
@@ -137,21 +141,23 @@ public class EntityManager implements Renderable {
 		Iterator<Entity> iterator = getEnities().iterator();
         while (iterator.hasNext()) {
         	Entity entity = iterator.next();
+        	entity.update();
+
         	if (entity.isDead) {
         		iterator.remove();
-        	} 
-        	entity.update();
+        	}
         }
-        
-		Iterator<Projectile> iterator1 = getProjectiles().iterator();
+
+        Iterator<Projectile> iterator1 = getProjectiles().iterator();
         while (iterator1.hasNext()) {
         	Projectile bullet = iterator1.next();
             if (bullet.isDead) {
             	iterator1.remove();
+            } else {
+            	bullet.update();
             }
-            bullet.update();
         }
-        
+
         spawnNewEntities();
 	}
 

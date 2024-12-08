@@ -11,6 +11,7 @@ public abstract class GameObject extends BaseEntity {
 	public Sprite sprite = new Sprite();
 	public String name;
 	public Boolean isSolid = false;
+	public Boolean isDead = false;
 	public int value;
 	
 	public int type;

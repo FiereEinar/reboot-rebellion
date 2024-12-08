@@ -77,6 +77,12 @@ public class ENM_Melee_1 extends Enemy {
 		
 		if (rec1.intersects(rec2)) {
 			this.state.attacking.setState(true);
+			
+			Boolean inRangeWhileAttacking = state.attacking.getCounter() == state.attacking.getStateDuration() / 2;
+			
+			if (inRangeWhileAttacking) {
+				gp.player.recieveDamage(damage);
+			}
 		}
 	}
 

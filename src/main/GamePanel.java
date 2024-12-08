@@ -125,13 +125,23 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	private void update() {
+//		System.out.println("UPDATING DEBUG...");
 		debug.update();
+//		System.out.println("UPDATED");
+//		System.out.println("UPDATING UI...");
 		ui.update();
+//		System.out.println("UPDATED");
 		
 		if (gameState == STATE_PLAY) {
+//			System.out.println("UPDATING OBJECT MANAGER...");
 			om.update();
+//			System.out.println("UPDATED");
+//			System.out.println("UPDATING ENTITY MANAGER...");
 			em.update();
+//			System.out.println("UPDATED");
+//			System.out.println("UPDATING PLAYER...");
 			player.update();
+//			System.out.println("UPDATED");
 		}
 
 		if (gameState == STATE_PAUSE) {

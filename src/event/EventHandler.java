@@ -25,9 +25,9 @@ public class EventHandler {
 	}
 	
 	public void checkEvent() {
-		if (eventCanTrigger(map2Transition)) {
-			handleMap2TransitionTrigger();
-		}
+//		if (eventCanTrigger(map2Transition)) {
+//			handleMap2TransitionTrigger();
+//		}
 	}
 	
 	private void handleMap2TransitionTrigger() {

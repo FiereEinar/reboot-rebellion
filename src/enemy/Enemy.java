@@ -70,7 +70,7 @@ public class Enemy extends Entity {
 	}
 
 	protected void updateDirection() {
-		if (state.dying.getState())
+		if (state.dying.getState() || isDead)
 			return;
 
 		if (lockToPlayer) {
