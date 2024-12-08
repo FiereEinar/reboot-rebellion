@@ -9,7 +9,7 @@ public class EventState extends Rectangle {
 	private static final long serialVersionUID = 1L;
 
 	public Boolean isTriggered = false;
-	private int eventTriggerAreaSize = 5;
+	private int eventTriggerAreaSize = GamePanel.TILE_SIZE;
 	private int mapToTrigger;
 
 	public EventState() {

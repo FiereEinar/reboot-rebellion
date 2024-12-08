@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 
 import gun.GunObject;
 import main.GamePanel;
+import main.Objective;
 
 public class Map {
 
@@ -90,6 +91,19 @@ public class Map {
 				int gunSize = (int) (GamePanel.TILE_SIZE / scale) * 2;
 				g2.setColor(Color.YELLOW);
 				g2.fillRect(gunX, gunY, gunSize, gunSize);
+			}
+
+			// objectives in the map
+			for (int i = 0; i < gp.objectives.size(); i++) {
+				Objective o = gp.objectives.get(i);
+				int objX = (int) (x + o.position.x / scale);
+				int objY = (int) (y + o.position.y / scale);
+				int objSize = (int) (GamePanel.TILE_SIZE / scale) * 2;
+				g2.setColor(Color.MAGENTA);
+				g2.fillRect(objX, objY, objSize, objSize);
+				g2.setColor(Color.BLACK);
+				g2.setFont(gp.ui.extraSmallText);
+				g2.drawString("" + (i + 1), objX, objY);
 			}
 			
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));

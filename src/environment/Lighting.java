@@ -43,7 +43,7 @@ public class Lighting {
 		color[1] = new Color(0, 0, 0, 0.25f);
 		color[2] = new Color(0, 0, 0, 0.5f);
 		color[3] = new Color(0, 0, 0, 0.75f);
-		color[4] = new Color(0, 0, 0, 0.98f);
+		color[4] = new Color(0, 0, 0, 0.90f);
 		
 		fraction[0] = 0f;
 		fraction[1] = 0.25f;

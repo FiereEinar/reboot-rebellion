@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import gun.GunObject;
 import main.GamePanel;
 import main.Inventory;
+import main.Objective;
 import main.Renderable;
 
 public class UI implements Renderable {
@@ -16,10 +17,10 @@ public class UI implements Renderable {
 	GamePanel gp;
 	Graphics2D g2;
 
-	Font normalText;
-	Font smallText;
-	Font extraSmallText;
-	Font normalBoldText;
+	public Font normalText;
+	public Font smallText;
+	public Font extraSmallText;
+	public Font normalBoldText;
 
 	public int selectedMenuNum = 0;
 	public int menuItems = 2;
@@ -99,14 +100,10 @@ public class UI implements Renderable {
 		int rec1X = rec2X - rec1Width;
 		int rec1Y = 20;
 		
-		g2.setColor(Color.BLUE);
-		
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
 		g2.setColor(Color.BLACK);
 		g2.fillRoundRect(rec1X, rec1Y, rec1Width * 2, rec1Height, 10, 10);
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-		
-		g2.setColor(Color.BLUE);
 		
 		GunObject slot1Gun = gp.player.inventory.getGunByIndex(Inventory.GUN_SLOT_1);
 		if (slot1Gun != null) {
@@ -296,6 +293,37 @@ public class UI implements Renderable {
 	        g2.drawImage(exitButton, exitX, exitY, null);
 	    }
 	}
+	
+	private void drawObjectives() {
+		int tileSize = GamePanel.TILE_SIZE;
+		int margin = 20;
+		int width = tileSize * 3;
+		int height = tileSize * 2;
+		int x = gp.screenWidth - width - margin;
+		int y = tileSize * 2;
+		
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+		g2.setColor(Color.BLACK);
+		g2.fillRoundRect(x, y, width, height, 10, 10);
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+		
+		String header = "Objectives";
+		int headerH = (int) g2.getFontMetrics().getStringBounds(header, g2).getHeight();
+		
+		int objX = x + 5;
+		int objY = y + headerH + 5;
+		
+		g2.setColor(Color.WHITE);
+		g2.drawString(header, objX, objY);
+		
+		for (int i = 0; i < gp.objectives.size(); i++) {
+			Objective obj = gp.objectives.get(i);
+			int textH = (int) g2.getFontMetrics().getStringBounds(obj.getObjective(), g2).getHeight();
+			int gap = 3;
+			
+			g2.drawString((i + 1) + ". " + obj.getObjective(), objX, objY + (textH * (i + 1)) + gap);
+		}
+	}
 
 	/*
 	 * HANDLERS
@@ -310,6 +338,7 @@ public class UI implements Renderable {
 		drawPlayerWeapons();
 		drawWeaponState();
 		drawControls();
+		drawObjectives();
 	}
 
 	private void pausedScreenHandler() {

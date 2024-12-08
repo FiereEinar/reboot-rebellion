@@ -132,9 +132,9 @@ public class Entity extends BaseEntity implements Renderable {
 		
 		Rectangle solidArea = getSolidArea();
 		
-		Boolean cantGoUp = (this.worldY - this.getSpeed()) < 0;
+		Boolean cantGoUp = ((this.worldY + solidArea.y) - this.getSpeed()) < 0;
 		Boolean cantGoDown = (this.worldY + solidArea.height + solidArea.y + this.getSpeed()) > gp.worldHeight;
-		Boolean cantGoLeft = (this.worldX - this.getSpeed()) < 0;
+		Boolean cantGoLeft = ((this.worldX + solidArea.x) - this.getSpeed()) < 0;
 		Boolean cantGoRight = (this.worldX + solidArea.width + solidArea.x + this.getSpeed()) > gp.worldWidth;
 
 		if (this.getDirection().equalsIgnoreCase("up")) {

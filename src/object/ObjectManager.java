@@ -44,8 +44,8 @@ public class ObjectManager implements Renderable {
 	
 	private void loadGuns() {
 		int map = 1;
-		guns.get(map).add(new GUN_Shotgun(895, 4407));
-		guns.get(map).add(new GUN_Rifle(3365, 2112));
+		guns.get(map).add(new GUN_Shotgun(912, 4416));
+		guns.get(map).add(new GUN_Rifle(3360, 2112));
 //		guns.get(map).add(new GUN_Pistol_1(GamePanel.TILE_SIZE * 3, GamePanel.TILE_SIZE * 3));
 //		guns.get(map).add(new GUN_MachineGun(GamePanel.TILE_SIZE * 6, GamePanel.TILE_SIZE * 3));
 //		guns.get(map).add(new GUN_Sniper(GamePanel.TILE_SIZE * 6, GamePanel.TILE_SIZE * 6));
