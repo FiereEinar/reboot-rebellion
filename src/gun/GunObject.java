@@ -12,6 +12,7 @@ public class GunObject extends GameObject {
 	public int bulletSpeed;
 	public int bulletSpread;
 	public int bulletMultiplier;
+	public int sound;
 	public int reloadTime = 120;
 	public float fireRate;
 	private long lastShotTime;
@@ -86,8 +87,16 @@ public class GunObject extends GameObject {
 	
 	public void handleReload() {
 		int remainingAmmo = getCurrentMag();
-		setCurrentMag(getMagSize());
-		reduceReservedAmmo(getMagSize() - remainingAmmo);
+		int ammo;
+		
+		if (getReservedAmmo() < getMagSize()) {
+			ammo = getReservedAmmo();
+		} else {
+			ammo = getMagSize();
+		}
+		
+		setCurrentMag(ammo);
+		reduceReservedAmmo(ammo - remainingAmmo);
 		reloading.resetIsTriggered();
 	}
 	

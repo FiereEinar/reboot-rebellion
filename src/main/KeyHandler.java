@@ -61,8 +61,10 @@ public class KeyHandler implements KeyListener {
 			
 			if (selectedGun.getCurrentMag() == selectedGun.getMagSize()) return;
 			if (selectedGun.reloading.getState()) return;
+			if (selectedGun.getReservedAmmo() <= 0) return;
 			
 			selectedGun.reloading.setState(true);
+			gp.sound.play(Sound.GUN_RELOAD);
 		}
 		
 		if (code == KeyEvent.VK_UP || code == KeyEvent.VK_W) {
@@ -92,10 +94,12 @@ public class KeyHandler implements KeyListener {
 		
 		if (code == KeyEvent.VK_1) {
 			gp.player.inventory.setSelectedGun(Inventory.GUN_SLOT_1);
+			gp.sound.play(Sound.GUN_CLOCK);
 		}
 		
 		if (code == KeyEvent.VK_2) {
 			gp.player.inventory.setSelectedGun(Inventory.GUN_SLOT_2);
+			gp.sound.play(Sound.GUN_CLOCK);
 		}
 	}
 

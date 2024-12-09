@@ -87,7 +87,7 @@ public class EntityManager implements Renderable {
 	}
 	
 	private void spawnNewEntities() {
-		if (getEnities().size() > maxEntityCount) return;
+		if (getEnities().size() >= maxEntityCount) return;
 		
 		int safeZoneRadius = HALF_DESPAWN_RANGE; // Distance close to the player where entities shouldn't spawn
 		int tileSize = GamePanel.TILE_SIZE;

@@ -61,6 +61,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public PathFinder pathFinder = new PathFinder(this);
 	public EnvironmentManager envManager = new EnvironmentManager(this);
 	private Map map = new Map(this);
+	public Sound sound = new Sound();
 	public LinkedList<Objective> objectives = new LinkedList<>();
 	private Graphics2D g2;
 	public Player player;

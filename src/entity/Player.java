@@ -4,11 +4,14 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import gun.GUN_MachineGun;
 import gun.GUN_Pistol_1;
+import gun.GUN_Rifle;
 import gun.GunObject;
 import main.GamePanel;
 import main.Inventory;
 import main.KeyHandler;
+import main.Sound;
 import main.Utils;
 import object.GameObject;
 import projectiles.GunProjectile;
@@ -52,7 +55,8 @@ public class Player extends Entity {
 		this.setDirection("right");
 
 		this.setSolidArea(new Rectangle(6, 10, 28, 28));
-		this.inventory.getArsenal().add(new GUN_Pistol_1(worldX, worldY));
+		this.inventory.getArsenal().add(new GUN_MachineGun(worldX, worldY));
+		hitSound = Sound.PLAYER_HIT;
 		
 		loadSprites();
 		updateSpritesInterval();
@@ -110,7 +114,10 @@ public class Player extends Entity {
 		GunObject gun = inventory.getSelectedGun();
 		
 		if (!gun.hasAmmo()) {
+			if (gun.reloading.getState()) return;
+			if (gun.getReservedAmmo() <= 0) return;
 			gun.reloading.setState(true);
+			gp.sound.play(Sound.GUN_RELOAD);
 			return;
 		}
 		
@@ -153,6 +160,7 @@ public class Player extends Entity {
 		}
 
 		gun.recordShot();
+		gp.sound.play(gun.sound);
 	}
 
 	private void updateDirection() {

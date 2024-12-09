@@ -8,6 +8,7 @@ import entity.Entity;
 import entity.Vector2;
 import gun.GUN_EnemyWeapon;
 import main.GamePanel;
+import main.Sound;
 import main.Utils;
 import projectiles.GunProjectile;
 import states.State;
@@ -47,6 +48,7 @@ public class ENM_Boss_1 extends ShootingEnemy {
 		this.setSolidArea(new Rectangle(tileSize * 2 + halfTileSize, tileSize * 2 + halfTileSize, tileSize - 5, tileSize - 5));
 		
 		this.setAttackRange(new Rectangle(0, 0, Entity.DETECTION_RANGE_WIDTH, Entity.DETECTION_RANGE_HEIGHT));
+		this.attackDetectionRange = new Rectangle(0, 0, Entity.DETECTION_RANGE_WIDTH * 2, Entity.DETECTION_RANGE_HEIGHT * 2);
 //		this.setAttackRange(new Rectangle(-halfTile, -halfTile, attackRangeWidth, attackRangeHeight));
 		this.state.attacking.setDuration(240);
 
@@ -132,6 +134,7 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	    }
 
 	    gun.recordShot();
+	    gp.sound.play(gun.sound);
 	    return true;
 	}
 	
@@ -147,6 +150,7 @@ public class ENM_Boss_1 extends ShootingEnemy {
 				firstAttack();
 				attackCooldown.setState(true);
 				secondAttackCount = 0;
+				gp.sound.play(Sound.ROBOT_ATTACK_2);
 			}
 		}
 	}
@@ -190,6 +194,14 @@ public class ENM_Boss_1 extends ShootingEnemy {
 				}
 			}
 		}
+	}
+	
+	@Override
+	public Rectangle getSolidAreaRelativeToWorld() {
+		int tileSize = GamePanel.TILE_SIZE;
+		Rectangle rec = new Rectangle(worldX + tileSize * 2, worldY + tileSize * 2, tileSize * 2, tileSize * 2);
+		
+		return rec;
 	}
 	
 	@Override

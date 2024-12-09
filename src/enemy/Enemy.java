@@ -7,6 +7,7 @@ import java.util.Random;
 import entity.Entity;
 import entity.Vector2;
 import main.GamePanel;
+import main.Sound;
 import object.OBJ_Ammo;
 import object.OBJ_Heart;
 
@@ -17,6 +18,7 @@ public class Enemy extends Entity {
 	public Enemy(GamePanel gp) {
 		super(gp);
 		type = ENTITY_TYPE.ENEMY;
+		hitSound = Sound.ROBOT_HIT;
 	}
 
 	public Rectangle getAttackRange() {
@@ -39,22 +41,25 @@ public class Enemy extends Entity {
 	}
 
 	protected Boolean isCloseToPlayer() {
-		int width = Entity.DETECTION_RANGE_WIDTH;
-		int height = Entity.DETECTION_RANGE_HEIGHT;
+		int width = attackDetectionRange.width;
+		int height = attackDetectionRange.height;
 		int offsetW = width / 2;
 		int offsetH = height / 2;
+		
+		Rectangle rec1 = new Rectangle();
+		Rectangle rec2 = new Rectangle();
 
-		attackDetectionRange.x = worldX - offsetW;
-		attackDetectionRange.y = worldY - offsetH;
+		rec1.x = worldX - offsetW;
+		rec1.y = worldY - offsetH;
+		rec1.width = width;
+		rec1.height = height;
 
-		gp.player.attackDetectionRange.x = gp.player.worldX - offsetW;
-		gp.player.attackDetectionRange.y = gp.player.worldY - offsetH;
+		rec2.x = gp.player.worldX - gp.player.attackDetectionRange.width / 2;
+		rec2.y = gp.player.worldY - gp.player.attackDetectionRange.height / 2;
+		rec2.width = gp.player.attackDetectionRange.width;
+		rec2.height = gp.player.attackDetectionRange.height;
 
-		if (attackDetectionRange.intersects(gp.player.attackDetectionRange)) {
-			return true;
-		}
-
-		return false;
+		return rec1.intersects(rec2);
 	}
 
 	private void checkIfCloseToPlayer() {
@@ -88,10 +93,10 @@ public class Enemy extends Entity {
 		int x = rec.x + rec.width / 2;
 		int y = rec.y + rec.height / 2;
 
-		if (i <= 50) {
+		if (i <= 35) {
 			gp.om.addObject(new OBJ_Heart(x, y));
 		}
-		if (i > 50 && i <= 90) {
+		if (i > 35 && i <= 100) {
 			gp.om.addObject(new OBJ_Ammo(x, y));
 		}
 	}

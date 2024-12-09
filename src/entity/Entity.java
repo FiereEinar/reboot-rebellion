@@ -19,6 +19,7 @@ public class Entity extends BaseEntity implements Renderable {
 	private String direction;
 	private String spriteDirection = "left";
 	public int damage = 1;
+	public int hitSound;
 	
 	public Boolean movementDisabled = false;
 	public int actionLockCounter = 0;
@@ -120,6 +121,7 @@ public class Entity extends BaseEntity implements Renderable {
 
 	public void recieveDamage(int damage) {
 		if (!state.invincibility.getState()) {
+			gp.sound.play(hitSound);
 			this.state.attacked.setState(true);
 			if (this.health > 0) this.health -= damage;
 			if (this.health <= 0) state.dying.setState(true);

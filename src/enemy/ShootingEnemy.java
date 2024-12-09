@@ -69,7 +69,8 @@ public class ShootingEnemy extends Enemy {
 
 			gp.em.addBullets(new GunProjectile(gp, start.x, start.y, speedX, speedY, BULLET_DAMAGE));
 		}
-
+		
+		gp.sound.play(gun.sound);
 	}
 	
 	public boolean hasLineOfSight() {

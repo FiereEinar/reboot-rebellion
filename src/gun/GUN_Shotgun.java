@@ -1,5 +1,7 @@
 package gun;
 
+import main.Sound;
+
 public class GUN_Shotgun extends GunObject {
 
 	public GUN_Shotgun(int x, int y) {
@@ -18,7 +20,7 @@ public class GUN_Shotgun extends GunObject {
 		this.setCurrentMag(this.getMagSize());
 		
 		this.name = "gun_shotgun";
-		
+		this.sound = Sound.SHOTGUN_SHOT;
 		loadSprites();
 	}
 	

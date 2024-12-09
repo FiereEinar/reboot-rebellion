@@ -8,12 +8,15 @@ import java.awt.image.BufferedImage;
 import gun.GunObject;
 import main.GamePanel;
 import main.Objective;
+import main.Utils;
 
 public class Map {
 
 	GamePanel gp;
 	BufferedImage worldMap[];
 	public Boolean isVisible = true;
+	int width = 200;
+	int height = 200;
 	
 	public Map(GamePanel gp) {
 		this.gp = gp;
@@ -21,6 +24,7 @@ public class Map {
 	}
 	
 	private void createWorldMap() {
+		Utils utils = new Utils();
 		worldMap = new BufferedImage[gp.MAX_MAPS];
 		int tileSize = GamePanel.TILE_SIZE;
 		
@@ -47,6 +51,7 @@ public class Map {
 				}
 			}
 			
+			worldMap[i] = utils.scaleImage(worldMap[i], width, height);
 		}
 	}
 	
@@ -69,12 +74,12 @@ public class Map {
 	
 	public void drawMiniMap(Graphics2D g2) {
 		if (isVisible) {
-			int width = 200;
-			int height = 200;
+//			int width = 200;
+//			int height = 200;
 			int x = 20;
 			int y = 20;
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
-			g2.drawImage(worldMap[gp.currentMap], x, y, width, height, null);
+			g2.drawImage(worldMap[gp.currentMap], x, y, null);
 			
 			// player
 			double scale = (double) (GamePanel.TILE_SIZE * gp.worldCol) / width;

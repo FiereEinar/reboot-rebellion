@@ -7,11 +7,10 @@ public class BaseEntity {
 	public int worldX = 0;
 	public int worldY = 0;
 	private Rectangle solidArea;
-	private Rectangle collisionArea;
 	private Rectangle solidAreaRelativeToWorld = new Rectangle(0, 0, 48, 48);
 	
 	public void setSolidArea(Rectangle solidArea) {
-		this.solidArea = collisionArea = solidArea;
+		this.solidArea = solidArea;
 	}
 	
 	public Rectangle getSolidArea() {
@@ -25,14 +24,6 @@ public class BaseEntity {
 		this.solidAreaRelativeToWorld.height = solidArea.height;
 		
 		return this.solidAreaRelativeToWorld;
-	}
-
-	public Rectangle getCollisionArea() {
-		return collisionArea;
-	}
-
-	public void setCollisionArea(Rectangle collisionArea) {
-		this.collisionArea = collisionArea;
 	}
 
 }
