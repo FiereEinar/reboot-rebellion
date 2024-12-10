@@ -15,6 +15,7 @@ public class ENM_Ranger_1 extends ShootingEnemy {
 		
 		this.worldX = x;
 		this.worldY = y;
+		this.killPoints = 70;
 		
 		this.setMaxHealth(70);
 		this.setHealth(getMaxHealth());

@@ -16,7 +16,7 @@ public class GUN_Pistol_1 extends GunObject {
 		this.worldY = y;
 		
 		this.reloading.setDuration(reloadTime);
-		this.setReservedAmmo(30);
+		this.setReservedAmmo(120);
 		this.setMagSize(20);
 		this.setCurrentMag(this.getMagSize());
 		

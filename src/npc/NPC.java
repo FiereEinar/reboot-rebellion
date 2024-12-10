@@ -15,6 +15,7 @@ public abstract class NPC extends Entity {
 	public NPC(GamePanel gp) {
 		super(gp);
 		type = ENTITY_TYPE.NPC;
+		this.killPoints = 100;
 	}
 	
 	public Boolean isFollowingPlayer() {

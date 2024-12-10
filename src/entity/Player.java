@@ -31,6 +31,8 @@ public class Player extends Entity {
 	private long lastFootstepTime = 0;
 	private final long footstepInterval = 900;
 	
+	private int points = 0;
+	
 	public Player(GamePanel gp, KeyHandler keys) {
 		super(gp);
 		int tileSize = GamePanel.TILE_SIZE;
@@ -106,6 +108,23 @@ public class Player extends Entity {
 	    for (int i = 0; i < 5; i++) { 
 	        this.sprite.dying.addSprite(utils.cropSprite(spritesheet, i * width, 6 * height, width, height));
 	    }
+	}
+
+	public void restart() {
+		this.worldX = 2385;
+		this.worldY = 4757;
+		inventory.getArsenal().clear();
+		setHealth(getMaxHealth());
+		this.inventory.getArsenal().add(new GUN_Pistol_1(worldX, worldY));
+		points = 0;
+	}
+
+	public void addPoints(int amount) {
+		this.points += amount;
+	}
+	
+	public int getPoints() {
+		return this.points;
 	}
 
 	public void shootProjectile() {
@@ -298,33 +317,32 @@ public class Player extends Entity {
 			if (!entity.state.dying.getState()) recieveDamage(entity.damage);
 		}
 	}
+	
+	@Override
+	protected void checkWorldCollision() {
+		if (!keys.NOCLIP) {
+			super.checkWorldCollision();
+			setSpeed(5);
+		} else {
+			setSpeed(20);
+		}
+	}
 
 	@Override
 	public void update() {
 		state.update();
 		this.movementDisabled = false;
 		updateDirection();
-		if (!keys.NOCLIP) {
-			checkWorldCollision();
-			setSpeed(5);
-		} else {
-			setSpeed(20);
-		}
+		checkWorldCollision();
 		checkEntitiesCollision();
 		updateWeaponPickupCooldown();
 		inventory.update();
 		checkObjectCollisions();
 		checkGunCollisions();
 		gp.eh.checkEvent();
-		if (gp.keys.isMoving())
-			updateCoordinates();
-		if (gp.mouse.SHOOTING)
-			shootProjectile();
+		if (gp.keys.isMoving()) updateCoordinates();
+		if (gp.mouse.SHOOTING) shootProjectile();
 		playFootsteps();
-//		if (!movementDisabled && keys.isMoving()) { 
-//			gp.sound.setFile(Sound.PLAYER_FOOTSTEPS);
-//			if (!gp.sound.isRunning()) gp.sound.play();
-//		}
 	}
 
 	@Override

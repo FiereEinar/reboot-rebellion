@@ -17,7 +17,7 @@ import main.Utils;
 public class TileManager implements Renderable {
 
 	GamePanel gp;
-	private final int TILE_COUNT = 931; 
+	private final int TILE_COUNT = 955; 
 	private Tile[] tiles;
 	private int[][][] map;
 
@@ -28,10 +28,18 @@ public class TileManager implements Renderable {
 
 		System.out.println("LOADING TILES...");
 		loadTiles();
+		loadGameMaps();
+	}
+	
+	private void loadGameMaps() {
 		System.out.println("LOADING MAPS...");
 		loadMap("/maps/Map_01.txt", 0);
 		loadMap("/maps/Basement_Map.txt", 1);
 		loadMap("/maps/Map_3.txt", 2);
+	}
+	
+	public void restart() {
+		loadGameMaps();
 	}
 
 	private void loadTiles() {

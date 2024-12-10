@@ -72,6 +72,8 @@ public class GamePanel extends JPanel implements Runnable {
 	public static final int STATE_PAUSE = 1;
 	public static final int STATE_PLAY = 2;
 	public static final int STATE_DIALOGUE = 3;
+	public static final int STATE_ENDGAME_DIALOGUE = 4;
+	public static final int STATE_ESC_DIALOGUE = 5;
 	
 	public enum LIGHTING {
 		DARK,
@@ -108,9 +110,30 @@ public class GamePanel extends JPanel implements Runnable {
         objectives.add(new Objective("Get the rifle", OBJECTIVE_TYPE.MAIN, 0, 3365, 2112, "main_objective_2"));
         objectives.add(new Objective("Go to the rooftop", OBJECTIVE_TYPE.MAIN, 0, 4464, 192, "main_objective_3"));
 
-//        music.setFile(Sound.MUSIC_LEVEL);
-//        music.play();
-//        music.loop();
+        music.setFile(Sound.MUSIC_LEVEL);
+        music.play();
+        music.loop();
+	}
+	
+	public void restartGame() {
+		currentMap = 0;
+		om.restart();
+		tm.restart();
+		eh.restart();
+		
+		objectives.clear();
+		
+		objectives.add(new Objective("Get the shotgun", OBJECTIVE_TYPE.MAIN, 0, 895, 4407, "main_objective_1"));
+        objectives.add(new Objective("Get the rifle", OBJECTIVE_TYPE.MAIN, 0, 3365, 2112, "main_objective_2"));
+        objectives.add(new Objective("Go to the rooftop", OBJECTIVE_TYPE.MAIN, 0, 4464, 192, "main_objective_3"));
+
+        music.setFile(Sound.MUSIC_LEVEL);
+        music.play();
+        music.loop();
+        player.restart();
+        
+		gameState = STATE_PLAY;
+		lightingState = LIGHTING.LIGHT;
 	}
 
 	public void startGameThread() {

@@ -35,6 +35,17 @@ public class ObjectManager implements Renderable {
 		}
 	}
 	
+	public void restart() {
+		for (LinkedList<GameObject> go: objects) {
+			go.clear();
+		}
+		for (LinkedList<GunObject> g: guns) {
+			g.clear();
+		}
+		loadObjects();
+		loadGuns();
+	}
+	
 	private void loadObjects() {
 //		int map = 1;
 //		objects.get(map).add(new OBJ_Heart(GamePanel.TILE_SIZE * 9, GamePanel.TILE_SIZE * 3));

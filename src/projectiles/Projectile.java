@@ -94,6 +94,9 @@ public abstract class Projectile extends BaseEntity implements Renderable {
 			if (hitEntity != null && hitEntity.type != ENTITY_TYPE.NPC && !hitEntity.state.dying.getState()) {
 				hitEntity.recieveDamage(damage);
 				isDead = true;
+				if (hitEntity.getHealth() <= 0) {
+					gp.player.addPoints(hitEntity.killPoints);
+				}
 			}
 		}
 	}

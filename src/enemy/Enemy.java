@@ -11,7 +11,7 @@ import main.Sound;
 import object.OBJ_Ammo;
 import object.OBJ_Heart;
 
-public class Enemy extends Entity {
+public abstract class Enemy extends Entity {
 
 	private Rectangle attackRange = new Rectangle(0, 0, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
 	
@@ -71,8 +71,7 @@ public class Enemy extends Entity {
 	}
 
 	// override this when extending to have specific attacks
-	protected void attack() {
-	}
+	protected abstract void attack();
 
 	protected void updateDirection() {
 		if (state.dying.getState() || isDead)
@@ -93,11 +92,17 @@ public class Enemy extends Entity {
 		int x = rec.x + rec.width / 2;
 		int y = rec.y + rec.height / 2;
 
-		if (i <= 35) {
+		if (i <= 40) {
 			gp.om.addObject(new OBJ_Heart(x, y));
 		}
-		if (i > 35 && i <= 100) {
+		if (i > 40 && i <= 90) {
 			gp.om.addObject(new OBJ_Ammo(x, y));
+		}
+	}
+	
+	private void checkIfDead() {
+		if (isDead) {
+			dropItem();
 		}
 	}
 
@@ -106,10 +111,7 @@ public class Enemy extends Entity {
 		this.movementDisabled = false;
 		state.update();
 		checkState();
-		if (isDead) {
-			dropItem();
-			return;
-		}
+		checkIfDead();
 		checkEntitiesCollision();
 		checkIfCloseToPlayer();
 		checkIfCollidingWithPlayer();

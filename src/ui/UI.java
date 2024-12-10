@@ -46,6 +46,10 @@ public class UI implements Renderable {
 	
 	public Boolean startButtonHovered = false;
 	public Boolean exitButtonHovered = false;
+	public Boolean escRestartButtonHovered = false;
+	public Boolean escExitButtonHovered = false;
+	public Boolean restartDialogButtonHovered = false;
+	public Boolean exitDialogButtonHovered = false;
 	
 	public UI(GamePanel gp) {
 		this.gp = gp;
@@ -89,7 +93,7 @@ public class UI implements Renderable {
 		g2.setFont(extraSmallText);
 		g2.setColor(Color.WHITE);
 		int x = 20;
-		int y = 290;
+		int y = 300;
 		
 		String movement = "WASD: Movement";
 		int height = (int)g2.getFontMetrics().getStringBounds(movement, g2).getHeight();
@@ -167,7 +171,7 @@ public class UI implements Renderable {
 		GunObject slot1Gun = gp.player.inventory.getGunByIndex(Inventory.GUN_SLOT_1);
 		if (slot1Gun != null) {
 			if (slot1Gun.reloading.getState() && gp.player.inventory.isGunSelected(Inventory.GUN_SLOT_1)) {
-				setProgressText("Reloading...");
+				setProgressText("Reloading");
 				drawProgressTextBar(slot1Gun.reloading.getStateDuration(), slot1Gun.reloading.getCounter());
 			}
 		}
@@ -175,7 +179,7 @@ public class UI implements Renderable {
 		GunObject slot2Gun = gp.player.inventory.getGunByIndex(Inventory.GUN_SLOT_2);
 		if (slot2Gun != null) {
 			if (slot2Gun.reloading.getState() && gp.player.inventory.isGunSelected(Inventory.GUN_SLOT_2)) {
-				setProgressText("Reloading...");
+				setProgressText("Reloading");
 				drawProgressTextBar(slot2Gun.reloading.getStateDuration(), slot2Gun.reloading.getCounter());
 			}
 		}
@@ -194,17 +198,17 @@ public class UI implements Renderable {
 		g2.setFont(extraSmallText);
 		
 		int tileSize = GamePanel.TILE_SIZE;
-		
-		int x = gp.player.screenX;
+		int width = tileSize + 20;
+		int x = gp.screenWidth / 2 - width / 2;
 		int y = gp.player.screenY + tileSize + 10;
 		
-		g2.drawString(progressText, x, y);
+		g2.drawString(progressText, getXForCenteredText(progressText), y);
 		
-		double oneScale = (double) tileSize / duration;
+		double oneScale = (double) width / duration;
 		double progressWidth = oneScale * progress;
 		
 		g2.setColor(Color.LIGHT_GRAY);
-		g2.fillRect(x - 1, y + 4, tileSize + 2, 12);
+		g2.fillRect(x - 1, y + 4, width + 2, 12);
 
 		g2.setColor(Color.GRAY);
 		g2.fillRect(x, y + 5, (int) progressWidth, 10);
@@ -387,13 +391,245 @@ public class UI implements Renderable {
 		g2.setFont(extraSmallText);
 		g2.drawString("" + inv.getKeys(), x + spriteWidth + 2, y + spriteHeight - 4);
 	}
+	
+	private void drawPlayerPoints() {
+		String text = "Points: " + gp.player.getPoints();
+		int textH = (int) g2.getFontMetrics().getLineMetrics(text, g2).getHeight();
+		int y = textH;
+		int x = getXForCenteredText(text);
+		
+		g2.drawString(text, x, y);
+	}
 
 	/*
 	 * HANDLERS
 	 */
-	private void dialogueScreenHandler() {
-		
+	
+	private void escDialogueScreenHandler() {
+	    int width = 300;
+	    int height = 300;
+	    int boxX = gp.screenWidth / 2 - width / 2;
+	    int boxY = gp.screenHeight / 2 - height / 2;
+	    
+	    // Draw the semi-transparent background of the dialogue box
+	    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+	    g2.setColor(Color.BLACK);
+	    g2.fillRoundRect(boxX, boxY, width, height, 10, 10);
+	    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
+	    g2.setColor(Color.WHITE);
+	    g2.drawString("Menu", getXForCenteredText("Menu"), boxY + 50);
+
+	    // Draw the text inside the dialogue box
+	    g2.setColor(Color.WHITE);
+	    g2.setFont(normalText);
+
+	    // Button positions and sizes
+	    int buttonWidth = 150;
+	    int buttonHeight = 40;
+
+	    // Button positions relative to dialogue box
+	    int restartFX = gp.fullScreenWidth / 2 - buttonWidth / 2 - 50; // Bottom-left corner inside the box
+	    int restartFY = gp.fullScreenHeight / 2 - buttonHeight - 30;
+	    int restartX = gp.screenWidth / 2 - buttonWidth / 2; // Bottom-left corner inside the box
+	    int restartY = gp.screenHeight / 2 - buttonHeight;
+
+	    int exitFX = gp.fullScreenWidth / 2 - buttonWidth / 2 - 50; // Bottom-right corner inside the box
+	    int exitFY = gp.fullScreenHeight / 2 + buttonHeight - 10;
+	    int exitX = gp.screenWidth / 2 - buttonWidth / 2; // Bottom-right corner inside the box
+	    int exitY = gp.screenHeight / 2 + buttonHeight - 20;
+	    
+	    // Mouse position
+	    double mouseX = gp.mouse.mouseX;
+	    double mouseY = gp.mouse.mouseY;
+	    
+	    // Hover logic for Restart button
+	    escRestartButtonHovered = mouseX >= restartFX && mouseX <= restartFX + buttonWidth + 100
+	            && mouseY >= restartFY && mouseY <= restartFY + buttonHeight + 30;
+
+	    // Hover logic for Exit button
+	    escExitButtonHovered = mouseX >= exitFX && mouseX <= exitFX + buttonWidth + 100
+	            && mouseY >= exitFY && mouseY <= exitFY + buttonHeight + 30;
+
+	    // Draw Restart button
+	    g2.setColor(escRestartButtonHovered ? Color.GRAY : Color.DARK_GRAY); // Change color when hovered
+	    int restartOffset = escRestartButtonHovered ? 2 : 0; // Shrinking effect
+	    g2.fillRoundRect(restartX + restartOffset, restartY + restartOffset, 
+	                     buttonWidth - restartOffset * 2, buttonHeight - restartOffset * 2, 10, 10);
+	    g2.setColor(Color.WHITE);
+	    g2.setFont(smallText);
+	    g2.drawString("Restart", restartX + buttonWidth / 2 - g2.getFontMetrics().stringWidth("Restart") / 2,
+	                  restartY + buttonHeight / 2 + g2.getFontMetrics().getAscent() / 3);
+
+	    // Draw Exit button
+	    g2.setColor(escExitButtonHovered ? Color.GRAY : Color.DARK_GRAY); // Change color when hovered
+	    int exitOffset = escExitButtonHovered ? 2 : 0; // Shrinking effect
+	    g2.fillRoundRect(exitX + exitOffset, exitY + exitOffset, 
+	                     buttonWidth - exitOffset * 2, buttonHeight - exitOffset * 2, 10, 10);
+	    g2.setColor(Color.WHITE);
+	    g2.setFont(smallText);
+	    g2.drawString("Exit", exitX + buttonWidth / 2 - g2.getFontMetrics().stringWidth("Exit") / 2,
+	                  exitY + buttonHeight / 2 + g2.getFontMetrics().getAscent() / 3);
 	}
+
+	private void endgameDialogueScreenHandler() {
+	    int width = 400;
+	    int height = 300;
+	    int boxX = gp.screenWidth / 2 - width / 2;
+	    int boxY = gp.screenHeight / 2 - height / 2;
+	    int boxFX = gp.fullScreenWidth / 2 - width / 2;
+	    int boxFY = gp.fullScreenHeight / 2 - height / 2;
+
+	    // Draw semi-transparent black dialogue box
+	    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+	    g2.setColor(Color.BLACK);
+	    g2.fillRoundRect(boxX, boxY, width, height, 10, 10);
+	    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
+	    // Text rendering
+	    g2.setColor(Color.WHITE);
+	    g2.setFont(normalText);
+
+	    String text = "Congratulations!";
+	    int x = getXForCenteredText(text);
+	    int h = (int) g2.getFontMetrics().getLineMetrics(text, g2).getHeight();
+	    int y = boxY + h;
+	    g2.drawString(text, x, y);
+
+	    text = "You defeated the game!";
+	    h = (int) g2.getFontMetrics().getLineMetrics(text, g2).getHeight();
+	    y += h;
+	    g2.setFont(smallText);
+	    g2.drawString(text, getXForCenteredText(text), y);
+
+	    y += 10;
+
+	    text = "Your Stats:";
+	    h = (int) g2.getFontMetrics().getLineMetrics(text, g2).getHeight();
+	    y += h;
+	    g2.setFont(smallText);
+	    g2.drawString(text, getXForCenteredText(text), y);
+
+	    text = "Points: " + gp.player.getPoints();
+	    h = (int) g2.getFontMetrics().getLineMetrics(text, g2).getHeight();
+	    y += h;
+	    g2.setFont(smallText);
+	    g2.drawString(text, getXForCenteredText(text), y);
+
+	    text = "NPC's saved: " + gp.eh.npcSaved;
+	    h = (int) g2.getFontMetrics().getLineMetrics(text, g2).getHeight();
+	    y += h;
+	    g2.setFont(smallText);
+	    g2.drawString(text, getXForCenteredText(text), y);
+
+	    text = "Boss killed: " + gp.eh.bossKilled;
+	    h = (int) g2.getFontMetrics().getLineMetrics(text, g2).getHeight();
+	    y += h;
+	    g2.setFont(smallText);
+	    g2.drawString(text, getXForCenteredText(text), y);
+
+	    // Button setup
+	    int buttonWidth = 120;
+	    int buttonHeight = 40;
+
+	    // Button positions relative to dialogue box
+	    int restartFX = boxFX - 90; // Bottom-left corner inside the box
+	    int restartFY = boxFY + height - buttonHeight + 20;
+	    int restartX = boxX + 20; // Bottom-left corner inside the box
+	    int restartY = boxY + height - buttonHeight - 20;
+
+	    int exitFX = boxFX + width - buttonWidth + 20; // Bottom-right corner inside the box
+	    int exitFY = boxFY + height - buttonHeight + 20;
+	    int exitX = boxX + width - buttonWidth - 20; // Bottom-right corner inside the box
+	    int exitY = boxY + height - buttonHeight - 20;
+
+	    // Mouse position
+	    double mouseX = gp.mouse.mouseX;
+	    double mouseY = gp.mouse.mouseY;
+
+	    // Hover logic for Restart button
+	    restartDialogButtonHovered = mouseX >= restartFX && mouseX <= restartFX + buttonWidth + 70
+	            && mouseY >= restartFY && mouseY <= restartFY + buttonHeight + 30;
+
+	    // Hover logic for Exit button
+	    exitDialogButtonHovered = mouseX >= exitFX && mouseX <= exitFX + buttonWidth + 70
+	            && mouseY >= exitFY && mouseY <= exitFY + buttonHeight + 30;
+
+	    // Draw Restart button
+	    g2.setColor(restartDialogButtonHovered ? Color.GRAY : Color.DARK_GRAY); // Change color when hovered
+	    int restartOffset = restartDialogButtonHovered ? 2 : 0; // Shrinking effect
+	    g2.fillRoundRect(restartX + restartOffset, restartY + restartOffset, 
+	                     buttonWidth - restartOffset * 2, buttonHeight - restartOffset * 2, 10, 10);
+	    g2.setColor(Color.WHITE);
+	    g2.setFont(smallText);
+	    g2.drawString("Restart", restartX + buttonWidth / 2 - g2.getFontMetrics().stringWidth("Restart") / 2,
+	                  restartY + buttonHeight / 2 + g2.getFontMetrics().getAscent() / 3);
+
+	    // Draw Exit button
+	    g2.setColor(exitDialogButtonHovered ? Color.GRAY : Color.DARK_GRAY); // Change color when hovered
+	    int exitOffset = exitDialogButtonHovered ? 2 : 0; // Shrinking effect
+	    g2.fillRoundRect(exitX + exitOffset, exitY + exitOffset, 
+	                     buttonWidth - exitOffset * 2, buttonHeight - exitOffset * 2, 10, 10);
+	    g2.setColor(Color.WHITE);
+	    g2.setFont(smallText);
+	    g2.drawString("Exit", exitX + buttonWidth / 2 - g2.getFontMetrics().stringWidth("Exit") / 2,
+	                  exitY + buttonHeight / 2 + g2.getFontMetrics().getAscent() / 3);
+	}
+
+
+//	private void dialogueScreenHandler() {
+//		int width = 400;
+//		int height = 300;
+//		int boxX = gp.screenWidth / 2 - width / 2;
+//		int boxY = gp.screenHeight / 2 - height / 2;
+//		
+//		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+//		g2.setColor(Color.BLACK);
+//		g2.fillRoundRect(boxX, boxY, width, height, 10, 10);
+//		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); 
+//		
+//		g2.setColor(Color.WHITE);
+//		g2.setFont(normalText);
+//		
+//		String text = "Congratulations!";
+//		int x = getXForCenteredText(text);
+//		int h = (int) g2.getFontMetrics().getLineMetrics(text, g2).getHeight();
+//		int y = boxY + h;
+//		g2.drawString(text, x, y);
+//
+//		text = "You defeated the game!";
+//		h = (int) g2.getFontMetrics().getLineMetrics(text, g2).getHeight();
+//		y += h;
+//		g2.setFont(smallText);
+//		g2.drawString(text, getXForCenteredText(text), y);
+//		
+//		y += 10;		
+//
+//		text = "Your Stats:";
+//		h = (int) g2.getFontMetrics().getLineMetrics(text, g2).getHeight();
+//		y += h;
+//		g2.setFont(smallText);
+//		g2.drawString(text, getXForCenteredText(text), y);
+//		
+//		text = "Points: " + gp.player.getPoints();
+//		h = (int) g2.getFontMetrics().getLineMetrics(text, g2).getHeight();
+//		y += h;
+//		g2.setFont(smallText);
+//		g2.drawString(text, getXForCenteredText(text), y);
+//		
+//		text = "NPC's saved:" + gp.eh.npcSaved;
+//		h = (int) g2.getFontMetrics().getLineMetrics(text, g2).getHeight();
+//		y += h;
+//		g2.setFont(smallText);
+//		g2.drawString(text, getXForCenteredText(text), y);
+//		
+//		text = "Boss killed:" + gp.eh.bossKilled;
+//		h = (int) g2.getFontMetrics().getLineMetrics(text, g2).getHeight();
+//		y += h;
+//		g2.setFont(smallText);
+//		g2.drawString(text, getXForCenteredText(text), y);
+//		
+//	}
 	
 	private void playScreenHandler() {
 		drawPlayerTooltip();
@@ -404,6 +640,7 @@ public class UI implements Renderable {
 		drawObjectives();
 		showMessage();
 		drawPlayerKeys();
+		drawPlayerPoints();
 	}
 
 	private void pausedScreenHandler() {
@@ -441,8 +678,12 @@ public class UI implements Renderable {
 			playScreenHandler();
 		}
 		
-		if (gp.gameState == GamePanel.STATE_DIALOGUE) {
-			dialogueScreenHandler();
+		if (gp.gameState == GamePanel.STATE_ESC_DIALOGUE) {
+			escDialogueScreenHandler();
+		}
+		
+		if (gp.gameState == GamePanel.STATE_ENDGAME_DIALOGUE) {
+			endgameDialogueScreenHandler();
 		}
 	}
 

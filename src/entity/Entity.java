@@ -11,19 +11,23 @@ import main.Sound;
 import sprite.SpriteManager;
 import states.StateManager;
 
-public class Entity extends BaseEntity implements Renderable {
+public abstract class Entity extends BaseEntity implements Renderable {
 
 	public GamePanel gp;
+
 	public static final int DETECTION_RANGE_WIDTH = 500;
 	public static final int DETECTION_RANGE_HEIGHT = 350;
-	private int speed;
-	private String direction;
-	private String spriteDirection = "left";
+	
+	public int actionLockCounter = 0;
+	public int killPoints = 0;
 	public int damage = 1;
 	public int hitSound;
+	private int speed;
+
+	private String direction;
+	private String spriteDirection = "left";
 	
 	public Boolean movementDisabled = false;
-	public int actionLockCounter = 0;
 	public Boolean isPlayer = false;
 	public Boolean isDead = false;
 	protected Boolean lockToPlayer = true;

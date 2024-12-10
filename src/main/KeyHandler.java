@@ -61,6 +61,14 @@ public class KeyHandler implements KeyListener {
 			KEY_E = true;
 		}
 		
+		if (code == KeyEvent.VK_ESCAPE) {
+			if (gp.gameState == GamePanel.STATE_PLAY) {
+				gp.gameState = GamePanel.STATE_ESC_DIALOGUE;				
+			} else {
+				gp.gameState = GamePanel.STATE_PLAY;
+			}
+		}
+		
 		if (code == KeyEvent.VK_R) {
 			GunObject selectedGun = gp.player.inventory.getSelectedGun();
 			

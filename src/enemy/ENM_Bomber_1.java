@@ -14,6 +14,7 @@ public class ENM_Bomber_1 extends Enemy {
 		
 		this.worldX = x;
 		this.worldY = y;
+		this.killPoints = 80;
 		
 		this.setMaxHealth(50);
 		this.setHealth(getMaxHealth());
@@ -97,7 +98,6 @@ public class ENM_Bomber_1 extends Enemy {
 		}
 	}
 
-	
 	@Override
 	protected void attack() {
 		moveToPlayer();

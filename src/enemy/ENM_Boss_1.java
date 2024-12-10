@@ -35,6 +35,7 @@ public class ENM_Boss_1 extends ShootingEnemy {
 		
 		this.worldX = x;
 		this.worldY = y;
+		this.killPoints = 500;
 		
 		this.setMaxHealth(5000);
 		this.setHealth(getMaxHealth());

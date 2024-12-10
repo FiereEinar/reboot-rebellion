@@ -14,6 +14,7 @@ public class ENM_Melee_1 extends Enemy {
 		
 		this.worldX = x;
 		this.worldY = y;
+		this.killPoints = 100;
 		
 		this.setMaxHealth(100);
 		this.setHealth(getMaxHealth());

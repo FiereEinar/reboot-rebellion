@@ -3,7 +3,6 @@ package event;
 import java.awt.Rectangle;
 
 import enemy.ENM_Boss_1;
-import enemy.ENM_MindGrid;
 import entity.Entity;
 import entity.Entity.ENTITY_TYPE;
 import entity.Vector2;
@@ -33,9 +32,14 @@ public class EventHandler {
 	EventState openPowerSupplyDoor = new EventState();
 	EventState powerRestore = new EventState();
 	EventState npcSave = new EventState();
+	EventState mindGridOff = new EventState();
 	
-	private int npcSaved = 0;
-	private final int maxNpcSaved = 3;
+	public int npcSaved = 3;
+	public final int maxNpcSaved = 3;
+	
+	private Boolean isFinalObjectiveShown = false;
+	public int bossKilled = 0;
+	public final int maxBossKilled = 1;	
 	
 	public EventHandler(GamePanel gp) {
 		this.gp = gp;
@@ -45,6 +49,7 @@ public class EventHandler {
 	private void setupEvents() {
 		int map1 = 0;
 		int map2 = 1;
+		int map3 = 2;
 
 		map2Transition.setCoordinate(map1, 5, 0, GamePanel.TILE_SIZE);
 		map3Transition.setCoordinate(map1, 93, 4, GamePanel.TILE_SIZE);
@@ -60,6 +65,29 @@ public class EventHandler {
 		keyPickup.setCoordinate(map2, 32, 81, GamePanel.TILE_SIZE);
 		openPowerSupplyDoor.setCoordinate(map2, 96, 95, GamePanel.TILE_SIZE);
 		powerRestore.setCoordinate(map2, 94, 86, GamePanel.TILE_SIZE);
+
+		mindGridOff.setCoordinate(map3, 48, 47, GamePanel.TILE_SIZE);
+	}
+	
+	public void restart() {
+		map1Transition.restart();
+		map2Transition.restart();
+		map3Transition.restart();
+		powerdown.restart();
+		shotgunPickup.restart();
+		riflePickup.restart();
+		sniperPickup.restart();
+		machineGunPickup.restart();
+		powerSupplyRoomDoor.restart();
+		keyPickup.restart();
+		openPowerSupplyDoor.restart();
+		powerRestore.restart();
+		npcSave.restart();
+		mindGridOff.restart();
+		
+		npcSaved = 0;
+		isFinalObjectiveShown = false;
+		bossKilled = 0;
 	}
 	
 	public void checkEvent() {
@@ -86,6 +114,8 @@ public class EventHandler {
 		} 
 		
 		if (eventCanTrigger(powerRestore)) {
+			if (!openPowerSupplyDoor.isTriggered) return;
+			
 			gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_10");
 			gp.lightingState = LIGHTING.LIGHT;
 			powerRestore.isTriggered = true;
@@ -142,18 +172,39 @@ public class EventHandler {
 				handleNpcSaving();
 
 				for (Entity e: gp.em.getEnities()) {
+					if (e.type != ENTITY_TYPE.NPC) continue;
+					
 					if (eventShouldFire(npcSave, e)) {
+						gp.player.addPoints(e.killPoints);
 						e.isDead = true;
 						npcSaved++;
 					}
-					
-					if (npcSaved == maxNpcSaved) {
-						gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_12");
-						npcSave.isTriggered = true;
-						gp.objectives.add(new Objective("Go to the rooftop", OBJECTIVE_TYPE.MAIN, 0, 93 * GamePanel.TILE_SIZE, 4 * GamePanel.TILE_SIZE, "main_objective_13"));
-					}
+				}
+
+				if (npcSaved == maxNpcSaved) {
+					gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_12");
+					gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_npc_1");
+					gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_npc_2");
+					gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_npc_3");
+					npcSave.isTriggered = true;
+					gp.objectives.add(new Objective("Go to the rooftop", OBJECTIVE_TYPE.MAIN, 0, 93 * GamePanel.TILE_SIZE, 4 * GamePanel.TILE_SIZE, "main_objective_13"));
 				}
 			}
+		}
+		
+		if (bossKilled == maxBossKilled && map3Transition.isTriggered && !isFinalObjectiveShown) {
+			isFinalObjectiveShown = true;
+			gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_14");
+			gp.em.setMaxEntityCount(5);
+			gp.objectives.add(new Objective("Turn off the Mind Grid", OBJECTIVE_TYPE.MAIN, 2, 48 * GamePanel.TILE_SIZE, 47 * GamePanel.TILE_SIZE, "main_objective_15"));
+		}
+		
+		if (eventCanTrigger(mindGridOff)) {
+			if (bossKilled == 0) return;
+			
+			gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_15");
+			mindGridOff.isTriggered = true;
+			gp.gameState = GamePanel.STATE_ENDGAME_DIALOGUE;
 		}
 	}
 	
@@ -180,9 +231,13 @@ public class EventHandler {
 		gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_6");
 		gp.ui.showMessage("Oh no! It turns out there's actually workers", "that are stuck! We need to save them!");
 		gp.em.addEntity(new NPC_Scientist(gp, 4210, 4332));
+		gp.objectives.add(new Objective("Save worker 1", OBJECTIVE_TYPE.MAIN, 0, 4210, 4332, "main_objective_npc_1"));
 		gp.em.addEntity(new NPC_Scientist(gp, 4210, 2387));
+		gp.objectives.add(new Objective("Save worker 2", OBJECTIVE_TYPE.MAIN, 0, 4210, 2387, "main_objective_npc_2"));
 		gp.em.addEntity(new NPC_Scientist(gp, 235, 4582));
-		gp.objectives.add(new Objective("Save the workers", OBJECTIVE_TYPE.MAIN, 0, 49 * GamePanel.TILE_SIZE, 99 * GamePanel.TILE_SIZE, "main_objective_12"));
+		gp.objectives.add(new Objective("Save worker 3", OBJECTIVE_TYPE.MAIN, 0, 235, 4582, "main_objective_npc_3"));
+
+		gp.objectives.add(new Objective("Lead the workers to the exit", OBJECTIVE_TYPE.MAIN, 0, 49 * GamePanel.TILE_SIZE, 99 * GamePanel.TILE_SIZE, "main_objective_12"));
 	}
 	
 	private void handleMap2Transition() {
@@ -199,24 +254,13 @@ public class EventHandler {
 	
 	private void handleMap3Transition() {
 		if (!npcSave.isTriggered) return;
+		map3Transition.isTriggered = true;
 		
 		gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_13");
+		gp.objectives.add(new Objective("Defeat the boss", OBJECTIVE_TYPE.MAIN, 1, 50 * GamePanel.TILE_SIZE, 50 * GamePanel.TILE_SIZE, "main_objective_14"));
 		
 		gp.currentMap = 2;
 		gp.em.addEntity(new ENM_Boss_1(gp, 50 * GamePanel.TILE_SIZE, 45 * GamePanel.TILE_SIZE));
-		
-//		ENM_MindGrid mindGrid = new ENM_MindGrid(gp, 50 * GamePanel.TILE_SIZE, 50 * GamePanel.TILE_SIZE);
-//		
-//		int spriteWidth = mindGrid.sprite.down.safeGetSprite().getWidth();
-//		int spriteHeight = mindGrid.sprite.down.safeGetSprite().getHeight();
-//		int x = gp.worldWidth / 2 - spriteWidth / 2;
-//		int y = gp.worldHeight / 2 - spriteHeight + GamePanel.TILE_SIZE * 2;
-//		
-//		mindGrid.worldX = x;
-//		mindGrid.worldY = y;
-//		
-//		gp.em.addEntity(mindGrid);
-//		gp.em.setMaxEntityCount(10);
 		
 		gp.music.stop();
 		gp.music.setFile(Sound.MUSIC_BOSS);

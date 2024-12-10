@@ -36,16 +36,40 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 		mouseX = e.getX();
         mouseY = e.getY();
         
-		if (e.getButton() == MouseEvent.BUTTON1) {
-			if (gp.gameState == GamePanel.STATE_MENU_SCREEN) {
+        if (gp.gameState == GamePanel.STATE_PLAY) {
+			SHOOTING = true;
+        }
+        
+		if (gp.gameState == GamePanel.STATE_MENU_SCREEN) {
+			if (e.getButton() == MouseEvent.BUTTON1) {
 				if (gp.ui.startButtonHovered) {
 					gp.gameState = GamePanel.STATE_PLAY;
 				}
 				if (gp.ui.exitButtonHovered) {
 					System.exit(0);
 				}
-			} else {
-				SHOOTING = true;
+			}
+		}
+		
+		if (gp.gameState == GamePanel.STATE_DIALOGUE) {
+			if (e.getButton() == MouseEvent.BUTTON1) {
+				if (gp.ui.exitDialogButtonHovered) {
+					System.exit(0);
+				}
+				if (gp.ui.restartDialogButtonHovered) {
+					gp.restartGame();
+				}
+			}
+		}
+		
+		if (gp.gameState == GamePanel.STATE_ESC_DIALOGUE) {
+			if (e.getButton() == MouseEvent.BUTTON1) {
+				if (gp.ui.escExitButtonHovered) {
+					System.exit(0);
+				}
+				if (gp.ui.escRestartButtonHovered) {
+					gp.restartGame();
+				}
 			}
 		}
 	}

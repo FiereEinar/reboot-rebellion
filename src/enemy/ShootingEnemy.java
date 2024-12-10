@@ -6,7 +6,7 @@ import gun.GunObject;
 import main.GamePanel;
 import projectiles.GunProjectile;
 
-public class ShootingEnemy extends Enemy {
+public abstract class ShootingEnemy extends Enemy {
 	
 	GUN_EnemyWeapon gun = new GUN_EnemyWeapon(); 
 	
@@ -105,7 +105,7 @@ public class ShootingEnemy extends Enemy {
 	        }
 	    }
 
-	    return true; // No obstruction found
+	    return true;
 	}
 	
 	@Override
@@ -118,6 +118,10 @@ public class ShootingEnemy extends Enemy {
 		if (state.attacking.getState() && !isPlayer) {
 			movementDisabled = true;
 		}
+	}
+
+	@Override
+	protected void attack() {
 	}
 
 }

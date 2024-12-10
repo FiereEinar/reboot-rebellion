@@ -16,6 +16,10 @@ public class EventState extends Rectangle {
 		this.width = this.height = eventTriggerAreaSize;
 	}
 	
+	public void restart() {
+		isTriggered = false;
+	}
+	
 	public void setCoordinate(int map, int col, int row, int size) {
 		int worldX = col * GamePanel.TILE_SIZE;
 		int worldY = row * GamePanel.TILE_SIZE;

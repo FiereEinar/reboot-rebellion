@@ -31,6 +31,16 @@ public class EntityManager implements Renderable {
 //		spawnNPCS();
 	}
 	
+	public void restart() {
+		for (ArrayList<Entity> e: entities) {
+			e.clear();
+		}
+		for (ArrayList<Projectile> e: bullets) {
+			e.clear();
+		}
+		deadNpcCount = 0;
+	}
+	
 	private void initLists() {
 		for (int i = 0; i < gp.MAX_MAPS; i++) {
 			entities.add(new ArrayList<Entity>());
@@ -156,6 +166,10 @@ public class EntityManager implements Renderable {
         	if (entity.isDead) {
         		if (entity.type == ENTITY_TYPE.NPC) {
         			deadNpcCount++;
+        		}
+        		
+        		if (entity.type == ENTITY_TYPE.BOSS) {
+        			gp.eh.bossKilled++;
         		}
         		iterator.remove();
         	}
