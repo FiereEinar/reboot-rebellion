@@ -312,7 +312,7 @@ public class Entity extends BaseEntity implements Renderable {
 	protected void checkEntitiesCollision() {
 		Entity entity = gp.cd.checkEntityCollision(this);
 
-		if (entity != null) {
+		if (entity != null && !isDead) {
 			if (entity.type == ENTITY_TYPE.NPC) {
 				this.movementDisabled = true;
 				entity.recieveDamage(damage);

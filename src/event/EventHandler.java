@@ -4,9 +4,14 @@ import java.awt.Rectangle;
 
 import enemy.ENM_Boss_1;
 import enemy.ENM_MindGrid;
+import entity.Entity;
+import entity.Entity.ENTITY_TYPE;
+import entity.Vector2;
 import main.GamePanel;
 import main.GamePanel.LIGHTING;
 import main.Objective.OBJECTIVE_TYPE;
+import npc.NPC;
+import npc.NPC_Scientist;
 import object.OBJ_Key;
 import main.Objective;
 import main.Sound;
@@ -27,6 +32,10 @@ public class EventHandler {
 	EventState keyPickup = new EventState();
 	EventState openPowerSupplyDoor = new EventState();
 	EventState powerRestore = new EventState();
+	EventState npcSave = new EventState();
+	
+	private int npcSaved = 0;
+	private final int maxNpcSaved = 3;
 	
 	public EventHandler(GamePanel gp) {
 		this.gp = gp;
@@ -37,13 +46,14 @@ public class EventHandler {
 		int map1 = 0;
 		int map2 = 1;
 
-		map1Transition.setCoordinate(map2, 5, 0, GamePanel.TILE_SIZE);
 		map2Transition.setCoordinate(map1, 5, 0, GamePanel.TILE_SIZE);
 		map3Transition.setCoordinate(map1, 93, 4, GamePanel.TILE_SIZE);
 		powerdown.setCoordinate(map1, 93, 4, GamePanel.TILE_SIZE);
 		shotgunPickup.setCoordinate(map1, 19, 92, GamePanel.TILE_SIZE);
 		riflePickup.setCoordinate(map1, 70, 44, GamePanel.TILE_SIZE);
+		npcSave.setCoordinate(map1, 49, 99, GamePanel.TILE_SIZE);
 		
+		map1Transition.setCoordinate(map2, 5, 0, GamePanel.TILE_SIZE);
 		sniperPickup.setCoordinate(map2, 74, 48, GamePanel.TILE_SIZE);
 		machineGunPickup.setCoordinate(map2, 14, 38, GamePanel.TILE_SIZE);
 		powerSupplyRoomDoor.setCoordinate(map2, 96, 95, GamePanel.TILE_SIZE);
@@ -59,9 +69,7 @@ public class EventHandler {
 		
 		if (eventCanTrigger(map1Transition)) {
 			if (gp.lightingState == LIGHTING.LIGHT) {
-				gp.currentMap = 0;
-				map1Transition.isTriggered = true;
-				gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_11");
+				handleMap1Transition();
 			}
 		} 
 		
@@ -120,6 +128,7 @@ public class EventHandler {
 		
 		if (eventCanTrigger(openPowerSupplyDoor)) {
 			if (!keyPickup.isTriggered) return;
+			
 			gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_9");
 			gp.player.inventory.setKeys(gp.player.inventory.getKeys() - 1);
 			openPowerSupplyDoor.isTriggered = true;
@@ -127,6 +136,53 @@ public class EventHandler {
 			gp.tm.getMap()[97][94] = 27;
 			gp.objectives.add(new Objective("Restore the power", OBJECTIVE_TYPE.MAIN, 1, 94 * GamePanel.TILE_SIZE, 86 * GamePanel.TILE_SIZE, "main_objective_10"));
 		}
+		
+		if (map1Transition.isTriggered) {
+			if (eventCanTrigger(npcSave)) {
+				handleNpcSaving();
+
+				for (Entity e: gp.em.getEnities()) {
+					if (eventShouldFire(npcSave, e)) {
+						e.isDead = true;
+						npcSaved++;
+					}
+					
+					if (npcSaved == maxNpcSaved) {
+						gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_12");
+						npcSave.isTriggered = true;
+						gp.objectives.add(new Objective("Go to the rooftop", OBJECTIVE_TYPE.MAIN, 0, 93 * GamePanel.TILE_SIZE, 4 * GamePanel.TILE_SIZE, "main_objective_13"));
+					}
+				}
+			}
+		}
+	}
+	
+	private void handleNpcSaving() {
+		if (!powerRestore.isTriggered) return;
+
+		int tileSize = GamePanel.TILE_SIZE;
+		
+		for (Entity e: gp.em.getEnities()) {
+			if (e.type == ENTITY_TYPE.NPC) {
+				NPC npc = (NPC) e;
+				if (npc.isFollowingPlayer()) {
+					e.searchPath(new Vector2(49 * tileSize, 99 * tileSize));
+				}
+			}
+		}
+	}
+	
+	private void handleMap1Transition() {
+		gp.currentMap = 0;
+		map1Transition.isTriggered = true;
+		gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_11");
+		gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_5");
+		gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_6");
+		gp.ui.showMessage("Oh no! It turns out there's actually workers", "that are stuck! We need to save them!");
+		gp.em.addEntity(new NPC_Scientist(gp, 4210, 4332));
+		gp.em.addEntity(new NPC_Scientist(gp, 4210, 2387));
+		gp.em.addEntity(new NPC_Scientist(gp, 235, 4582));
+		gp.objectives.add(new Objective("Save the workers", OBJECTIVE_TYPE.MAIN, 0, 49 * GamePanel.TILE_SIZE, 99 * GamePanel.TILE_SIZE, "main_objective_12"));
 	}
 	
 	private void handleMap2Transition() {
@@ -136,27 +192,31 @@ public class EventHandler {
 		gp.em.setMaxEntityCount(5);
 		gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_4");
 
-		gp.objectives.add(new Objective("Pick up the sniper(optional)", OBJECTIVE_TYPE.MAIN, 1, 73 * GamePanel.TILE_SIZE, 48 * GamePanel.TILE_SIZE, "main_objective_5"));
-		gp.objectives.add(new Objective("Pick up the machine gun(optional)", OBJECTIVE_TYPE.MAIN, 1, 14 * GamePanel.TILE_SIZE, 38 * GamePanel.TILE_SIZE, "main_objective_6"));
+		gp.objectives.add(new Objective("Pick up the sniper (optional)", OBJECTIVE_TYPE.MAIN, 1, 73 * GamePanel.TILE_SIZE, 48 * GamePanel.TILE_SIZE, "main_objective_5"));
+		gp.objectives.add(new Objective("Pick up the machine gun (optional)", OBJECTIVE_TYPE.MAIN, 1, 14 * GamePanel.TILE_SIZE, 38 * GamePanel.TILE_SIZE, "main_objective_6"));
 		gp.objectives.add(new Objective("Go to the power supply room", OBJECTIVE_TYPE.MAIN, 1, 96 * GamePanel.TILE_SIZE, 95 * GamePanel.TILE_SIZE, "main_objective_7"));
 	}
 	
 	private void handleMap3Transition() {
+		if (!npcSave.isTriggered) return;
+		
+		gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_13");
+		
 		gp.currentMap = 2;
 		gp.em.addEntity(new ENM_Boss_1(gp, 50 * GamePanel.TILE_SIZE, 45 * GamePanel.TILE_SIZE));
 		
-		ENM_MindGrid mindGrid = new ENM_MindGrid(gp, 50 * GamePanel.TILE_SIZE, 50 * GamePanel.TILE_SIZE);
-		
-		int spriteWidth = mindGrid.sprite.down.safeGetSprite().getWidth();
-		int spriteHeight = mindGrid.sprite.down.safeGetSprite().getHeight();
-		int x = gp.worldWidth / 2 - spriteWidth / 2;
-		int y = gp.worldHeight / 2 - spriteHeight + GamePanel.TILE_SIZE * 2;
-		
-		mindGrid.worldX = x;
-		mindGrid.worldY = y;
-		
-		gp.em.addEntity(mindGrid);
-		gp.em.setMaxEntityCount(5);
+//		ENM_MindGrid mindGrid = new ENM_MindGrid(gp, 50 * GamePanel.TILE_SIZE, 50 * GamePanel.TILE_SIZE);
+//		
+//		int spriteWidth = mindGrid.sprite.down.safeGetSprite().getWidth();
+//		int spriteHeight = mindGrid.sprite.down.safeGetSprite().getHeight();
+//		int x = gp.worldWidth / 2 - spriteWidth / 2;
+//		int y = gp.worldHeight / 2 - spriteHeight + GamePanel.TILE_SIZE * 2;
+//		
+//		mindGrid.worldX = x;
+//		mindGrid.worldY = y;
+//		
+//		gp.em.addEntity(mindGrid);
+//		gp.em.setMaxEntityCount(10);
 		
 		gp.music.stop();
 		gp.music.setFile(Sound.MUSIC_BOSS);
@@ -165,7 +225,7 @@ public class EventHandler {
 	}
 	
 	private void handlePowerdownEvent() {
-		gp.ui.showMessage("Oh no! the power went out!", "Go to the basement to fix it");
+		gp.ui.showMessage("Oh no! the power went out! We can't", "go up. Go to the basement to fix it");
 		gp.lightingState = LIGHTING.DARK;
 		gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_3");
 		gp.em.setMaxEntityCount(3);
@@ -179,6 +239,12 @@ public class EventHandler {
 
 	private Boolean eventShouldFire(Rectangle rec2) {
 		Rectangle rec1 = gp.player.getSolidAreaRelativeToWorld();
+		
+		return rec1.intersects(rec2);
+	}
+	
+	private Boolean eventShouldFire(Rectangle rec2, Entity entity) {
+		Rectangle rec1 = entity.getSolidAreaRelativeToWorld();
 		
 		return rec1.intersects(rec2);
 	}

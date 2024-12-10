@@ -17,6 +17,10 @@ public abstract class NPC extends Entity {
 		type = ENTITY_TYPE.NPC;
 	}
 	
+	public Boolean isFollowingPlayer() {
+		return followPlayer;
+	}
+	
 	private void checkIfCollidingWithPlayer() {
 		if (gp.cd.isCollidingWithPlayer(this)) {
 			followPlayer = true;

@@ -108,9 +108,9 @@ public class GamePanel extends JPanel implements Runnable {
         objectives.add(new Objective("Get the rifle", OBJECTIVE_TYPE.MAIN, 0, 3365, 2112, "main_objective_2"));
         objectives.add(new Objective("Go to the rooftop", OBJECTIVE_TYPE.MAIN, 0, 4464, 192, "main_objective_3"));
 
-        music.setFile(Sound.MUSIC_LEVEL);
-        music.play();
-        music.loop();
+//        music.setFile(Sound.MUSIC_LEVEL);
+//        music.play();
+//        music.loop();
 	}
 
 	public void startGameThread() {

@@ -75,14 +75,17 @@ public class Sound {
 	}
 	
 	public void play() {
+		if (clip == null) return;
 		clip.start();
 	}
 	
 	public void loop() {
+		if (clip == null) return;
 		clip.loop(Clip.LOOP_CONTINUOUSLY);
 	}
 	
 	public void stop() {
+		if (clip == null) return;
 		clip.stop();
 	}
 

@@ -10,7 +10,7 @@ public class GUN_Pistol_1 extends GunObject {
 		this.bulletSpread = 5;
 		this.bulletMultiplier = 1;
 		this.fireRate = 5;
-		this.reloadTime = 60;
+		this.reloadTime = 90;
 		
 		this.worldX = x;
 		this.worldY = y;
@@ -26,7 +26,7 @@ public class GUN_Pistol_1 extends GunObject {
 	}
 	
 	private void loadSprites() {
-		this.sprite.addSprite(utils.getAndScaleImage("/guns/pistol2.png", 43, 24));
+		this.sprite.addSprite(utils.getAndScaleImage("/guns/pistol.png", 43, 24));
 	}
 
 }

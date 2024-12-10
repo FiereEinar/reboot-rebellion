@@ -20,7 +20,7 @@ public class NPC_Scientist extends NPC {
 		this.setSpeed(3);
 		this.setDirection("down");
 
-		this.setSolidArea(new Rectangle(0, 0, 28, 28));
+		this.setSolidArea(new Rectangle(6, 10, 28, 28));
 		
 		loadSprites();
 		updateSpritesInterval();

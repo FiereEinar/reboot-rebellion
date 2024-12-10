@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.Random;
 
 import enemy.ENM_Bomber_1;
-import enemy.ENM_Boss_1;
 import enemy.ENM_Melee_1;
 import enemy.ENM_Ranger_1;
 import entity.Entity.ENTITY_TYPE;
@@ -24,11 +23,12 @@ public class EntityManager implements Renderable {
 	public static final int DESPAWN_RANGE = 1200;
 	private final int HALF_DESPAWN_RANGE = DESPAWN_RANGE / 2;
 	private int maxEntityCount = 5;
+	public int deadNpcCount = 0;
 	
 	public EntityManager(GamePanel gp) {
 		this.gp = gp;
 		initLists();
-		spawnNPCS();
+//		spawnNPCS();
 	}
 	
 	private void initLists() {
@@ -55,7 +55,6 @@ public class EntityManager implements Renderable {
 		int y = 8 * tileSize;
 		
 		entities.get(map).add(new NPC_Scientist(gp, x, y));
-		entities.get(map).add(new ENM_Boss_1(gp, x, y - tileSize * 2));
 	}
 	
 	public void addBullets(Projectile bullet) {
@@ -155,6 +154,9 @@ public class EntityManager implements Renderable {
         	entity.update();
 
         	if (entity.isDead) {
+        		if (entity.type == ENTITY_TYPE.NPC) {
+        			deadNpcCount++;
+        		}
         		iterator.remove();
         	}
         }

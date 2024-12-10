@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import entity.Entity;
+import entity.Entity.ENTITY_TYPE;
 import gun.GunObject;
 import main.GamePanel;
 import main.Objective;
@@ -114,6 +116,16 @@ public class Map {
 				g2.fillOval(objX - 2, objY - h + 2, 10, 10);
 				g2.setColor(Color.WHITE);
 				g2.drawString(number, objX, objY);
+			}
+			
+			// npcs in the map
+			for (Entity e: gp.em.getEnities()) {
+				if (e.type != ENTITY_TYPE.NPC) return;
+				
+				int npcX = (int) (x + e.worldX / scale);
+				int npcY = (int) (y + e.worldY / scale);
+				g2.setColor(Color.GREEN);
+				g2.fillRect(npcX, npcY, playerSize, playerSize);
 			}
 			
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));

@@ -44,8 +44,6 @@ public class ENM_Boss_1 extends ShootingEnemy {
 		
 		int tileSize = GamePanel.TILE_SIZE;
 		int halfTileSize = tileSize / 2;
-		int width = 325;
-	    int height = 294;
 	    
 //		this.setSolidArea(new Rectangle(tileSize * 2, tileSize * 2, tileSize * 2, tileSize * 2));
 		this.setSolidArea(new Rectangle(tileSize * 2 + halfTileSize, tileSize * 2 + halfTileSize, tileSize - 5, tileSize - 5));
