@@ -10,6 +10,7 @@ public class Sound {
 	
 	private Clip clip;
 	private URL soundURL[] = new URL[30];
+	public static final int NONE = 29;
 	public static final int PISTOL_SHOT = 0;
 	public static final int SHOTGUN_SHOT = 1;
 	public static final int AK47_SHOT = 2;
@@ -22,6 +23,12 @@ public class Sound {
 	public static final int GUN_RELOAD = 9;
 	public static final int ROBOT_HIT = 10;
 	public static final int PLAYER_HIT = 11;
+	public static final int PLAYER_FOOTSTEPS = 12;
+	public static final int BOSS_FOOTSTEPS = 13;
+	public static final int ROBOT_SLASH = 14;
+	public static final int MUSIC_BOSS = 15;
+	public static final int MUSIC_LEVEL = 16;
+	public static final int ROBOT_EXPLOSION = 17;
 	
 	public Sound() {
 		String[] urls = {
@@ -37,6 +44,12 @@ public class Sound {
 				"/sounds/reload.wav",
 				"/sounds/robot-hit.wav",
 				"/sounds/player-hit.wav",
+				"/sounds/player-footsteps.wav",
+				"/sounds/boss-footsteps.wav",
+				"/sounds/robot-slash.wav",
+				"/sounds/apocalypse-254123.wav",
+				"/sounds/danger-and-resolution-183864.wav",
+				"/sounds/explosion-sound-effect-1-free-on-gamesfxpackscom-241821.wav",
 		};
 		
 		for (int i = 0; i < urls.length; i++) {
@@ -45,11 +58,13 @@ public class Sound {
 	}
 	
 	public void play(int i) {
+		if (i == NONE) return;
 		setFile(i);
 		play();
 	}
 	
 	public void setFile(int i) {
+		if (i == NONE) return;
 		try {
 			AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
 			clip = AudioSystem.getClip();

@@ -74,8 +74,6 @@ public class Map {
 	
 	public void drawMiniMap(Graphics2D g2) {
 		if (isVisible) {
-//			int width = 200;
-//			int height = 200;
 			int x = 20;
 			int y = 20;
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
@@ -109,9 +107,13 @@ public class Map {
 				int objSize = (int) (GamePanel.TILE_SIZE / scale) * 2;
 				g2.setColor(Color.MAGENTA);
 				g2.fillRect(objX, objY, objSize, objSize);
+				g2.setFont(gp.ui.veryExtraSmallText);
+				String number = "" + (i + 1);
+				int h = (int) g2.getFontMetrics().getStringBounds(number, g2).getHeight();
 				g2.setColor(Color.BLACK);
-				g2.setFont(gp.ui.extraSmallText);
-				g2.drawString("" + (i + 1), objX, objY);
+				g2.fillOval(objX - 2, objY - h + 2, 10, 10);
+				g2.setColor(Color.WHITE);
+				g2.drawString(number, objX, objY);
 			}
 			
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));

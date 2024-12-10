@@ -4,7 +4,7 @@ import entity.Vector2;
 
 public class Objective {
 	
-	enum OBJECTIVE_TYPE {
+	public enum OBJECTIVE_TYPE {
 		MAIN,
 		SIDE
 	}

@@ -30,6 +30,9 @@ public class Player extends Entity {
 	private int weaponPickupCooldown = 60;
 	private int weaponPickupCooldownCounter = 0;
 
+	private long lastFootstepTime = 0;
+	private final long footstepInterval = 900;
+	
 	public Player(GamePanel gp, KeyHandler keys) {
 		super(gp);
 		int tileSize = GamePanel.TILE_SIZE;
@@ -51,7 +54,7 @@ public class Player extends Entity {
 		this.setMaxHealth(6);
 		this.setHealth(getMaxHealth());
 
-		this.setSpeed(5);
+		this.setSpeed(10);
 		this.setDirection("right");
 
 		this.setSolidArea(new Rectangle(6, 10, 28, 28));
@@ -268,6 +271,18 @@ public class Player extends Entity {
 		// Dispose of the copy to reset the transform
 		gCopy.dispose();
 	}
+	
+	private void playFootsteps() {
+		if (!movementDisabled) {
+	        long currentTime = System.currentTimeMillis(); // Get the current time in milliseconds
+
+	        // Check if the interval has passed
+	        if (currentTime - lastFootstepTime >= footstepInterval) {
+	        	if (keys.isMoving()) gp.sound.play(Sound.PLAYER_FOOTSTEPS);
+	            lastFootstepTime = currentTime;
+	        }
+	    }
+	}
 
 	@Override
 	protected void checkEntitiesCollision() {
@@ -283,7 +298,12 @@ public class Player extends Entity {
 		state.update();
 		this.movementDisabled = false;
 		updateDirection();
-		checkWorldCollision();
+		if (!keys.NOCLIP) {
+			checkWorldCollision();
+			setSpeed(5);
+		} else {
+			setSpeed(20);
+		}
 		checkEntitiesCollision();
 		updateWeaponPickupCooldown();
 		inventory.update();
@@ -294,6 +314,11 @@ public class Player extends Entity {
 			updateCoordinates();
 		if (gp.mouse.SHOOTING)
 			shootProjectile();
+		playFootsteps();
+//		if (!movementDisabled && keys.isMoving()) { 
+//			gp.sound.setFile(Sound.PLAYER_FOOTSTEPS);
+//			if (!gp.sound.isRunning()) gp.sound.play();
+//		}
 	}
 
 	@Override

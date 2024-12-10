@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import entity.Vector2;
 import entity.EntityManager;
 import gun.GUN_MachineGun;
-import gun.GUN_Pistol_1;
 import gun.GUN_Rifle;
 import gun.GUN_Shotgun;
 import gun.GUN_Sniper;
@@ -43,12 +42,10 @@ public class ObjectManager implements Renderable {
 	}
 	
 	private void loadGuns() {
-		int map = 1;
-		guns.get(map).add(new GUN_Shotgun(912, 4416));
-		guns.get(map).add(new GUN_Rifle(3360, 2112));
-//		guns.get(map).add(new GUN_Pistol_1(GamePanel.TILE_SIZE * 3, GamePanel.TILE_SIZE * 3));
-//		guns.get(map).add(new GUN_MachineGun(GamePanel.TILE_SIZE * 6, GamePanel.TILE_SIZE * 3));
-//		guns.get(map).add(new GUN_Sniper(GamePanel.TILE_SIZE * 6, GamePanel.TILE_SIZE * 6));
+		guns.get(1).add(new GUN_Shotgun(912, 4416));
+		guns.get(1).add(new GUN_Rifle(3360, 2112));
+		guns.get(2).add(new GUN_MachineGun(14 * GamePanel.TILE_SIZE, 38 * GamePanel.TILE_SIZE));
+		guns.get(2).add(new GUN_Sniper(73 * GamePanel.TILE_SIZE, 48 * GamePanel.TILE_SIZE));
 	}
 	
 	public LinkedList<GameObject> getObjects() {
@@ -87,6 +84,10 @@ public class ObjectManager implements Renderable {
 		getObjects().add(obj);
 	}
 	
+	public void addObject(int map, GameObject obj) {
+		objects.get(map).add(obj);
+	}
+	
 	@Override
 	public void update() {
 		// Get player position
@@ -99,13 +100,13 @@ public class ObjectManager implements Renderable {
 	        
 	        // Mark objects as dead if far from the player
 	        double distance = Math.sqrt(Math.pow(obj.worldX - player.x, 2) + Math.pow(obj.worldY - player.y, 2));
-	        if (distance > EntityManager.DESPAWN_RANGE) {
+	        if (distance > EntityManager.DESPAWN_RANGE && obj.type != GameObject.OBJ_KEY) {
 	            obj.isDead = true;
 	        }
 	        
 	        // Remove dead objects
 	        if (obj.isDead) {
-	            objectIterator.remove();
+	        	objectIterator.remove();
 	        }
 	    }
 	}

@@ -69,16 +69,14 @@ public class ShootingEnemy extends Enemy {
 
 			gp.em.addBullets(new GunProjectile(gp, start.x, start.y, speedX, speedY, BULLET_DAMAGE));
 		}
-		
-		gp.sound.play(gun.sound);
 	}
 	
 	public boolean hasLineOfSight() {
 		int tileSize= GamePanel.TILE_SIZE;
 		
 	    // Convert positions to tile-based coordinates
-	    int entityTileX = (int) worldX / tileSize;
-	    int entityTileY = (int) worldY / tileSize;
+	    int entityTileX = (int) (worldX + getSolidArea().x) / tileSize;
+	    int entityTileY = (int) (worldY + getSolidArea().y) / tileSize;
 	    int playerTileX = (int) gp.player.worldX / tileSize;
 	    int playerTileY = (int) gp.player.worldY / tileSize;
 

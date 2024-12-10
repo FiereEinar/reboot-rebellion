@@ -30,10 +30,10 @@ public class NPC_Scientist extends NPC {
 		Utils utils = new Utils();
 		
 		// Load the sprite sheet
-	    BufferedImage spritesheet = utils.getSpriteSheet("/player/Character.png");
+	    BufferedImage spritesheet = utils.getAndScaleImage("/player/NPC.png", 240, 336);
 
-	    int width = 41;
-	    int height = 41;
+	    int width = 48;
+	    int height = 48;
 	    
 	    // Load idle sprites
 	    for (int i = 0; i < 2; i++) { 
@@ -42,7 +42,7 @@ public class NPC_Scientist extends NPC {
 	    }
 
 	    // Load attacking sprites
-	    for (int i = 0; i < 5; i++) { 
+	    for (int i = 0; i < 4; i++) { 
 	        this.sprite.attackingRight.addSprite(utils.cropSprite(spritesheet, i * width, 2 * height, width, height));
 	        this.sprite.attackingLeft.addSprite(utils.cropSprite(spritesheet, i * width, 3 * height, width, height));
 	        this.sprite.attackingDown.addSprite(utils.cropSprite(spritesheet, i * width, 2 * height, width, height));

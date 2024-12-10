@@ -10,13 +10,14 @@ import java.util.HashMap;
 
 import entity.Vector2;
 import main.GamePanel;
+import main.Objective;
 import main.Renderable;
 import main.Utils;
 
 public class TileManager implements Renderable {
 
 	GamePanel gp;
-	private final int TILE_COUNT = 810; 
+	private final int TILE_COUNT = 931; 
 	private Tile[] tiles;
 	private int[][][] map;
 
@@ -29,6 +30,7 @@ public class TileManager implements Renderable {
 		loadTiles();
 		System.out.println("LOADING MAPS...");
 		loadMap("/maps/Map_01.txt", 0);
+		loadMap("/maps/Basement_Map.txt", 1);
 		loadMap("/maps/Map_3.txt", 2);
 	}
 
@@ -106,14 +108,13 @@ public class TileManager implements Renderable {
 
 	@Override
 	public void update() {
-
 	}
 
 	@Override
 	public void draw(Graphics2D g2) {
 		g2.setColor(Color.BLACK);
 		g2.fillRect(0, 0, gp.fullScreenWidth, gp.fullScreenHeight);
-		
+
 		int[][] currentMap = map[gp.currentMap];
 		
 		for (int i = 0; i < currentMap.length; i++) {
@@ -121,6 +122,9 @@ public class TileManager implements Renderable {
 				int tileNum = currentMap[i][j];
 				if (gp.currentMap == 2) {
 					tileNum += 724;
+				}
+				if (gp.currentMap == 1) {
+					tileNum += 811;
 				}
 				
 				BufferedImage image = tiles[tileNum].getSprite();
@@ -134,7 +138,20 @@ public class TileManager implements Renderable {
 					g2.drawImage(image, screenX, screenY, null);
 				}
 			}
-		}		
+		}
+		
+		// draw objectives in the world
+		for (Objective obj: gp.objectives) {
+			g2.setColor(new Color(0, 255, 0, 70));
+			int tileSize = GamePanel.TILE_SIZE;
+			
+			if (gp.isInPlayerView(obj.position)) {
+				int screenX = obj.position.x - gp.player.worldX + gp.player.screenX;
+				int screenY = obj.position.y - gp.player.worldY + gp.player.screenY;
+				
+				g2.fillRect(screenX, screenY, tileSize, tileSize);
+			}
+		}
 	}
 
 	public int getMapTileNumber(int col, int row) {
@@ -152,6 +169,13 @@ public class TileManager implements Renderable {
 	}
 
 	public Boolean isTileSolid(int tileIndex) {
+		if (gp.currentMap == 2) {
+			tileIndex += 724;
+		}
+		if (gp.currentMap == 1) {
+			tileIndex += 811;
+		}
+
 		return tiles[tileIndex].isSolid;
 	}
 	
@@ -165,6 +189,10 @@ public class TileManager implements Renderable {
 	
 	public int [][] getMap() {
 		return this.map[gp.currentMap];
+	}
+	
+	public int [][] getMap(int i) {
+		return this.map[i];
 	}
 
 }

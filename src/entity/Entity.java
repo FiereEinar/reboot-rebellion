@@ -7,6 +7,7 @@ import java.util.Random;
 
 import main.GamePanel;
 import main.Renderable;
+import main.Sound;
 import sprite.SpriteManager;
 import states.StateManager;
 
@@ -44,6 +45,7 @@ public class Entity extends BaseEntity implements Renderable {
 
 	public Entity(GamePanel gp) {
 		this.gp = gp;
+		hitSound = Sound.NONE;
 	}
 	
 	// used AFTER loading entity sprites so that the interval adjusts based in sprites len

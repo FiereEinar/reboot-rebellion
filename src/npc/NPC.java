@@ -41,7 +41,7 @@ public abstract class NPC extends Entity {
 		state.update();
 		checkState();
 		checkIfCollidingWithPlayer();
-		checkWorldCollision();
+//		checkWorldCollision();
 		updateCoordinates();
 	}
 

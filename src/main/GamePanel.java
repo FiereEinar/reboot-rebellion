@@ -62,6 +62,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public EnvironmentManager envManager = new EnvironmentManager(this);
 	private Map map = new Map(this);
 	public Sound sound = new Sound();
+	public Sound music = new Sound();
 	public LinkedList<Objective> objectives = new LinkedList<>();
 	private Graphics2D g2;
 	public Player player;
@@ -106,6 +107,10 @@ public class GamePanel extends JPanel implements Runnable {
         objectives.add(new Objective("Get the shotgun", OBJECTIVE_TYPE.MAIN, 0, 895, 4407, "main_objective_1"));
         objectives.add(new Objective("Get the rifle", OBJECTIVE_TYPE.MAIN, 0, 3365, 2112, "main_objective_2"));
         objectives.add(new Objective("Go to the rooftop", OBJECTIVE_TYPE.MAIN, 0, 4464, 192, "main_objective_3"));
+
+        music.setFile(Sound.MUSIC_LEVEL);
+        music.play();
+        music.loop();
 	}
 
 	public void startGameThread() {

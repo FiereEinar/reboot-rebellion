@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import main.GamePanel;
+import main.Sound;
 import main.Utils;
 
 public class ENM_Bomber_1 extends Enemy {
@@ -76,14 +77,19 @@ public class ENM_Bomber_1 extends Enemy {
 		Rectangle range = this.getAttackRange();
 		Rectangle rec2 = new Rectangle(this.worldX + range.x, this.worldY + range.y, range.width, range.height);
 		
+		Boolean inRangeWhileExploding = state.attacking.getCounter() == state.attacking.getStateDuration() / 2;
+
 		if (rec1.intersects(rec2)) {
 			state.attacking.setState(true);
 			
-			Boolean inRangeWhileExploding = state.attacking.getCounter() == state.attacking.getStateDuration() / 2;
 			
 			if (inRangeWhileExploding) {
 				gp.player.recieveDamage(damage);
 			}
+		}
+		
+		if (inRangeWhileExploding) {
+			gp.sound.play(Sound.ROBOT_EXPLOSION);
 		}
 		
 		if (this.state.attacking.isTriggered()) {

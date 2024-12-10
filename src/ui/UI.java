@@ -11,6 +11,7 @@ import main.GamePanel;
 import main.Inventory;
 import main.Objective;
 import main.Renderable;
+import states.State;
 
 public class UI implements Renderable {
 
@@ -20,16 +21,23 @@ public class UI implements Renderable {
 	public Font normalText;
 	public Font smallText;
 	public Font extraSmallText;
+	public Font veryExtraSmallText;
 	public Font normalBoldText;
 
 	public int selectedMenuNum = 0;
 	public int menuItems = 2;
+	private final int MESSAGE_DURATION = 300;
 	private String tooltipText = "";
 	private String progressText = "";
+	private String message1 = "";
+	private String message2 = "";
 	
 	Asset healthbar = new Asset(64 * 3, 32 * 3);
 	Asset buttons = new Asset(64 * 3, 32 * 3);
 	Asset background = new Asset();
+	Asset key = new Asset(64, 64);
+	
+	State showMessage = new State(MESSAGE_DURATION);
 	
 	public final int MENU_OPTION_START = 0;
 	public final int MENU_OPTION_EXIT = 1;
@@ -46,7 +54,8 @@ public class UI implements Renderable {
 		
 		this.normalText = new Font(font, Font.PLAIN, 40);
 		this.smallText = new Font(font, Font.PLAIN, 20);
-		this.extraSmallText = new Font(font, Font.PLAIN, 10);
+		this.extraSmallText = new Font(font, Font.PLAIN, 15);
+		this.veryExtraSmallText = new Font(font, Font.PLAIN, 10);
 		this.normalBoldText = new Font(font, Font.BOLD, 80);
 		loadAssets();
 	}
@@ -64,6 +73,8 @@ public class UI implements Renderable {
 		this.healthbar.set("/healthbar/Health_Bar7.png");
 		
 		this.background.load("/ui/menu_background.png");
+		
+		this.key.load("/objects/Key.png");
 	}
 	
 	public void setTooltipText(String text) {
@@ -124,6 +135,7 @@ public class UI implements Renderable {
 			g2.setColor(Color.WHITE);
 			g2.setFont(extraSmallText);
 			g2.drawString(slot1Gun.getCurrentMag() + "/" + slot1Gun.getReservedAmmo(), rec1X + 5, rec1Y + rec1Height - 5);
+			g2.setFont(veryExtraSmallText);
 			g2.drawString("1", rec1X + 5, rec1Y + 10);
 		}
 		
@@ -146,6 +158,7 @@ public class UI implements Renderable {
 			g2.setColor(Color.WHITE);
 			g2.setFont(extraSmallText);
 			g2.drawString(slot2Gun.getCurrentMag() + "/" + slot2Gun.getReservedAmmo(), rec2X + 5, rec1Y + rec1Height - 5);
+			g2.setFont(veryExtraSmallText);
 			g2.drawString("2", rec2X + 5, rec1Y + 10);
 		}
 	}
@@ -297,8 +310,8 @@ public class UI implements Renderable {
 	private void drawObjectives() {
 		int tileSize = GamePanel.TILE_SIZE;
 		int margin = 20;
-		int width = tileSize * 3;
-		int height = tileSize * 2;
+		int width = tileSize * 5;
+		int height = tileSize * 3;
 		int x = gp.screenWidth - width - margin;
 		int y = tileSize * 2;
 		
@@ -324,6 +337,56 @@ public class UI implements Renderable {
 			g2.drawString((i + 1) + ". " + obj.getObjective(), objX, objY + (textH * (i + 1)) + gap);
 		}
 	}
+	
+	private void showMessage() {
+		if (!showMessage.getState()) {
+			message1 = "";
+			message2 = "";
+			return;
+		}
+		
+		int tileSize = GamePanel.TILE_SIZE;
+		int margin = 20;
+		int width = tileSize * 6;
+		int height = tileSize + 20;
+		int x = gp.screenWidth - width - margin;
+		int y = tileSize * 6;
+		
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+		g2.setColor(Color.BLACK);
+		g2.fillRoundRect(x, y, width, height, 10, 10);
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); 
+		
+		g2.setColor(Color.WHITE);
+		g2.setFont(extraSmallText);
+
+		int height1 = (int) g2.getFontMetrics().getLineMetrics(message1, g2).getHeight();
+		int height2 = (int) g2.getFontMetrics().getLineMetrics(message2, g2).getHeight();
+		
+		g2.drawString(message1, x + 5, y + height1 + 5);
+		g2.drawString(message2, x + 5, y + height1 +  height2 + 10);
+	}
+	
+	public void showMessage(String message1, String message2) {
+		this.message1 = message1;
+		this.message2 = message2;
+		showMessage.setState(true);
+	}
+	
+	private void drawPlayerKeys() {
+		Inventory inv = gp.player.inventory;
+		if (inv.getKeys() == 0) return;
+		
+		int x = 230;
+		int y = 20;
+		
+		int spriteWidth = key.image.getSprite().getWidth();
+		int spriteHeight = key.image.getSprite().getHeight();
+		
+		g2.drawImage(key.image.getSprite(), x, y, null);
+		g2.setFont(extraSmallText);
+		g2.drawString("" + inv.getKeys(), x + spriteWidth + 2, y + spriteHeight - 4);
+	}
 
 	/*
 	 * HANDLERS
@@ -339,6 +402,8 @@ public class UI implements Renderable {
 		drawWeaponState();
 		drawControls();
 		drawObjectives();
+		showMessage();
+		drawPlayerKeys();
 	}
 
 	private void pausedScreenHandler() {
@@ -353,6 +418,7 @@ public class UI implements Renderable {
 	public void update() {
 		setTooltipText("");
 		setProgressText("");
+		showMessage.update();
 	}
 	
 	@Override

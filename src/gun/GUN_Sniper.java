@@ -5,7 +5,7 @@ import main.Sound;
 public class GUN_Sniper extends GunObject {
 
 	public GUN_Sniper(int x, int y) {
-		this.damage = 250;
+		this.damage = 350;
 		this.bulletSpeed = 55;
 		this.bulletSpread = 1;
 		this.bulletMultiplier = 1;

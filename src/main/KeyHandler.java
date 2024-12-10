@@ -15,6 +15,7 @@ public class KeyHandler implements KeyListener {
 	public Boolean RIGHT = false;
 	public Boolean LOG_SWITCH = false;
 	public Boolean KEY_E = false;
+	public Boolean NOCLIP = false;
 
 	public KeyHandler(GamePanel gp) {
 		this.gp = gp;
@@ -50,6 +51,10 @@ public class KeyHandler implements KeyListener {
 		
 		if (code == KeyEvent.VK_L) {
 			LOG_SWITCH = !LOG_SWITCH;
+		}
+		
+		if (code == KeyEvent.VK_BACK_SLASH) {
+			NOCLIP = !NOCLIP;
 		}
 		
 		if (code == KeyEvent.VK_E) {

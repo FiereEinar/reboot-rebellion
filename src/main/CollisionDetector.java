@@ -53,7 +53,7 @@ public class CollisionDetector {
 			System.out.println("WARNING: Invalid value for direction");
 			break;
 		}
-
+		
 		if (gp.tm.isTileSolid(tileNum1) || gp.tm.isTileSolid(tileNum2)) {
 			return true;
 		}

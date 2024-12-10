@@ -7,12 +7,21 @@ import gun.GunObject;
 public class Inventory {
 	
 	private LinkedList<GunObject> arsenal = new LinkedList<>();
+	private int keys = 0;
 	private int selectedGun = 0;
 	
 	public static final int GUN_SLOT_1 = 0;
 	public static final int GUN_SLOT_2 = 1;
 	
 	public Inventory() {
+	}
+	
+	public int getKeys() {
+		return keys;
+	}
+
+	public void setKeys(int keys) {
+		this.keys = keys;
 	}
 	
 	public GunObject getSelectedGun() {

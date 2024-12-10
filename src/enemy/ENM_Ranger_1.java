@@ -80,6 +80,7 @@ public class ENM_Ranger_1 extends ShootingEnemy {
 			if (shouldAttack) {
 				shootProjectile(this.gun, new Vector2(gp.player.worldX, gp.player.worldY));
 				this.gun.recordShot();
+				gp.sound.play(gun.sound);
 			}
 		}
 	}

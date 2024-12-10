@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 import enemy.ENM_Bomber_1;
+import enemy.ENM_Boss_1;
 import enemy.ENM_Melee_1;
 import enemy.ENM_Ranger_1;
 import entity.Entity.ENTITY_TYPE;
@@ -27,7 +28,7 @@ public class EntityManager implements Renderable {
 	public EntityManager(GamePanel gp) {
 		this.gp = gp;
 		initLists();
-//		spawnNPCS();
+		spawnNPCS();
 	}
 	
 	private void initLists() {
@@ -50,10 +51,11 @@ public class EntityManager implements Renderable {
 		
 		int tileSize = GamePanel.TILE_SIZE;
 		
-		int x = 28 * tileSize;
-		int y = 5 * tileSize;
+		int x = 90 * tileSize;
+		int y = 8 * tileSize;
 		
 		entities.get(map).add(new NPC_Scientist(gp, x, y));
+		entities.get(map).add(new ENM_Boss_1(gp, x, y - tileSize * 2));
 	}
 	
 	public void addBullets(Projectile bullet) {
@@ -97,8 +99,11 @@ public class EntityManager implements Renderable {
 	    Random random = new Random();
 
         int randX = 0, randY = 0;
+        int retryCount = 0;
+        int maxRetryCount = 99999;
 
-        while (true) {
+        while (retryCount < maxRetryCount) {
+        	retryCount++;
             // Generate random positions within the DESPAWN_RANGE
             randX = player.x - HALF_DESPAWN_RANGE + random.nextInt(HALF_DESPAWN_RANGE * 2);
             randY = player.y - HALF_DESPAWN_RANGE + random.nextInt(HALF_DESPAWN_RANGE * 2);
@@ -121,6 +126,10 @@ public class EntityManager implements Renderable {
                 	break; // Valid spawn point found
                 }
             }
+        }
+        
+        if (retryCount >= maxRetryCount) {
+        	return;
         }
         
         // Randomly determine the type of entity to spawn

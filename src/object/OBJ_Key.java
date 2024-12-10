@@ -24,15 +24,13 @@ public class OBJ_Key extends GameObject {
 	private void loadSprites() {
 		Utils utils = new Utils();
 		
-		this.sprite.addSprite(utils.getAndScaleImage("/objects/Key.png", 16, 16));
+		this.sprite.addSprite(utils.getAndScaleImage("/objects/Key.png", 32, 32));
 	}
 
 	@Override
 	public Boolean useEffect(Player entity) {
-//		GunObject gun = entity.inventory.getSelectedGun();
-//		if (gun == null) return false;
-//		
-//		gun.increaseReservedAmmo(gun.getMagSize() * 2);
+		int keys = entity.inventory.getKeys();
+		entity.inventory.setKeys(keys + 1);
 		return true;
 	}
 

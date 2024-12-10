@@ -27,6 +27,9 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	
 	private final int MAX_SECOND_ATTACK_COUNT = 3;
 	
+	private long lastFootstepTime = 0;
+	private final long footstepInterval = 1100;
+	
 	public ENM_Boss_1(GamePanel gp, int x, int y) {
 		super(gp);
 		
@@ -171,6 +174,7 @@ public class ENM_Boss_1 extends ShootingEnemy {
 		shootProjectile(secondGun, target, firstTurretOrigin);
 		shootProjectile(secondGun, target, secondTurretOrigin);
 		
+		gp.sound.play(gun.sound);
 		this.secondGun.recordShot();
 		
 		return true;
@@ -196,6 +200,18 @@ public class ENM_Boss_1 extends ShootingEnemy {
 		}
 	}
 	
+	private void playFootsteps() {
+		if (!movementDisabled) {
+	        long currentTime = System.currentTimeMillis(); // Get the current time in milliseconds
+
+	        // Check if the interval has passed
+	        if (currentTime - lastFootstepTime >= footstepInterval) {
+	        	gp.sound.play(Sound.BOSS_FOOTSTEPS);
+	            lastFootstepTime = currentTime;
+	        }
+	    }
+	}
+	
 	@Override
 	public Rectangle getSolidAreaRelativeToWorld() {
 		int tileSize = GamePanel.TILE_SIZE;
@@ -219,6 +235,7 @@ public class ENM_Boss_1 extends ShootingEnemy {
 	@Override
 	public void update() {
 		super.update();
+		playFootsteps();
 		attackCooldown.update();
 	}
 	
