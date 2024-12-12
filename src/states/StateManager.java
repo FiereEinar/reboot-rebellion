@@ -12,6 +12,13 @@ public class StateManager {
 		dying.setDuration(120);
 	}
 	
+	public void reset() {
+		invincibility.resetIsTriggered();
+		dying.resetIsTriggered();
+		attacking.resetIsTriggered();
+		attacked.resetIsTriggered();
+	}
+	
 	// REMINDERS: add state here if you want to add another state
 	// this is skill issue, poor code structure fr
 	public Boolean shouldResetSprites() {

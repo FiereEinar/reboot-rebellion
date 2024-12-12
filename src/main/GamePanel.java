@@ -74,6 +74,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public static final int STATE_DIALOGUE = 3;
 	public static final int STATE_ENDGAME_DIALOGUE = 4;
 	public static final int STATE_ESC_DIALOGUE = 5;
+	public static final int STATE_GAMEOVER_DIALOGUE = 6;
 	
 	public enum LIGHTING {
 		DARK,
@@ -105,10 +106,7 @@ public class GamePanel extends JPanel implements Runnable {
         
         player = new Player(this, keys);
         envManager.setup();
-        
-        objectives.add(new Objective("Get the shotgun", OBJECTIVE_TYPE.MAIN, 0, 895, 4407, "main_objective_1"));
-        objectives.add(new Objective("Get the rifle", OBJECTIVE_TYPE.MAIN, 0, 3365, 2112, "main_objective_2"));
-        objectives.add(new Objective("Go to the rooftop", OBJECTIVE_TYPE.MAIN, 0, 4464, 192, "main_objective_3"));
+        addObjectives();
 
         music.setFile(Sound.MUSIC_LEVEL);
         music.play();
@@ -117,23 +115,27 @@ public class GamePanel extends JPanel implements Runnable {
 	
 	public void restartGame() {
 		currentMap = 0;
+		gameState = STATE_PLAY;
+		player.restart();
 		om.restart();
 		tm.restart();
 		eh.restart();
-		
+		em.restart();
 		objectives.clear();
+		addObjectives();
 		
-		objectives.add(new Objective("Get the shotgun", OBJECTIVE_TYPE.MAIN, 0, 895, 4407, "main_objective_1"));
-        objectives.add(new Objective("Get the rifle", OBJECTIVE_TYPE.MAIN, 0, 3365, 2112, "main_objective_2"));
-        objectives.add(new Objective("Go to the rooftop", OBJECTIVE_TYPE.MAIN, 0, 4464, 192, "main_objective_3"));
-
+		music.stop();
         music.setFile(Sound.MUSIC_LEVEL);
         music.play();
         music.loop();
-        player.restart();
         
-		gameState = STATE_PLAY;
 		lightingState = LIGHTING.LIGHT;
+	}
+	
+	private void addObjectives() {
+		objectives.add(new Objective("Get the shotgun", OBJECTIVE_TYPE.MAIN, 0, 895, 4407, "main_objective_1"));
+        objectives.add(new Objective("Get the rifle", OBJECTIVE_TYPE.MAIN, 0, 3365, 2112, "main_objective_2"));
+        objectives.add(new Objective("Go to the rooftop", OBJECTIVE_TYPE.MAIN, 0, 672, 48, "main_objective_3"));
 	}
 
 	public void startGameThread() {
@@ -170,14 +172,6 @@ public class GamePanel extends JPanel implements Runnable {
 			om.update();
 			em.update();
 			player.update();
-		}
-
-		if (gameState == STATE_PAUSE) {
-
-		}
-
-		if (gameState == STATE_DIALOGUE) {
-
 		}
 	}
 	

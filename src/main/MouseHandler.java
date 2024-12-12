@@ -51,7 +51,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 			}
 		}
 		
-		if (gp.gameState == GamePanel.STATE_DIALOGUE) {
+		if (gp.gameState == GamePanel.STATE_ENDGAME_DIALOGUE) {
 			if (e.getButton() == MouseEvent.BUTTON1) {
 				if (gp.ui.exitDialogButtonHovered) {
 					System.exit(0);
@@ -63,6 +63,16 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 		}
 		
 		if (gp.gameState == GamePanel.STATE_ESC_DIALOGUE) {
+			if (e.getButton() == MouseEvent.BUTTON1) {
+				if (gp.ui.escExitButtonHovered) {
+					System.exit(0);
+				}
+				if (gp.ui.escRestartButtonHovered) {
+					gp.restartGame();
+				}
+			}
+		}
+		if (gp.gameState == GamePanel.STATE_GAMEOVER_DIALOGUE) {
 			if (e.getButton() == MouseEvent.BUTTON1) {
 				if (gp.ui.escExitButtonHovered) {
 					System.exit(0);

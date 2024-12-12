@@ -11,6 +11,7 @@ import main.GamePanel;
 import main.Sound;
 import main.Utils;
 import projectiles.GunProjectile;
+import sprite.SpriteManager;
 import states.State;
 
 public class ENM_Boss_1 extends ShootingEnemy {
@@ -59,6 +60,7 @@ public class ENM_Boss_1 extends ShootingEnemy {
 		
 		this.type = ENTITY_TYPE.BOSS;
 		
+		this.sprite = new SpriteManager(this, 40);
 		loadSprites();
 		updateSpritesInterval();
 	}

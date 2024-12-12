@@ -51,6 +51,11 @@ public class State {
 		this.isTriggered = false;
 	}
 	
+	public void reset() {
+		counter = 0;
+		isOn = false;
+	}
+	
 	public void update() {
 		if (getState()) {
 			counter++;

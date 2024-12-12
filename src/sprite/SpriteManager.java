@@ -31,9 +31,16 @@ public class SpriteManager {
 	public Sprite attackedDown = new Sprite();
 
 	Entity entity;
+	int spriteSize = Sprite.DEFAULT_SPRITE_SIZE;
 
 	public SpriteManager(Entity entity) {
 		this.entity = entity;
+	}
+	
+	public SpriteManager(Entity entity, int spriteSize) {
+		this.entity = entity;
+		this.spriteSize = spriteSize;
+		reInitializeSprites();
 	}
 	
 	// REMINDERS: add a sprite reseter if you add another sprite, 
@@ -62,6 +69,32 @@ public class SpriteManager {
 		attackedRight.resetCounters();
 		attackedUp.resetCounters();
 		attackedDown.resetCounters();
+	}
+	
+	private void reInitializeSprites() {
+		up = new Sprite(spriteSize);
+		down = new Sprite(spriteSize);
+		left = new Sprite(spriteSize);
+		right = new Sprite(spriteSize);
+		
+		dying = new Sprite(spriteSize);
+		idleRight = new Sprite(spriteSize);
+		idleLeft = new Sprite(spriteSize);
+		
+		attackingLeft = new Sprite(spriteSize);
+		attackingRight = new Sprite(spriteSize);
+		attackingUp = new Sprite(spriteSize);
+		attackingDown = new Sprite(spriteSize);
+		
+		attackingLeft2 = new Sprite(spriteSize);
+		attackingRight2 = new Sprite(spriteSize);
+		attackingUp2 = new Sprite(spriteSize);
+		attackingDown2 = new Sprite(spriteSize);
+		
+		attackedLeft = new Sprite(spriteSize);
+		attackedRight = new Sprite(spriteSize);
+		attackedUp = new Sprite(spriteSize);
+		attackedDown = new Sprite(spriteSize);
 	}
 	
 	private void assertIfShouldResetSprites() {

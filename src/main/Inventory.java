@@ -34,6 +34,8 @@ public class Inventory {
 	}
 	
 	public void setSelectedGun(int index) {
+		if (arsenal.size() == 1) arsenal.get(GUN_SLOT_1).reloading.reset();
+		if (arsenal.size() == 2) arsenal.get(GUN_SLOT_2).reloading.reset();		
 		this.selectedGun = index;
 	}
 	

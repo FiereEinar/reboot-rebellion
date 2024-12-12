@@ -34,7 +34,7 @@ public class EventHandler {
 	EventState npcSave = new EventState();
 	EventState mindGridOff = new EventState();
 	
-	public int npcSaved = 3;
+	public int npcSaved = 0;
 	public final int maxNpcSaved = 3;
 	
 	private Boolean isFinalObjectiveShown = false;
@@ -52,8 +52,8 @@ public class EventHandler {
 		int map3 = 2;
 
 		map2Transition.setCoordinate(map1, 5, 0, GamePanel.TILE_SIZE);
-		map3Transition.setCoordinate(map1, 93, 4, GamePanel.TILE_SIZE);
-		powerdown.setCoordinate(map1, 93, 4, GamePanel.TILE_SIZE);
+		map3Transition.setCoordinate(map1, 14, 1, GamePanel.TILE_SIZE);
+		powerdown.setCoordinate(map1, 14, 1, GamePanel.TILE_SIZE);
 		shotgunPickup.setCoordinate(map1, 19, 92, GamePanel.TILE_SIZE);
 		riflePickup.setCoordinate(map1, 70, 44, GamePanel.TILE_SIZE);
 		npcSave.setCoordinate(map1, 49, 99, GamePanel.TILE_SIZE);
@@ -119,6 +119,7 @@ public class EventHandler {
 			gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_10");
 			gp.lightingState = LIGHTING.LIGHT;
 			powerRestore.isTriggered = true;
+			gp.ui.showMessage("Power has been restored!", "Go back now");
 			gp.objectives.add(new Objective("Go back to the ground floor", OBJECTIVE_TYPE.MAIN, 1, 5 * GamePanel.TILE_SIZE, 0, "main_objective_11"));
 		}
 		
@@ -181,13 +182,13 @@ public class EventHandler {
 					}
 				}
 
-				if (npcSaved == maxNpcSaved) {
+				if (gp.em.deadNpcCount == maxNpcSaved) {
 					gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_12");
 					gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_npc_1");
 					gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_npc_2");
 					gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_npc_3");
 					npcSave.isTriggered = true;
-					gp.objectives.add(new Objective("Go to the rooftop", OBJECTIVE_TYPE.MAIN, 0, 93 * GamePanel.TILE_SIZE, 4 * GamePanel.TILE_SIZE, "main_objective_13"));
+					gp.objectives.add(new Objective("Go to the rooftop", OBJECTIVE_TYPE.MAIN, 0, 14 * GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, "main_objective_13"));
 				}
 			}
 		}
@@ -196,6 +197,7 @@ public class EventHandler {
 			isFinalObjectiveShown = true;
 			gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_14");
 			gp.em.setMaxEntityCount(5);
+			gp.ui.showMessage("Good job! you killed the boss!", "");
 			gp.objectives.add(new Objective("Turn off the Mind Grid", OBJECTIVE_TYPE.MAIN, 2, 48 * GamePanel.TILE_SIZE, 47 * GamePanel.TILE_SIZE, "main_objective_15"));
 		}
 		
@@ -255,6 +257,9 @@ public class EventHandler {
 	private void handleMap3Transition() {
 		if (!npcSave.isTriggered) return;
 		map3Transition.isTriggered = true;
+		
+		gp.player.worldX = 250;
+		gp.player.worldY = 185;
 		
 		gp.objectives.removeIf(t -> t.getIdentifier() == "main_objective_13");
 		gp.objectives.add(new Objective("Defeat the boss", OBJECTIVE_TYPE.MAIN, 1, 50 * GamePanel.TILE_SIZE, 50 * GamePanel.TILE_SIZE, "main_objective_14"));

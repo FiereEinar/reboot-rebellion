@@ -1,21 +1,30 @@
 package sprite;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public class Sprite {
 
-	private ArrayList<BufferedImage> sprites;
+	private BufferedImage[] sprites;
 	private int spriteCounter = 0;
 	private int fpsCounter = 0;
 	private int fps = 12;
+	private int spriteIndexCounter = 0;
+	public static final int DEFAULT_SPRITE_SIZE = 15;
 	
 	public Sprite() {
-		this.sprites = new ArrayList<>();
+		this.sprites = new BufferedImage[DEFAULT_SPRITE_SIZE];
+	}
+	
+	public Sprite(int size) {
+		this.sprites = new BufferedImage[size];
 	}
 	
 	public void addSprite(BufferedImage sprite) {
-		sprites.add(sprite);
+		if (spriteIndexCounter >= sprites.length) {
+			System.out.println("WARNING: sprites overflow");
+			return;
+		}
+		sprites[spriteIndexCounter++] = sprite;
 	}
 	
 	public void setInterval(int interval) {
@@ -23,11 +32,11 @@ public class Sprite {
 	}
 	
 	public int getSpritesSize() {
-		return sprites.size();
+		return spriteIndexCounter;
 	}
 	
 	public BufferedImage getSpriteByIndex(int index) {
-		return sprites.get(index);
+		return sprites[index];
 	}
 	
 	public void resetCounters() {
@@ -36,21 +45,21 @@ public class Sprite {
 	}
 	
 	public BufferedImage safeGetSprite() {
-		if (sprites.size() == 0) {
+		if (spriteIndexCounter == 0) {
 			System.out.println("You forgot to add some sprites you dimwit");
 			return null;
 		}
 		
-		return sprites.get(spriteCounter);
+		return sprites[spriteCounter];
 	}
 	
 	public BufferedImage getSprite() {
-		if (sprites.size() == 0) {
+		if (spriteIndexCounter == 0) {
 			System.out.println("You forgot to add some sprites you dimwit");
 			return null;
 		}
 		
-		BufferedImage sprite = sprites.get(spriteCounter);
+		BufferedImage sprite = sprites[spriteCounter];
 		fpsCounter++;
 		
 		if (fpsCounter >= fps) {
@@ -58,7 +67,7 @@ public class Sprite {
 			spriteCounter++;
 		}
 
-		if (spriteCounter >= sprites.size()) {
+		if (spriteCounter >= spriteIndexCounter) {
 			spriteCounter = 0;
 		}
 		

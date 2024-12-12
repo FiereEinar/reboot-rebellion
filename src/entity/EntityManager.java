@@ -22,13 +22,13 @@ public class EntityManager implements Renderable {
 	
 	public static final int DESPAWN_RANGE = 1200;
 	private final int HALF_DESPAWN_RANGE = DESPAWN_RANGE / 2;
+	
 	private int maxEntityCount = 5;
-	public int deadNpcCount = 0;
+	public int deadNpcCount = 3;
 	
 	public EntityManager(GamePanel gp) {
 		this.gp = gp;
 		initLists();
-//		spawnNPCS();
 	}
 	
 	public void restart() {
@@ -54,17 +54,6 @@ public class EntityManager implements Renderable {
 
 	public void setMaxEntityCount(int maxEntityCount) {
 		this.maxEntityCount = maxEntityCount;
-	}
-	
-	private void spawnNPCS() {
-		int map = 1;
-		
-		int tileSize = GamePanel.TILE_SIZE;
-		
-		int x = 90 * tileSize;
-		int y = 8 * tileSize;
-		
-		entities.get(map).add(new NPC_Scientist(gp, x, y));
 	}
 	
 	public void addBullets(Projectile bullet) {

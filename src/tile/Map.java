@@ -44,7 +44,13 @@ public class Map {
 				int tileNum = gp.tm.getMapTileNumber(i, col, row);
 				int x = tileSize * col;
 				int y = tileSize * row;
-				g2.drawImage(gp.tm.getTileByIndex(tileNum).getSprite(), x, y, null);
+				if (gp.tm.isTileSolid(tileNum)) {
+					g2.setColor(Color.BLACK);
+				} else {
+					g2.setColor(Color.WHITE);
+				}
+				g2.fillRect(x, y, tileSize, tileSize);
+//				g2.drawImage(gp.tm.getTileByIndex(tileNum).getSprite(), x, y, null);
 				
 				col++;
 				if (col == gp.worldCol) {

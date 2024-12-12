@@ -32,6 +32,7 @@ public class Player extends Entity {
 	private final long footstepInterval = 900;
 	
 	private int points = 0;
+	private int enemiesKilled = 0;
 	
 	public Player(GamePanel gp, KeyHandler keys) {
 		super(gp);
@@ -116,7 +117,10 @@ public class Player extends Entity {
 		inventory.getArsenal().clear();
 		setHealth(getMaxHealth());
 		this.inventory.getArsenal().add(new GUN_Pistol_1(worldX, worldY));
+		isDead = false;
 		points = 0;
+		state.reset();
+		inventory.setSelectedGun(Inventory.GUN_SLOT_1);
 	}
 
 	public void addPoints(int amount) {
@@ -126,9 +130,17 @@ public class Player extends Entity {
 	public int getPoints() {
 		return this.points;
 	}
+	
+	public void incrementEnemiesKilled(int amount) {
+		this.enemiesKilled++;
+	}
+	
+	public int getEnemiesKilled() {
+		return this.enemiesKilled;
+	}
 
 	public void shootProjectile() {
-		if (inventory.arsenalSize() == 0) return;
+		if (inventory.arsenalSize() == 0 || isDead) return;
 		if (inventory.getSelectedGunIndex() >= inventory.arsenalSize()) return;
 		
 		GunObject gun = inventory.getSelectedGun();
@@ -265,7 +277,7 @@ public class Player extends Entity {
 	}
 
 	private void drawPlayerGun(Graphics2D g2) {
-		if (inventory.arsenalSize() == 0) return;
+		if (inventory.arsenalSize() == 0 || isDead) return;
 		
 		if (inventory.getSelectedGunIndex() >= inventory.arsenalSize()) return;
 		
@@ -308,6 +320,20 @@ public class Player extends Entity {
 	        }
 	    }
 	}
+	
+	private void checkNoClip() {
+		if (gp.keys.NOCLIP) {
+			movementDisabled = false;
+			isDead = false;
+			state.dying.setState(false);
+		}
+	}
+	
+	private void checkIfDead() {
+		if (isDead) {
+			gp.gameState = GamePanel.STATE_GAMEOVER_DIALOGUE;
+		}
+	}
 
 	@Override
 	protected void checkEntitiesCollision() {
@@ -321,8 +347,8 @@ public class Player extends Entity {
 	@Override
 	protected void checkWorldCollision() {
 		if (!keys.NOCLIP) {
-			super.checkWorldCollision();
 			setSpeed(5);
+			super.checkWorldCollision();
 		} else {
 			setSpeed(20);
 		}
@@ -330,7 +356,10 @@ public class Player extends Entity {
 
 	@Override
 	public void update() {
+		if (isDead) return;
 		state.update();
+		checkState();
+		checkIfDead();
 		this.movementDisabled = false;
 		updateDirection();
 		checkWorldCollision();
@@ -343,6 +372,7 @@ public class Player extends Entity {
 		if (gp.keys.isMoving()) updateCoordinates();
 		if (gp.mouse.SHOOTING) shootProjectile();
 		playFootsteps();
+		checkNoClip();
 	}
 
 	@Override

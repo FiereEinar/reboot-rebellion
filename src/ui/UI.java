@@ -405,7 +405,7 @@ public class UI implements Renderable {
 	 * HANDLERS
 	 */
 	
-	private void escDialogueScreenHandler() {
+	private void escDialogueScreenHandler(String topText) {
 	    int width = 300;
 	    int height = 300;
 	    int boxX = gp.screenWidth / 2 - width / 2;
@@ -418,7 +418,7 @@ public class UI implements Renderable {
 	    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
 	    g2.setColor(Color.WHITE);
-	    g2.drawString("Menu", getXForCenteredText("Menu"), boxY + 50);
+	    g2.drawString(topText, getXForCenteredText(topText), boxY + 50);
 
 	    // Draw the text inside the dialogue box
 	    g2.setColor(Color.WHITE);
@@ -510,6 +510,12 @@ public class UI implements Renderable {
 	    g2.setFont(smallText);
 	    g2.drawString(text, getXForCenteredText(text), y);
 
+//	    text = "Enemies Killed: " + gp.player.getEnemiesKilled();
+//	    h = (int) g2.getFontMetrics().getLineMetrics(text, g2).getHeight();
+//	    y += h;
+//	    g2.setFont(smallText);
+//	    g2.drawString(text, getXForCenteredText(text), y);
+	    
 	    text = "Points: " + gp.player.getPoints();
 	    h = (int) g2.getFontMetrics().getLineMetrics(text, g2).getHeight();
 	    y += h;
@@ -679,7 +685,11 @@ public class UI implements Renderable {
 		}
 		
 		if (gp.gameState == GamePanel.STATE_ESC_DIALOGUE) {
-			escDialogueScreenHandler();
+			escDialogueScreenHandler("Menu");
+		}
+		
+		if (gp.gameState == GamePanel.STATE_GAMEOVER_DIALOGUE) {
+			escDialogueScreenHandler("Game Over!");
 		}
 		
 		if (gp.gameState == GamePanel.STATE_ENDGAME_DIALOGUE) {

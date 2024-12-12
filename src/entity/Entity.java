@@ -130,13 +130,13 @@ public abstract class Entity extends BaseEntity implements Renderable {
 			gp.sound.play(hitSound);
 			this.state.attacked.setState(true);
 			if (this.health > 0) this.health -= damage;
-			if (this.health <= 0) state.dying.setState(true);
+			if (this.health <= 0 && !state.dying.isTriggered()) state.dying.setState(true);
 			if (isPlayer || type == ENTITY_TYPE.NPC) state.invincibility.setState(true);
 		}
 	}
 
 	protected void updateCoordinates() {
-		if (this.movementDisabled || state.dying.getState() && !isPlayer)
+		if (this.movementDisabled || state.dying.getState())
 			return;
 		
 		Rectangle solidArea = getSolidArea();
